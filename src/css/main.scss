@@ -485,3 +485,77 @@ figure[data-alt="Small multiples"] {
 	fill:#efefef;
 }
 
+
+.interactive-wrapper {
+    height: 100%;
+    width: 100%;
+    // min-height: 150px;
+    min-width: 280px;
+
+
+    .gv-chart-title {
+        @include fs-bodyHeading(3)
+    }
+    .gv-chart-subtitle {
+        @include fs-bodyHeading(2);
+        color: $gu-grey-2;
+        margin-bottom: 12px;
+    }
+
+    .gv-main-party-1,.gv-main-party-2 {
+        @include fs-bodyHeading(3)
+    }
+
+    .gv-main-party-votes,.gv-main-party-label {
+        display: inline-block;
+    }
+
+    .gv-main-party-2 {
+        .gv-main-party-votes {
+            float: left;
+            margin-right: 7px;
+        }
+        .gv-main-party-label {
+            margin-left: 10px;
+        }
+    }
+
+    .gv-halfway-wrapper {
+        margin-top: -12px;
+        margin-bottom: 12px;
+    }
+
+    .gv-halfway-marker {
+        position: relative;
+        left: calc(50% - 0.2em);
+    }
+    .gv-halfway-label {
+        @include fs-textSans(1);
+        position: relative;
+        left: calc(50% - 1em);
+    }
+
+    .gv-party-key-entry {
+        display: inline-block;
+        @include fs-textSans(2);
+        margin-right: 10px;
+    }
+
+    .gv-blob {
+        display: inline-block;
+        height: 13px;
+        width: 13px;
+        background-color: var(--gv-colour);
+        border-radius: 20%;
+        margin-right: 5px;
+    }
+
+    .gv-main-party-1 {
+        float: left;
+    }
+
+    .gv-main-party-2 {
+        float: right;
+    }
+
+}
