@@ -2,7 +2,7 @@ import csvParse from 'csv-parse/lib/es5/sync'
 import csvStringify from 'csv-stringify/lib/es5/sync'
 import fs from "fs"
 
-const provincesVotesRaw = fs.readFileSync("./src/assets/TXTOTCO99heq8a41c.csv")
+const provincesVotesRaw = fs.readFileSync("./src/assets/latestraw.csv")
 
 const provinces = csvParse(provincesVotesRaw,{"delimiter": ";","rtrim": true});
 
@@ -60,7 +60,7 @@ provinces.map(field => {
 			provincesTotals.push(province[0])
 
 	}
-	/*if(field[0] == 'TO')
+	if(field[0] == 'TO')
 	{
 		let cont = 1;
 
@@ -102,11 +102,11 @@ provinces.map(field => {
 
 			}
 
-	}*/
+	}
 
 			
 })
 
 
 fs.writeFileSync('./src/assets/Congreso_Abril_2019_Resultados por circuscripcion.csv', csvStringify(provincesTotals, { header : true }));
-//fs.writeFileSync('./src/assets/Resultados totales.csv', csvStringify(totals, { header : true }));
+fs.writeFileSync('./src/assets/Resultados totales.csv', csvStringify(totals, { header : true }));
