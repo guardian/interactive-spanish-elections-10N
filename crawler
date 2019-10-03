@@ -1,0 +1,12 @@
+#!/bin/bash 
+# TIMESTAMP=$(curl -u usuario643:ain7aeC3 https://www.descargas.eleccionesgenerales19.es/web/datos/DESCAR99_L1.html 2>&1 | grep 'TXTOTCO99hhmm' | sed -n 's/.*href="\([^"]*\).*/\1/p')
+
+# curl -u usuario643:ain7aeC3 https://www.descargas.eleccionesgenerales19.es/web/datos/DESCAR99_L1.html
+
+# while true
+# do
+curl https://gdn-cdn.s3.us-east-1.amazonaws.com/testing/2019/10/spain/TXTOTCO993bq0u3ct.gz | gzip -d > ./src/assets/latest.csv
+gulp
+# gulp deploypreview
+# sleep 300
+# done
