@@ -1,89 +1,349 @@
 //https://interactive.guim.co.uk/docsdata-test/11_Yp1yHl8xlIl0GMALvr0TXdNj8917Ei7lO0t-3PWZA.json
 
+//import totalResults from 'raw-loader!./../assets/april-total-results.csv'
+import provinceResults from 'raw-loader!./../assets/april-province-results.csv'
+import oldResults from 'raw-loader!./../assets/old-province-results.csv'
 import * as d3 from 'd3'
 
-function getFurniture(data) {
-    var furniture = data.sheets.furniture;
-    furniture.map(f => {
-        if (document.querySelector(f.element) !== null) {
-            var el = document.querySelector(f.element)
-            el.innerHTML = f.text;
-        }
+const partiesList = ["UP", "ERC", "AHORA CANARIAS","ANDECHA ASTUR","ARA-MES-ESQUERRA","AVANT ADELANTE LOS VERDES","AVANT-LOS VERDES","AxSI","BNG","C 21","CCa-PNC","centrados","C.Ex-C.R.Ex-P.R.Ex","CILU-LINARES","CNV","COMPROMÍS 2019","CpM","Cs","Cs","CxG","DP","DPL","EAJ-PNV","EB","EB","EB","ECP-GUANYEM EL CANVI","EH Bildu","ELAK/PCTE","EL PI","EN MAREA","ERC-SOBIRANISTES","ERPV","F8","FE de las JONS","FIA","FRONT REPUBLICÀ","GBAI","IZAR","IZQP","JF","JxCAT-JUNTS","+MAS+","NA+","NCa","PACMA","PACMA","PACT","PCOE","PCPA","PCPC","PCPC","PCPE","PCPE","PCTC","PCTE","PCTE/ELAK","PCTG","PDSJE-UDEC","PH","P-LIB","PODEMOS-EUIB","PODEMOS-EU-MAREAS EN COMÚN-EQUO","PODEMOS-EUPV","PODEMOS-IU-EQUO","PODEMOS-IU-EQUO-AAeC","PODEMOS-IU-EQUO-BATZARRE","PODEMOS-IU-EQUO BERDEAK","PODEMOS-IU LV CA-EQUO","PODEMOS-IX-EQUO","PP","PP","PP","PP-FORO","PPSO","PR+","PRC","PREPAL","PSC","PSdeG-PSOE","PSE-EE (PSOE)","PSOE","PSOE","PUM+J","PUM+J","PUM+J","PYLN","RECORTES CERO-GV","RECORTES CERO-GV-PCAS-TC","RISA","SOLIDARIA","SOMOS REGIÓN","UDT","UIG-SOM-CUIDES","UNIÓN REGIONALISTA","VOU","VOX"];
+const podemosRawNames = ["PODEMOS-EUIB","PODEMOS-EU-MAREAS EN COMÚN-EQUO","PODEMOS-EUPV","PODEMOS-IU-EQUO","PODEMOS-IU-EQUO-AAeC","PODEMOS-IU-EQUO-BATZARRE","PODEMOS-IU-EQUO BERDEAK","PODEMOS-IU LV CA-EQUO","PODEMOS-IX-EQUO","ECP-GUANYEM EL CANVI"];
+const psoeRawNames = ["PSC","PSdeG-PSOE","PSE-EE (PSOE)","PSOE","PSOE"]
+const csRawNames = ["C's","Cs","Citizens"]
+const ppRawNames = ["PP","PP-FORO"]
+const ercRawNames = ["ERC-SOBIRANISTES","ERC-CATSÍ","ERC"]
+const seats = 350;
+const majority = seats / 2;
+const ranks = 10;
+const parsedOld = d3.csvParse(oldResults)
+const totalProvinceVotes = d3.csvParse(provinceResults);
+const totalProvinceVotesOld = d3.csvParse(oldResults);
+const partyWing = [];
+
+let totalCounted = 0;
+
+partyWing["UP"]="left";partyWing["ERC"]="left";partyWing["AHORA CANARIAS"]="left";partyWing["ANDECHA ASTUR"]="left";partyWing["ARA-MES-ESQUERRA"]="left";partyWing["AVANT ADELANTE LOS VERDES"]="left";partyWing["AVANT-LOS VERDES"]="left";partyWing["AxSI"]="left";partyWing["BNG"]="left";partyWing["C 21"]="left";partyWing["CCa-PNC"]="left";partyWing["centrados"]="left";partyWing["C.Ex-C.R.Ex-P.R.Ex"]="left";partyWing["CILU-LINARES"]="left";partyWing["CNV"]="left";partyWing["COMPROMÍS 2019"]="left";partyWing["CpM"]="left";partyWing["Cs"]="right";partyWing["Cs"]="right";partyWing["CxG"]="left";partyWing["DP"]="left";partyWing["DPL"]="";partyWing["EAJ-PNV"]="right";partyWing["EB"]="left";partyWing["EB"]="left";partyWing["EB"]="left";partyWing["ECP-GUANYEM EL CANVI"]="left";partyWing["EH Bildu"]="left";partyWing["ELAK/PCTE"]="left";partyWing["EL PI"]="left";partyWing["EN MAREA"]="left";partyWing["ERC-SOBIRANISTES"]="left";partyWing["ERPV"]="left";partyWing["F8"]="left";partyWing["FE de las JONS"]="right";partyWing["FIA"]="left";partyWing["FRONT REPUBLICÀ"]="left";partyWing["GBAI"]="left";partyWing["IZAR"]="left";partyWing["IZQP"]="left";partyWing["JF"]="left";partyWing["JxCAT-JUNTS"]="right";partyWing["+MAS+"]="left";partyWing["NA+"]="right";partyWing["NCa"]="left";partyWing["PACMA"]="left";partyWing["PACMA"]="left";partyWing["PACT"]="left";partyWing["PCOE"]="left";partyWing["PCPA"]="left";partyWing["PCPC"]="left";partyWing["PCPC"]="left";partyWing["PCPE"]="left";partyWing["PCPE"]="left";partyWing["PCTC"]="left";partyWing["PCTE"]="left";partyWing["PCTE/ELAK"]="left";partyWing["PCTG"]="left";partyWing["PDSJE-UDEC"]="left";partyWing["PH"]="left";partyWing["P-LIB"]="left";partyWing["PODEMOS-EUIB"]="left";partyWing["PODEMOS-EU-MAREAS EN COMÚN-EQUO"]="left";partyWing["PODEMOS-EUPV"]="left";partyWing["PODEMOS-IU-EQUO"]="left";partyWing["PODEMOS-IU-EQUO-AAeC"]="left";partyWing["PODEMOS-IU-EQUO-BATZARRE"]="left";partyWing["PODEMOS-IU-EQUO BERDEAK"]="left";partyWing["PODEMOS-IU LV CA-EQUO"]="left";partyWing["PODEMOS-IX-EQUO"]="left";partyWing["PP"]="right";partyWing["PP"]="right";partyWing["PP"]="right";partyWing["PP-FORO"]="right";partyWing["PPSO"]="";partyWing["PR+"]="left";partyWing["PRC"]="left";partyWing["PREPAL"]="left";partyWing["PSC"]="left";partyWing["PSdeG-PSOE"]="left";partyWing["PSE-EE (PSOE)"]="left";partyWing["PSOE"]="left";partyWing["PSOE"]="left";partyWing["PUM+J"]="left";partyWing["PUM+J"]="left";partyWing["PUM+J"]="left";partyWing["PYLN"]="left";partyWing["RECORTES CERO-GV"]="left";partyWing["RECORTES CERO-GV-PCAS-TC"]="left";partyWing["RISA"]="left";partyWing["SOLIDARIA"]="left";partyWing["SOMOS REGIÓN"]="left";partyWing["UDT"]="left";partyWing["UIG-SOM-CUIDES"]="left";partyWing["UNIÓN REGIONALISTA"]="left";partyWing["VOU"]="left";partyWing["VOX"]="right";
+
+let totalSeatsByParty = [];
+let partiesWithSeats = [];
+let partiesRaw = [];
+
+let containerWidth = Number(d3.select(".gv-waffle").style('width').slice(0, -2));
+
+let files = seats / ranks;
+let cellsize = containerWidth / files;
+
+let containerHeight =  (cellsize * ranks);
+
+let waffle = d3.select(".gv-waffle")
+
+let svg = waffle.append("svg")
+.attr("width", containerWidth)
+.attr("height",containerHeight)
+
+let fourParties;
+let partyarray = [];
+let left = [];
+let right = [];
+
+let totalNodata = {party: "nodata", seats: seats};
+
+let assignedSeats = 0;
+
+let newPartiesList = [];
+
+
+partiesList.map(party => totalSeatsByParty[party] = [])
+
+totalProvinceVotes.map( (province,n) => {
+
+    if(province.territory_id == 'TO') totalCounted = +province.census_counted_percentage / 100;
+
+    d3.select('.gv-main-title span').html(totalCounted + '% of votes counted')
+
+    let oldProvince = totalProvinceVotesOld.find(p => p.id === province.province_code);
+   
+    if(+province.census_counted > 0 && oldProvince)
+        {
+            for(let i = 1 ; i<80 ; i++)
+            {
+
+                let party = province['party ' + i];
+                let oldSeats = 0;
+                let oldVotes = 0;
+                let wing = '';
+
+                if(podemosRawNames.indexOf(party) != -1) party = 'UP';
+                if(psoeRawNames.indexOf(party) != -1) party = 'PSOE';
+                if(ercRawNames.indexOf(party) != -1) party = 'ERC';
+                if(ppRawNames.indexOf(party) != -1) party = 'PP';
+                if(csRawNames.indexOf(party) != -1) party = 'Cs';
+
+                if(partyWing[party])wing =  partyWing[party];
+
+                for (var j = 1; j <= 13; j++) {
+                     if(oldProvince['party ' + j] ==  party){
+                        oldSeats = oldProvince['seats ' + j]; //CAUTION old and new party names must match. I have tweaked April's csv results sheet to match but we need to double check this as soos as new parties come across
+                        oldVotes = oldProvince['votes ' + j]; //CAUTION old and new party names must match
+                    }
+                }
+
+                if(partiesList.indexOf(party) == -1){
+                    partiesList.push(party);
+                    newPartiesList.push(party);
+                    totalSeatsByParty[party] = [];
+                    partyWing[party]="left";
+                }
+
+                if(partiesList.indexOf(party) != -1 && +province['seats ' + i] > 0 || oldSeats > 0){
+
+                    totalSeatsByParty[party].push(
+                    {
+                        province: province.province_name,
+                        seats: +province['seats ' + i],
+                        old_seats: +oldSeats,
+                        votes: +province['votes ' + i],
+                        old_votes: +oldVotes,
+                        percentage: +province['percentage ' + i],
+                        wing:wing
+
+                    });
+
+                    if(+province['seats ' + i] > 0 && partiesRaw.indexOf(party) == -1)
+                    {
+                        partiesWithSeats.push({party:party, seats:0});
+                        partiesRaw.push(party)
+                    }
+                }  
+        } 
+    }
+    else{
+        console.log(province.province_name, " hasn't yet started to count")
+    }
+})
+
+partiesWithSeats.map(party => {
+
+    let t = 0;
+
+    totalSeatsByParty[party.party].map(seats => {
+
+        t += seats.seats
+
+        assignedSeats += seats.seats;
     })
+
+    party.seats = t;
+})
+
+partiesWithSeats.sort((a,b) => +b.seats - +a.seats);
+
+fourParties = partiesWithSeats.slice(0,4);
+
+flagMainParties();
+addKey();
+
+totalNodata.seats = seats - assignedSeats;
+
+if(seats - assignedSeats < 0) totalNodata.seats = 0;
+
+partiesWithSeats.map(party => {
+    if(partyWing[party.party] == 'left') left.push(party)
+    else right.push(party)
+})
+
+if(right.length > 0)
+{
+    partiesWithSeats = [];
+
+    if(left[0].seats > right[0].seats){
+        right.reverse();
+
+        partiesWithSeats = left.concat(totalNodata).concat(right);
+
+    }
+    else
+    {
+        left.reverse()
+
+        partiesWithSeats = right.concat(totalNodata).concat(left)
+    }
 }
 
-function addKey(data) {
-    var parties = data.sheets.results;
-    var gvkeystring = '';
-    var keydiv = document.querySelector(".gv-key")
+partiesWithSeats.map(party => {
+    let parray = Array(Number(party.seats)).fill(party);
+    partyarray.push(...parray);
+    
+})
 
-    parties.map(p => {
-        var partystring = `<div class="gv-party-key-entry"><div class="gv-blob ${p.party}" style="--gv-colour: ${p.colour}"></div>${p.seats} ${p.party}</div>`;
-        gvkeystring += partystring
+let partyIniArray = [];
+
+for (let i = 0; i < seats; i++) {
+    partyIniArray.push(i)
+}
+
+let partyblobsIni = svg.append("g").selectAll("rect")
+.data(partyIniArray)
+.enter()
+.append('rect')
+.attr("id", (d, i) => { return i })
+.attr("height", cellsize)
+.attr("width", cellsize)
+.attr("x", (d, i) => {
+    return cellsize * Math.floor(i / ranks)
+})
+.attr("y", (d, i) => {
+    return i * cellsize - (Math.floor(i / ranks) * cellsize * ranks)
+})
+.attr('class','deputy')
+
+let partyblobs = svg.append("g").selectAll("rect")
+.data(partyarray)
+.enter()
+.append('rect')
+.attr("id", (d, i) => { return i })
+.attr("height", cellsize)
+.attr("width", cellsize)
+.attr("x", (d, i) => {
+    return cellsize * Math.floor(i / ranks)
+})
+.attr("y", (d, i) => {
+    return i * cellsize - (Math.floor(i / ranks) * cellsize * ranks)
+})
+.attr('class', d => d.party)
+
+newPartiesList.map(party =>{
+
+    let randomColor = Math.floor(Math.random()*16777215).toString(16);
+
+    d3.select('[class="' + party + '"').style('background-color','#'+ randomColor)
+
+    d3.selectAll('.gv-waffle [class="' + party + '"').style('fill', '#' + randomColor)
+
+    d3.selectAll('.cartogram [class="' + party + '"').style('fill', '#' + randomColor)
+
+    d3.selectAll('.provinces [class="' + party + '"').style('fill', '#' + randomColor)
+
+
+})
+
+
+let midline = svg.append('g')
+.attr('width', 200)
+.attr('height', containerHeight )
+.attr('transform', 'translate('+ ((containerWidth /2) + cellsize / 2) +', 0)');
+
+let path = midline
+.append('path')
+.attr('d', "M 0 0 V 0 L 0 " +  (cellsize * (ranks / 2)) + "H " + (-cellsize) + " V " + (cellsize * (ranks / 2)) + "L " + (-cellsize) + " " +  (cellsize * ranks) ) 
+.attr('class', 'gv-midline')
+
+
+/*let majorityBlobs = []
+
+for (var i = 0; i < majority ; i++) {
+   majorityBlobs.push(i)
+}
+
+
+svg.append("g").selectAll("rect")
+.data(majorityBlobs)
+.enter()
+.append('rect')
+.attr("id", (d, i) => { return i })
+.attr("height", cellsize)
+.attr("width", cellsize)
+.attr("x", (d, i) => {
+    return cellsize * Math.floor(i / ranks)
+})
+.attr("y", (d, i) => {
+    return i * cellsize - (Math.floor(i / ranks) * cellsize * ranks)
+})
+.attr('class','black')*/
+
+
+function addKey() {
+    let gvkeystring = '';
+    let keydiv = document.querySelector(".gv-key")
+
+    partiesWithSeats.sort((a,b) => +b.seats - +a.seats)
+
+    partiesWithSeats.map(p => {
+
+        if(p.party != 'nodata' && p.seats >0)
+        {
+            if(fourParties.indexOf(p) == -1)
+            {
+                let partystring = `<div class="gv-party-key-entry"><div class="${p.party}"></div><span>${+p.seats} ${p.party}</span></div>`;
+                gvkeystring += partystring;
+            }
+        }
     })
+
+
     keydiv.innerHTML = gvkeystring;
 }
 
-function flagMainParties (data) {
-    var mainparties = data.sheets.results.filter(p => p.special != null && p.special.length > 0);
-    mainparties.map(p => {
-        //console.log(p)
-        if (document.querySelector(p.special) !== null) {
-            //console.log(p);
-            var el = document.querySelector(p.special);
-            //console.log(el)
-            var partystring = `<span class="gv-main-party-label">${p.party}<span> <span class="gv-main-party-votes">${p.seats}</span>`
-            el.innerHTML = partystring;
-        }
+function flagMainParties () {
+
+    fourParties.map((party,i) => {
+
+        if(party.seats > 0)
+        {
+
+            let name = party.party;
+
+            let current = totalSeatsByParty[name].reduce((a, b) => { return a + b.seats; }, 0);
+            let old = totalSeatsByParty[name].reduce((a, b) => { return a + b.old_seats; }, 0);
+
+
+            console.log(party, current, old)
+            let difference = current - old
+
+            if(difference > 0) difference = '+' + difference;
+            
+            document.querySelector('.gv-main-party-' + (i+1) + '-name').innerHTML = name;
+            document.querySelector('.gv-main-party-' + (i+1) + '-seats').innerHTML = party.seats + " (" + difference + ")";
+            document.querySelector('.gv-party-box-' + (i+1) ).className = name;
+        } 
     })
 }
 
-d3.json("https://interactive.guim.co.uk/docsdata-test/11_Yp1yHl8xlIl0GMALvr0TXdNj8917Ei7lO0t-3PWZA.json").then(data => {
 
-    var containerWidth = Number(d3.select(".interactive-wrapper").style('width').slice(0, -2))
+window.addEventListener("resize", function(){
 
-    var setup = data.sheets.setup[0]
 
-    console.log(data)
-    //    var cellsize = Number(setup.cellsize);
-    var seats = Number(setup.totalseats);
-    var ranks = Number(setup.ranks);
-    var files = seats / ranks;
+    containerWidth = Number(d3.select(".gv-waffle").style('width').slice(0, -2));
+    containerHeight = cellsize * ranks;
 
-    var cellsize = containerWidth / files;
+    cellsize = containerWidth / files;
 
-    var blobs = Array(seats).fill("seat");
+    svg
+    .attr("width", containerWidth)
+    .attr("height", containerHeight)
 
-    var waffle = d3.select(".gv-waffle")
-
-    var svg = waffle.append("svg").attr("width", containerWidth).attr("height", cellsize * ranks)
-
-    var results = data.sheets.results;
-    var partyarray = []
-    results.map(p => {
-        var parray = Array(Number(p.seats)).fill(p);
-        partyarray.push(...parray);
+    partyblobsIni
+    .attr("x", (d, i) => {
+        return cellsize * Math.floor(i / ranks)
     })
+    .attr("y", (d, i) => {
+        return i * cellsize - (Math.floor(i / ranks) * cellsize * ranks)
+    })
+    .attr("height", cellsize)
+    .attr("width", cellsize)
 
-    var partyblobs = svg.append("g").selectAll("pblob")
-        .data(partyarray)
-        .enter()
-        .append('rect')
-        .attr("id", (d, i) => { return i })
-        .attr("x", (d, i) => {
-            return cellsize * Math.floor(i / ranks)
-        })
-        .attr("y", (d, i) => {
-            return i * cellsize - (Math.floor(i / ranks) * cellsize * ranks)
-        })
-        .attr("fill", d => d.colour)
-        .attr("height", cellsize - 2)
-        .attr("width", cellsize - 2)
+    partyblobs
+    .attr("x", (d, i) => {
+        return cellsize * Math.floor(i / ranks)
+    })
+    .attr("y", (d, i) => {
+        return i * cellsize - (Math.floor(i / ranks) * cellsize * ranks)
+    })
+    .attr("height", cellsize)
+    .attr("width", cellsize)
 
-    getFurniture(data);
-    addKey(data);
-    flagMainParties(data);
+    midline.attr('transform', 'translate('+ ((containerWidth /2) + cellsize / 2) +', 0)');
+    path
+    .attr('d', "M 0 0 V 0 L 0 " +  (cellsize * (ranks / 2)) + "H " + (-cellsize) + " V " + (cellsize * (ranks / 2)) + "L " + (-cellsize) + " " +  (cellsize * ranks) ) 
 
-    //window.resize()
+});
 
-})

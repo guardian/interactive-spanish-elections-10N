@@ -12,7 +12,7 @@ const totals = [];
 provinces.map(field => {
 
 
-	if(field[0] == 'CI')
+	if(field[0] == 'CI' || field[0] == 'TO')
 	{
 
 		let province = []
@@ -42,29 +42,28 @@ provinces.map(field => {
 
 			for (let i = 18; i < field.length-1; i++) {
 
+					if((i-18)%5 == 0)
+					{
 
-				if((i-18)%5 == 0)
-				{
-						
-					province[0][ 'code ' + cont] = field[i];
-					province[0][ 'party ' + cont] = field[i + 1];
-					province[0][ 'votes ' + cont] = field[i + 2];
-					province[0][ 'percentage ' + cont] = field[i + 3];
-					province[0][ 'seats ' + cont] = field[i + 4];
+						province[0][ 'code ' + cont] = field[i];
+						province[0][ 'party ' + cont] = field[i + 1];
+						province[0][ 'votes ' + cont] = field[i + 2];
+						province[0][ 'percentage ' + cont] = field[i + 3];
+						province[0][ 'seats ' + cont] = field[i + 4];
 
-					cont++
-				}
+						cont++
 
+					}
 			}
 
 			provincesTotals.push(province[0])
 
 	}
-	if(field[0] == 'TO')
+	/*if(field[0] == 'TO')
 	{
-		let cont = 1;
 
 		totals.push({
+
 					territory_id:field[0],
 					comunidad_code:field[1],
 					province_code:field[2],
@@ -87,26 +86,26 @@ provinces.map(field => {
 
 		for (let i = 18; i < field.length-1; i++) {
 
-
+			if(field[i + 4] > 0)
+			{
 				if((i-18)%5 == 0)
 				{
-						
-					//totals[0][ 'code ' + cont] = field[i];
-					totals[0][ 'party ' + cont] = field[i + 1];
-					//totals[0][ 'votes ' + cont] = field[i + 2];
-					//totals[0][ 'percentage ' + cont] = field[i + 3];
-					totals[0][ 'seats ' + cont] = field[i + 4];
 
-					cont++
+					totals.push({code: field[i], party: field[i+1], votes: +field[i+2], percentage: +field[i+3]/100, seats: +field[i+4]})
+
 				}
-
 			}
 
-	}
+		}
+	}*/
+
+
+	
+	
 
 			
 })
 
 
-fs.writeFileSync('./src/assets/Congreso_Abril_2019_Resultados por circuscripcion.csv', csvStringify(provincesTotals, { header : true }));
-fs.writeFileSync('./src/assets/Resultados totales.csv', csvStringify(totals, { header : true }));
+fs.writeFileSync('./src/assets/april-province-results.csv', csvStringify(provincesTotals, { header : true }));
+//fs.writeFileSync('./src/assets/april-total-results.csv', csvStringify(totals, { header : true }));

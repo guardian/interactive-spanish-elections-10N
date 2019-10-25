@@ -6,8 +6,8 @@
 # while true
 # do
 curl https://gdn-cdn.s3.us-east-1.amazonaws.com/testing/2019/10/spain/TXTOTCO993bq0u3ct.gz | gzip -d > ./src/assets/latestraw.csv
-gulp provinces-parser
-gulp
+npm run provinces-parser
+#gulp
 # gulp deploypreview
 # sleep 300
 # done
