@@ -360,7 +360,7 @@ font-size: 24px;
 [class="UNIÓN REGIONALISTA"]{fill:#454545;background-color: #454545;}
 [class="VOU"]{fill:#B3B3B4;background-color: #B3B3B4;}
 [class="VOX"]{fill:#9C835F;background-color: #9C835F;}
-[class="MAS PAÍS"]{fill:$highlight-yellow;background-color:$highlight-yellow;}
+[class="MAS PAÍS"]{fill:#2BADBC;background-color:#2BADBC;}
 [class="Others"]{fill:#B3B3B4;background-color: #B3B3B4;}
 .nodata{fill:#fafafa;}
 .municipality{fill:#FFFFFF;}
@@ -514,5 +514,220 @@ font-size: 24px;
 
 
 }
+
+
+
+.gv-parties-profiles-wrapper{
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	//justify-content: flex-start;
+}
+.gv-key-party-wrapper{
+	min-width: 200px;
+	max-width: 295px;
+	display: flex;
+	margin: 0 20px 20px 0;
+
+	.aside{
+		order: 1;
+	}
+
+	.main{
+		order: 2;
+	}
+
+	.gv-party-short-name{
+		@include fs-header(3);
+
+		&.PSOE{
+			color:#c70000;
+		}
+		&.PP{
+			color:#1896d7;
+		}
+		&.Cs{
+			color:#ed6300;
+		}
+		&.UP{
+			color:#951d7a;
+		}
+		&.Vox{
+			color:#9C835F;
+		}
+		&.mas-pais{
+			color:#2BADBC;
+		}
+		&.ERC{
+			color:#f5be2c;
+		}
+	}
+
+	.gv-party-name, .gv-party-description{
+		font-family: 'Guardian Text Sans Web', Arial, sans-serif;
+		font-size: 13px;
+		color:#929297;
+	}
+
+	.gv-party-name{
+		padding-bottom: 8px;
+		margin-bottom: 12px;
+		border-bottom: 1px solid #dadada;
+	}
+
+	.gv-party-description{
+		margin-top: 12px;
+	}
+
+	
+
+	.gv-leader-wrapper, .gv-ideology-wrapper{
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		margin-bottom: 6px;
+
+		border-bottom: 1px dotted #dadada;
+
+		font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+		font-size: 14px;
+
+		.gv-leader-sentence, .gv-ideology-sentence, .gv-leader-name, .gv-ideology-name{
+			width: 50%;
+		}
+
+		.gv-leader-name, .gv-ideology-name{
+			font-weight: 900;
+		}
+	}
+}
+
+
+
+.gv-leader-image-wrapper figure {
+  position: relative;
+  float: left;
+}
+
+.party-key__leader-img{
+	height: 45px;
+	width: 45px;
+	border-radius: 50px;
+	margin-right: 6px;
+}
+
+.tint-psoe:before {
+	content: "";
+  display: block;
+  
+  position: absolute;
+  background: #c70000;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity:0.4;
+  border-radius: 50px;
+  margin-right: 6px;
+  
+}
+
+.tint-pp:before {
+	content: "";
+  display: block;
+  
+  position: absolute;
+  background: #1896d7;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity:0.4;
+  border-radius: 50px;
+  margin-right: 6px;
+  
+}
+
+.tint-cs:before {
+	content: "";
+  display: block;
+  
+  position: absolute;
+  background: #ed6300;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity:0.4;
+  border-radius: 50px;
+  margin-right: 6px;
+  
+}
+
+.tint-up:before {
+	content: "";
+  display: block;
+  
+  position: absolute;
+  background: #951d7a;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity:0.4;
+  border-radius: 50px;
+  margin-right: 6px;
+  
+}
+
+.tint-vox:before {
+	content: "";
+  display: block;
+  
+  position: absolute;
+  background: #9C835F;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity:0.4;
+  border-radius: 50px;
+  margin-right: 6px;
+  
+}
+
+.tint-mas-pais:before {
+	content: "";
+  display: block;
+  
+  position: absolute;
+  background: #2BADBC;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity:0.4;
+  border-radius: 50px;
+  margin-right: 6px;
+  
+}
+
+.tint-erc:before {
+	content: "";
+  display: block;
+  
+  position: absolute;
+  background: #f5be2c;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity:0.4;
+  border-radius: 50px;
+  margin-right: 6px;
+  
+}
+
+
 
 

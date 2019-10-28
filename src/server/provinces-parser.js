@@ -42,7 +42,7 @@ provinces.map(field => {
 
 			for (let i = 18; i < field.length-1; i++) {
 
-					if((i-18)%5 == 0)
+					if((i-18)%5 == 0 && field[i + 1])
 					{
 
 						province[0][ 'code ' + cont] = field[i];
@@ -98,14 +98,9 @@ provinces.map(field => {
 
 		}
 	}*/
-
-
-	
-	
-
 			
 })
 
 
-fs.writeFileSync('./src/assets/april-province-results.csv', csvStringify(provincesTotals, { header : true }));
+fs.writeFileSync('./src/assets/november-province-results.csv', csvStringify(provincesTotals, { header : true }));
 //fs.writeFileSync('./src/assets/april-total-results.csv', csvStringify(totals, { header : true }));

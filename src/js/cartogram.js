@@ -4,7 +4,7 @@ import * as topojson from 'topojson'
 import * as d3geo from 'd3-geo'
 import {event as currentEvent} from 'd3-selection';
 import cartogram from '../assets/spa-hex-adm1-adm2-deputies.json'
-import provincesVotesRaw from 'raw-loader!./../assets/april-province-results.csv';
+import provincesVotesRaw from 'raw-loader!./../assets/november-province-results.csv';
 import * as d3Jetpack from 'd3-jetpack';
 import { $ } from "./util"
 
@@ -156,88 +156,96 @@ provincesVotes.map(p => {
 	let acumm = 1;
 
 	deputiesByProvince[p.province_code] = []
+
+
+	if(+p.census_counted > 0)
+	{
+
+		for(let i = 1 ; i<80 ; i++){
+
+			if(+p['seats ' + i] > 0)
+			{
+				let party = p['party ' + i];
+				let partyBeauty = party;
+				let deputies = +p['seats ' + i];
+				let votes = +p['votes ' + i];
+				let percentage = +p['percentage ' + i];
+
+				if(party == "PODEMOS-EUIB") partyBeauty = 'Podemos-EUIB';
+				if(party == "PODEMOS-EU-MAREAS EN COMÚN-EQUO") partyBeauty = 'Podemos-EU-MAREAS EN COMÚN-EQUO';
+				if(party == "PODEMOS-EUPV") partyBeauty = 'Podemos-EUPV';
+				if(party == "PODEMOS-IU-EQUO") partyBeauty = 'Podemos-IU-EQUO';
+				if(party == "PODEMOS-IU-EQUO-AAeC") partyBeauty = 'Podemos-IU-EQUO-AAeC';
+				if(party == "PODEMOS-IU-EQUO-BATZARRE") partyBeauty = 'Podemos-IU-EQUO-BATZARRE';
+				if(party == "PODEMOS-IU-EQUO BERDEAK") partyBeauty = 'Podemos-IU-EQUO BERDEAK';
+				if(party == "PODEMOS-IU LV CA-EQUO")partyBeauty = 'Podemos-IU LV CA-EQUO';
+				if(party == "PODEMOS-IX-EQUO" )partyBeauty = 'Podemos-IX-EQUO';
+				
+				if(party == "Cs") partyBeauty = 'Citizens';
+
+				let partyToKey = partyBeauty;
+
+				if(partyBeauty == 'Podemos-EUIB') partyToKey = 'Podemos and coalitions';
+				if(partyBeauty == 'Podemos-EU-MAREAS EN COMÚN-EQUO') partyToKey = 'Podemos and coalitions';
+				if(partyBeauty == 'Podemos-EUPV') partyToKey = 'Podemos and coalitions';
+				if(partyBeauty == 'Podemos-IU-EQUO') partyToKey = 'Podemos and coalitions';
+				if(partyBeauty == 'Podemos-IU-EQUO-AAeC') partyToKey = 'Podemos and coalitions';
+				if(partyBeauty == 'Podemos-IU-EQUO-BATZARRE') partyToKey = 'Podemos and coalitions';
+				if(partyBeauty == 'Podemos-IU-EQUO BERDEAK') partyToKey = 'Podemos and coalitions';
+				if(partyBeauty == 'Podemos-IU LV CA-EQUO') partyToKey = 'Podemos and coalitions';
+				if(partyBeauty == 'Podemos-IX-EQUO') partyToKey = 'Podemos and coalitions';
+				if(partyBeauty == "ECP-GUANYEM EL CANVI" ) partyToKey = 'Podemos and coalitions';
+
+
+				if(partyBeauty == 'PP-FORO') partyToKey = 'PP';
+
+				if(partyBeauty == "ERC-SOBIRANISTES") partyToKey = 'ERC'
+				if(partyBeauty == "ERC-CATSÍ") partyToKey = 'ERC'
+				if(partyBeauty == "ERPV") partyToKey = 'ERC'
+
+				if(partyBeauty == "JxCAT-JUNTS") partyToKey = 'JxCAT-JUNTS'
+				if(partyBeauty == "CDC") partyToKey = 'JxCAT-JUNTS'
+
+				if(partyBeauty == "PSC") partyToKey = "PSOE"
+				if(partyBeauty == "PSdeG-PSOE") partyToKey = "PSOE"
+				if(partyBeauty == "PSE-EE (PSOE)") partyToKey = "PSOE"
+				if(partyBeauty == "PSOE") partyToKey = "PSOE"
+				if(partyBeauty == "PSOE") partyToKey = "PSOE"
+
+
+				if(parties.indexOf(partyToKey) == -1){
+
+					parties.push(partyToKey)
+				}
+
+				deputiesByProvince[p.province_code].push({
+					"deputies" : deputies,
+					"votes" : votes,
+					"percentage" : percentage,
+					"party" : partyBeauty
+				});
+
+				for(let j = 0; j < deputies; j++)
+				{
+					let number = acumm;
+					if(acumm<10) number = '0' + acumm;
+					d3.select('#d' + p.province_code + number)
+					.attr('class', partyBeauty)
+					acumm++
+				}
+
+			}
+			
+		}
+
+		deputiesByProvince[p.province_code].sort((a,b) => b.votes - a.votes);
+
+		acumm = 0;
+
+	}
 	
 
-	for(let i = 1 ; i<80 ; i++){
-
-		if(+p['seats ' + i] > 0)
-		{
-			let party = p['party ' + i];
-			let partyBeauty = party;
-			let deputies = +p['seats ' + i];
-			let votes = +p['votes ' + i];
-			let percentage = +p['percentage ' + i];
-
-			if(party == "PODEMOS-EUIB") partyBeauty = 'Podemos-EUIB';
-			if(party == "PODEMOS-EU-MAREAS EN COMÚN-EQUO") partyBeauty = 'Podemos-EU-MAREAS EN COMÚN-EQUO';
-			if(party == "PODEMOS-EUPV") partyBeauty = 'Podemos-EUPV';
-			if(party == "PODEMOS-IU-EQUO") partyBeauty = 'Podemos-IU-EQUO';
-			if(party == "PODEMOS-IU-EQUO-AAeC") partyBeauty = 'Podemos-IU-EQUO-AAeC';
-			if(party == "PODEMOS-IU-EQUO-BATZARRE") partyBeauty = 'Podemos-IU-EQUO-BATZARRE';
-			if(party == "PODEMOS-IU-EQUO BERDEAK") partyBeauty = 'Podemos-IU-EQUO BERDEAK';
-			if(party == "PODEMOS-IU LV CA-EQUO")partyBeauty = 'Podemos-IU LV CA-EQUO';
-			if(party == "PODEMOS-IX-EQUO" )partyBeauty = 'Podemos-IX-EQUO';
-			
-			if(party == "Cs") partyBeauty = 'Citizens';
-
-			let partyToKey = partyBeauty;
-
-			if(partyBeauty == 'Podemos-EUIB') partyToKey = 'Podemos and coalitions';
-			if(partyBeauty == 'Podemos-EU-MAREAS EN COMÚN-EQUO') partyToKey = 'Podemos and coalitions';
-			if(partyBeauty == 'Podemos-EUPV') partyToKey = 'Podemos and coalitions';
-			if(partyBeauty == 'Podemos-IU-EQUO') partyToKey = 'Podemos and coalitions';
-			if(partyBeauty == 'Podemos-IU-EQUO-AAeC') partyToKey = 'Podemos and coalitions';
-			if(partyBeauty == 'Podemos-IU-EQUO-BATZARRE') partyToKey = 'Podemos and coalitions';
-			if(partyBeauty == 'Podemos-IU-EQUO BERDEAK') partyToKey = 'Podemos and coalitions';
-			if(partyBeauty == 'Podemos-IU LV CA-EQUO') partyToKey = 'Podemos and coalitions';
-			if(partyBeauty == 'Podemos-IX-EQUO') partyToKey = 'Podemos and coalitions';
-			if(partyBeauty == "ECP-GUANYEM EL CANVI" ) partyToKey = 'Podemos and coalitions';
-
-
-			if(partyBeauty == 'PP-FORO') partyToKey = 'PP';
-
-			if(partyBeauty == "ERC-SOBIRANISTES") partyToKey = 'ERC'
-			if(partyBeauty == "ERC-CATSÍ") partyToKey = 'ERC'
-			if(partyBeauty == "ERPV") partyToKey = 'ERC'
-
-			if(partyBeauty == "JxCAT-JUNTS") partyToKey = 'JxCAT-JUNTS'
-			if(partyBeauty == "CDC") partyToKey = 'JxCAT-JUNTS'
-
-			if(partyBeauty == "PSC") partyToKey = "PSOE"
-			if(partyBeauty == "PSdeG-PSOE") partyToKey = "PSOE"
-			if(partyBeauty == "PSE-EE (PSOE)") partyToKey = "PSOE"
-			if(partyBeauty == "PSOE") partyToKey = "PSOE"
-			if(partyBeauty == "PSOE") partyToKey = "PSOE"
-
-
-			if(parties.indexOf(partyToKey) == -1){
-
-				parties.push(partyToKey)
-			}
-
-			deputiesByProvince[p.province_code].push({
-				"deputies" : deputies,
-				"votes" : votes,
-				"percentage" : percentage,
-				"party" : partyBeauty
-			});
-
-			for(let j = 0; j < deputies; j++)
-			{
-				let number = acumm;
-				if(acumm<10) number = '0' + acumm;
-				d3.select('#d' + p.province_code + number)
-				.attr('class', partyBeauty)
-				acumm++
-			}
-
-		}
-		
-	}
-
-	deputiesByProvince[p.province_code].sort((a,b) => b.votes - a.votes);
-
-	acumm = 0;
+	
 
 })
 

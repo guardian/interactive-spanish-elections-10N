@@ -3,7 +3,7 @@ import * as d3Select from 'd3-selection';
 import * as topojson from 'topojson';
 import * as d3geo from 'd3-geo';
 import map from '../assets/adm1_adm2.json';
-import provincesVotesRaw from 'raw-loader!./../assets/april-province-results.csv';
+import provincesVotesRaw from 'raw-loader!./../assets/november-province-results.csv';
 import * as d3Jetpack from 'd3-jetpack';
 import {event as currentEvent} from 'd3-selection';
 import { $ } from "./util"
@@ -121,7 +121,11 @@ function checkOverlapping(box, position){
 
 provincesVotes.map(p => {
 
-	if(p['party 1'] && +p['seats 1'] > 0) d3.select("#p" + +p.province_code).attr('class', p['party 1'])
+	if(+p.census_counted > 0)
+	{
+
+		if(p['party 1'] && +p['seats 1'] > 0) d3.select("#p" + +p.province_code).attr('class', p['party 1'])
+	}
 
 
 } )

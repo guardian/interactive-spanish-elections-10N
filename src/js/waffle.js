@@ -1,7 +1,7 @@
 //https://interactive.guim.co.uk/docsdata-test/11_Yp1yHl8xlIl0GMALvr0TXdNj8917Ei7lO0t-3PWZA.json
 
 //import totalResults from 'raw-loader!./../assets/april-total-results.csv'
-import provinceResults from 'raw-loader!./../assets/april-province-results.csv'
+import provinceResults from 'raw-loader!./../assets/november-province-results.csv'
 import oldResults from 'raw-loader!./../assets/old-province-results.csv'
 import * as d3 from 'd3'
 
@@ -14,10 +14,10 @@ const ercRawNames = ["ERC-SOBIRANISTES","ERC-CATSÍ","ERC"]
 const seats = 350;
 const majority = seats / 2;
 const ranks = 10;
-const parsedOld = d3.csvParse(oldResults)
 const totalProvinceVotes = d3.csvParse(provinceResults);
 const totalProvinceVotesOld = d3.csvParse(oldResults);
 const partyWing = [];
+const totalPartiesLastElections = 13;
 
 let totalCounted = 0;
 
@@ -62,64 +62,141 @@ totalProvinceVotes.map( (province,n) => {
 
     let oldProvince = totalProvinceVotesOld.find(p => p.id === province.province_code);
    
-    if(+province.census_counted > 0 && oldProvince)
+    if(+province.census_counted > 0)
+    {
+        if(oldProvince)
         {
-            for(let i = 1 ; i<80 ; i++)
-            {
 
-                let party = province['party ' + i];
-                let oldSeats = 0;
-                let oldVotes = 0;
-                let wing = '';
+            //console.log(province, oldProvince)
 
-                if(podemosRawNames.indexOf(party) != -1) party = 'UP';
-                if(psoeRawNames.indexOf(party) != -1) party = 'PSOE';
-                if(ercRawNames.indexOf(party) != -1) party = 'ERC';
-                if(ppRawNames.indexOf(party) != -1) party = 'PP';
-                if(csRawNames.indexOf(party) != -1) party = 'Cs';
 
-                if(partyWing[party])wing =  partyWing[party];
+            console.log(province)
 
-                for (var j = 1; j <= 13; j++) {
-                     if(oldProvince['party ' + j] ==  party){
-                        oldSeats = oldProvince['seats ' + j]; //CAUTION old and new party names must match. I have tweaked April's csv results sheet to match but we need to double check this as soos as new parties come across
-                        oldVotes = oldProvince['votes ' + j]; //CAUTION old and new party names must match
+                for(let i = 1 ; i<80 ; i++)
+                {
+                        
+                        let party = province['party ' + i];
+                        let oldSeats = 0;
+                        let oldVotes = 0;
+                        let wing = '';
+
+                        if(podemosRawNames.indexOf(party) != -1) party = 'UP';
+                        if(psoeRawNames.indexOf(party) != -1) party = 'PSOE';
+                        if(ercRawNames.indexOf(party) != -1) party = 'ERC';
+                        if(ppRawNames.indexOf(party) != -1) party = 'PP';
+                        if(csRawNames.indexOf(party) != -1) party = 'Cs';
+
+
+                        //FIND new party in old parties list
+
+                        //console.log( '====>', partyRepeats, party)
+                        if(partyWing[party])wing =  partyWing[party];
+
+                        for (var j = 1; j <= totalPartiesLastElections; j++) {
+                            if(oldProvince['party ' + j] ==  party){
+                                oldSeats = oldProvince['seats ' + j]; //CAUTION old and new party names must match. I have tweaked April's csv results sheet to match but we need to double check this as soos as new parties come across
+                                oldVotes = oldProvince['votes ' + j]; //CAUTION old and new party names must match
+                            }
+                        }
+
+
+                        //  console.log(province.province_name, party, oldSeats, +province['seats ' + i])
+
+                        if(partiesList.indexOf(party) == -1){
+                            partiesList.push(party);
+                            newPartiesList.push(party);
+                            totalSeatsByParty[party] = [];
+                            partyWing[party]="left";
+                        }
+
+
+                        //if(province.province_name == 'Madrid')console.log('--', party, partiesList.indexOf(party) != -1, +province['seats ' + i] > 0)
+
+
+
+
+
+        //TODO --------------------------------------------
+
+
+
+        //MAKE SURE IT READS OLD RESULTS WHEN THOSE ARE BIGGER THAN CURRENT ONES
+        //i.e. Old results have PSOE 123 but current increase doen't show -11
+
+
+
+
+
+        //-------------------------------------------------
+
+
+        
+
+
+
+                        if(partiesList.indexOf(party) != -1 && +province['seats ' + i] > 0){
+
+                            totalSeatsByParty[party].push(
+                            {
+                                province: province.province_name,
+                                seats: +province['seats ' + i],
+                                old_seats: +oldSeats,
+                                votes: +province['votes ' + i],
+                                old_votes: +oldVotes,
+                                percentage: +province['percentage ' + i],
+                                wing:wing
+
+                            });
+
+                            if(+province['seats ' + i] > 0 && partiesRaw.indexOf(party) == -1)
+                            {
+                                partiesWithSeats.push({party:party, seats:0});
+                                partiesRaw.push(party)
+                            }
+                        }
+                    
+            }
+
+
+
+            //ADD OLD RESULTS TO PARTIES THAT HAVEN'T HAVE SEATS BUT WERE REPRESENTED BEFORE IN THIS PROVINCE
+
+            //console.log('--', oldProvince.province)
+
+
+            for (var i = 1; i <= totalPartiesLastElections; i++) {
+                if(oldProvince['seats ' + i] > 0){
+                   // console.log(oldProvince['party ' + i])
+                    let match = totalSeatsByParty[oldProvince['party ' + i]].find(province => oldProvince.province == province.province);
+
+                    if(!match){
+
+
+                        //console.log(match)
+                        totalSeatsByParty[oldProvince['party ' + i]].push(
+                            {
+                                province:  oldProvince.province,
+                                seats: 0,
+                                old_seats: +oldProvince['seats ' + i],
+                                votes: 0,
+                                old_votes: +oldProvince['votes ' + i],
+                                percentage: 0,
+                                wing:partyWing[oldProvince['party ' + i]]
+                            }
+                        )
                     }
                 }
-
-                if(partiesList.indexOf(party) == -1){
-                    partiesList.push(party);
-                    newPartiesList.push(party);
-                    totalSeatsByParty[party] = [];
-                    partyWing[party]="left";
-                }
-
-                if(partiesList.indexOf(party) != -1 && +province['seats ' + i] > 0 || oldSeats > 0){
-
-                    totalSeatsByParty[party].push(
-                    {
-                        province: province.province_name,
-                        seats: +province['seats ' + i],
-                        old_seats: +oldSeats,
-                        votes: +province['votes ' + i],
-                        old_votes: +oldVotes,
-                        percentage: +province['percentage ' + i],
-                        wing:wing
-
-                    });
-
-                    if(+province['seats ' + i] > 0 && partiesRaw.indexOf(party) == -1)
-                    {
-                        partiesWithSeats.push({party:party, seats:0});
-                        partiesRaw.push(party)
-                    }
-                }  
-        } 
+            }
+        }
     }
     else{
         console.log(province.province_name, " hasn't yet started to count")
     }
 })
+
+
+
+//console.log(totalSeatsByParty['ERC-SOBIRANISTES'])
 
 partiesWithSeats.map(party => {
 
@@ -213,6 +290,9 @@ let partyblobs = svg.append("g").selectAll("rect")
 
 newPartiesList.map(party =>{
 
+
+    console.log(party)
+
     let randomColor = Math.floor(Math.random()*16777215).toString(16);
 
     d3.select('[class="' + party + '"').style('background-color','#'+ randomColor)
@@ -296,7 +376,7 @@ function flagMainParties () {
             let old = totalSeatsByParty[name].reduce((a, b) => { return a + b.old_seats; }, 0);
 
 
-            console.log(party, current, old)
+            //console.log(party, current, Old)
             let difference = current - old
 
             if(difference > 0) difference = '+' + difference;
