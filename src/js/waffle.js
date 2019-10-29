@@ -1,6 +1,4 @@
 //https://interactive.guim.co.uk/docsdata-test/11_Yp1yHl8xlIl0GMALvr0TXdNj8917Ei7lO0t-3PWZA.json
-
-//import totalResults from 'raw-loader!./../assets/april-total-results.csv'
 import provinceResults from 'raw-loader!./../assets/november-province-results.csv'
 import oldResults from 'raw-loader!./../assets/old-province-results.csv'
 import * as d3 from 'd3'
@@ -51,7 +49,6 @@ let assignedSeats = 0;
 
 let newPartiesList = [];
 
-
 partiesList.map(party => totalSeatsByParty[party] = [])
 
 totalProvinceVotes.map( (province,n) => {
@@ -66,9 +63,6 @@ totalProvinceVotes.map( (province,n) => {
     {
         if(oldProvince)
         {
-
-            //console.log(province, oldProvince)
-
 
             console.log(province)
 
@@ -86,10 +80,6 @@ totalProvinceVotes.map( (province,n) => {
                         if(ppRawNames.indexOf(party) != -1) party = 'PP';
                         if(csRawNames.indexOf(party) != -1) party = 'Cs';
 
-
-                        //FIND new party in old parties list
-
-                        //console.log( '====>', partyRepeats, party)
                         if(partyWing[party])wing =  partyWing[party];
 
                         for (var j = 1; j <= totalPartiesLastElections; j++) {
@@ -99,39 +89,12 @@ totalProvinceVotes.map( (province,n) => {
                             }
                         }
 
-
-                        //  console.log(province.province_name, party, oldSeats, +province['seats ' + i])
-
                         if(partiesList.indexOf(party) == -1){
                             partiesList.push(party);
                             newPartiesList.push(party);
                             totalSeatsByParty[party] = [];
                             partyWing[party]="left";
                         }
-
-
-                        //if(province.province_name == 'Madrid')console.log('--', party, partiesList.indexOf(party) != -1, +province['seats ' + i] > 0)
-
-
-
-
-
-        //TODO --------------------------------------------
-
-
-
-        //MAKE SURE IT READS OLD RESULTS WHEN THOSE ARE BIGGER THAN CURRENT ONES
-        //i.e. Old results have PSOE 123 but current increase doen't show -11
-
-
-
-
-
-        //-------------------------------------------------
-
-
-        
-
 
 
                         if(partiesList.indexOf(party) != -1 && +province['seats ' + i] > 0){
@@ -158,21 +121,13 @@ totalProvinceVotes.map( (province,n) => {
             }
 
 
-
-            //ADD OLD RESULTS TO PARTIES THAT HAVEN'T HAVE SEATS BUT WERE REPRESENTED BEFORE IN THIS PROVINCE
-
-            //console.log('--', oldProvince.province)
-
-
             for (var i = 1; i <= totalPartiesLastElections; i++) {
                 if(oldProvince['seats ' + i] > 0){
-                   // console.log(oldProvince['party ' + i])
+
                     let match = totalSeatsByParty[oldProvince['party ' + i]].find(province => oldProvince.province == province.province);
 
                     if(!match){
 
-
-                        //console.log(match)
                         totalSeatsByParty[oldProvince['party ' + i]].push(
                             {
                                 province:  oldProvince.province,
@@ -193,10 +148,6 @@ totalProvinceVotes.map( (province,n) => {
         console.log(province.province_name, " hasn't yet started to count")
     }
 })
-
-
-
-//console.log(totalSeatsByParty['ERC-SOBIRANISTES'])
 
 partiesWithSeats.map(party => {
 
@@ -291,7 +242,7 @@ let partyblobs = svg.append("g").selectAll("rect")
 newPartiesList.map(party =>{
 
 
-    console.log(party)
+    console.log("This is a new party: ",party)
 
     let randomColor = Math.floor(Math.random()*16777215).toString(16);
 
@@ -316,29 +267,6 @@ let path = midline
 .append('path')
 .attr('d', "M 0 0 V 0 L 0 " +  (cellsize * (ranks / 2)) + "H " + (-cellsize) + " V " + (cellsize * (ranks / 2)) + "L " + (-cellsize) + " " +  (cellsize * ranks) ) 
 .attr('class', 'gv-midline')
-
-
-/*let majorityBlobs = []
-
-for (var i = 0; i < majority ; i++) {
-   majorityBlobs.push(i)
-}
-
-
-svg.append("g").selectAll("rect")
-.data(majorityBlobs)
-.enter()
-.append('rect')
-.attr("id", (d, i) => { return i })
-.attr("height", cellsize)
-.attr("width", cellsize)
-.attr("x", (d, i) => {
-    return cellsize * Math.floor(i / ranks)
-})
-.attr("y", (d, i) => {
-    return i * cellsize - (Math.floor(i / ranks) * cellsize * ranks)
-})
-.attr('class','black')*/
 
 
 function addKey() {
@@ -374,9 +302,6 @@ function flagMainParties () {
 
             let current = totalSeatsByParty[name].reduce((a, b) => { return a + b.seats; }, 0);
             let old = totalSeatsByParty[name].reduce((a, b) => { return a + b.old_seats; }, 0);
-
-
-            //console.log(party, current, Old)
             let difference = current - old
 
             if(difference > 0) difference = '+' + difference;
