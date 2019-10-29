@@ -1,13 +1,22 @@
 #!/bin/bash 
-# TIMESTAMP=$(curl -u usuario643:ain7aeC3 https://www.descargas.eleccionesgenerales19.es/web/datos/DESCAR99_L1.html 2>&1 | grep 'TXTOTCO99hhmm' | sed -n 's/.*href="\([^"]*\).*/\1/p')
 
-# curl -u usuario643:ain7aeC3 https://www.descargas.eleccionesgenerales19.es/web/datos/DESCAR99_L1.html
+#this is the test version using the INI version of the doc
+TIMESTAMP=$(curl -u usuario52:Ken7ohme https://descargas.10noviembre2019.es/web/datos/DESCAR99_L1.html 2>&1 | grep 'TXTOTCO99INI' | sed -n 's/.*href="\([^"]*\).*/\1/p' | sed 's/\.//' )
 
-# while true
-# do
-curl https://gdn-cdn.s3.us-east-1.amazonaws.com/testing/2019/10/spain/TXTOTCO993bq0u3ct.gz | gzip -d > ./src/assets/latestraw.csv
+#this is the real version getting the hours and minutes
+#TIMESTAMP=$(curl -u usuario52:Ken7ohme https://descargas.10noviembre2019.es/web/datos/DESCAR99_L1.html 2>&1 | grep 'TXTOTCO99hhmm' | sed -n 's/.*href="\([^"]*\).*/\1/p')
+
+
+echo https://descargas.10noviembre2019.es/web/datos$TIMESTAMP
+
+# curl -u usuario52:Ken7ohme https://descargas.10noviembre2019.es/web/datos/DESCAR99_L1.html
+
+ while true
+ do
+ curl -u usuario52:Ken7ohme https://descargas.10noviembre2019.es/web/datos$TIMESTAMP | gzip -d > ./src/assets/latestraw.csv
+
+
 npm run provinces-parser
-#gulp
-# gulp deploypreview
-# sleep 300
-# done
+gulp deploypreview
+ sleep 300
+ done
