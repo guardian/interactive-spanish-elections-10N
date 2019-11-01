@@ -60,7 +60,7 @@ deputiesCarto
 .attr('class', 'deputy')
 
 provincesVotes.sort((a,b) => a.province_code - b.province_code)
-	
+
 provincesCarto
 .selectAll('path')
 .data(topojson.feature(cartogram, cartogram.objects['spa-hex-adm2']).features)
@@ -69,8 +69,8 @@ provincesCarto
 .attr('d', path)
 .attr('class', 'provincia-hex')
 .attr('id', d => 'p' + d.properties.id)
-.on('mouseover', mouseover)
-.on('mouseout', mouseout)
+.on('mouseover', d => printResult(d.properties.id,d.properties['name-english']))
+.on('mouseout', cleanResult)
 
 comunidadesCarto
 .selectAll('path')
@@ -131,8 +131,8 @@ function checkOverlapping(box, position){
 
 			if(overlap)labels[i].node().remove()
 		}
-		
-	})
+
+})
 }
 
 provincesVotes.map(p => {
@@ -183,67 +183,73 @@ provincesVotes.map(p => {
 	}
 })
 
-function mouseover(d){
+function printResult(id,name){
 
-	tooltip.classed(" over", true)
+	let result = provincesVotes.find(province => +province.province_code == id);
 
-	d3.selectAll('.provincia-hex').style('fill-opacity',1)
-	d3.select(this).style('fill-opacity',0)
-
-	tooltip.select('.tooltip-province').html(d.properties['name-english'])
-	tooltip.select('.tooltip-deputies').html(d.properties['deputies'])
-
-	let turnOut = '';
-	let oldTurnOut = '';
-	let differenceTurnOut = '';
-
-	if(turnOutByProvince[d.properties.id]){
-		turnOut= parseFloat(turnOutByProvince[d.properties.id]);
-		oldTurnOut= parseFloat(totalProvinceVotesOld.find(p => +p.id == d.properties.id).turnout);
-		differenceTurnOut = (turnOut - oldTurnOut).toFixed(2);
-		if(differenceTurnOut > 0)differenceTurnOut = '+' + differenceTurnOut;
-	}
-	
-	
-
-	if(deputiesByProvince[d.properties.id])
-	{
-
-		if(turnOut || oldTurnOut){
-			tooltip.select('.tooltip-turnout .turnout').html(turnOut + "%")
-			tooltip.select('.tooltip-turnout .old-turnout').html("(" + differenceTurnOut + "%)")
-		}
-		else
-		{
-			tooltip.select('.tooltip-turnout .turnout').html("-")
-			tooltip.select('.tooltip-turnout .old-turnout').html("-")
-		}
-		
-
-		deputiesByProvince[d.properties.id].map(dep => {
-
-			let row = tooltip.select('.tooltip-results')
-			.append('div')
-			.attr('class', 'tooltip-row')
-
-			row
-			.append('div')
-			.attr('class','tooltip-party')
-			.html(dep.party)
-
-			row
-			.append('div')
-			.attr('class','tooltip-deputies')
-			.html(dep.deputies)
-		})
+	if(result){
 
 		d3.selectAll(".geo-map .provinces path").classed(" over", true)
-		d3.select(".geo-map #p" + +d.properties.id).classed(" over", false)
+		d3.select(".geo-map .provinces #p" + id).classed(" over", false)
+
+		tooltip.classed(" over", true)
+
+		tooltip.select('.tooltip-province').html(name)
+		tooltip.select('.tooltip-deputies').html(+result.deputies_total)
+
+		let turnOut = '-';
+		let oldTurnOut = parseFloat(totalProvinceVotesOld.find(p => p.id == id).turnout);
+		let differenceTurnOut = '-';
+
+		if(+result.voters_percentage > 0){
+			turnOut = +result.voters_percentage / 100;
+			differenceTurnOut = (turnOut - oldTurnOut).toFixed(2);
+			if(differenceTurnOut > 0)differenceTurnOut = '+' + differenceTurnOut;
+		}
+
+		tooltip.select('.tooltip-turnout .turnout').html(turnOut + "%")
+		tooltip.select('.tooltip-turnout .old-turnout').html("(" + differenceTurnOut + "%)")
+
+
+		if(deputiesByProvince[id])
+		{
+			deputiesByProvince[id].map(dep => {
+
+				let row = tooltip.select('.tooltip-results')
+				.append('div')
+				.attr('class', 'tooltip-row')
+
+				row
+				.append('div')
+				.attr('id','tooltip-color')
+				.attr('class', dep.party)
+
+				row
+				.append('div')
+				.attr('class','tooltip-party')
+				.html(dep.party)
+
+				row
+				.append('div')
+				.attr('class','tooltip-deputies')
+				.html(dep.deputies)
+			})
+
+
+			d3.selectAll(".cartogram-wrapper .cartogram path").style('fill-opacity',1)
+			d3.select(".cartogram-wrapper .cartogram #p" + id).style('fill-opacity',0)
+
+		}
+
 	}
+
+	
+
 }
 
 
-function mouseout(){
+
+function cleanResult(){
 
 	tooltip.classed(" over", false)
 	

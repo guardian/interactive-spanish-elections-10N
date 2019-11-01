@@ -4,6 +4,7 @@ import * as topojson from 'topojson';
 import * as d3geo from 'd3-geo';
 import map from '../assets/adm1_adm2.json';
 import provincesVotesRaw from 'raw-loader!./../assets/november-province-results.csv';
+import oldResults from 'raw-loader!./../assets/old-province-results.csv'
 import * as d3Jetpack from 'd3-jetpack';
 import {event as currentEvent} from 'd3-selection';
 import { $ } from "./util"
@@ -12,6 +13,7 @@ let d3 = Object.assign({}, d3B, d3Select, d3geo);
 
 const parsed = d3.csvParse(provincesVotesRaw)
 const provincesVotes = parsed;
+const totalProvinceVotesOld = d3.csvParse(oldResults);
 
 const atomEl = $('.gv-map-wrapper')
 
@@ -21,6 +23,10 @@ let width = atomEl.getBoundingClientRect().width;
 let height = width;
 
 let tooltip = d3.select(".tooltip")
+
+
+tooltip.select('.tooltip-button')
+.on("click", cleanResult)
 
 let svg = d3.select('.coropleth-wrapper').append('svg')
 .attr('width', width)
@@ -33,7 +39,7 @@ let projection = d3.geoMercator()
 let path = d3.geoPath()
 .projection(projection)
 
-projection.fitSize([width, width], topojson.feature(map, map.objects.esp_adm2));
+projection.fitSize([width, width], topojson.feature(map, map.objects.adm2));
 
 let provincesMap = svg.append('g')
 
@@ -51,18 +57,18 @@ let parties = []
 provincesMap
 .attr('class', "provinces")
 .selectAll('path')
-.data(topojson.feature(map, map.objects.esp_adm2).features)
+.data(topojson.feature(map, map.objects.adm2).features)
 .enter()
 .append('path')
 .attr('d', path)
 .attr('id', d => 'p' + d.properties.ID_3)
 .attr('class', 'province')
-.on('mouseover', mouseover)
-.on('mouseout', mouseout)
+.on('mouseover', d => printResult(d.properties.ID_3, d.properties.NAME_3))
+.on('mouseout', d => cleanResult())
 
 comunitiesMap
 .selectAll('path')
-.data(topojson.feature(map, map.objects.esp_adm1).features)
+.data(topojson.feature(map, map.objects.adm1).features)
 .enter()
 .append('path')
 .attr('d', path)
@@ -121,11 +127,16 @@ function checkOverlapping(box, position){
 
 			if(overlap)labels[i].node().remove()
 		}
-		
-	})
+
+})
 }
 
 let gvOption =`<option selected="selected">Jump to a province</option>`
+
+
+provincesVotes.sort((a,b) => +a.province_code - +b.province_code)
+
+console.log(provincesVotes)
 
 provincesVotes.map(p => {
 
@@ -133,56 +144,57 @@ provincesVotes.map(p => {
 	{
 		let acumm = 1;
 
-		deputiesByProvince[+p.province_code] = [];
+		deputiesByProvince[p.province_code] = [];
 
+
+		let province = topojson.feature(map, map.objects.adm2).features.find(feature => feature.properties.ID_3 == p.province_code);
 
 		if(p.province_name != 'Total nacional'){
-			let provinceEntry = `<option class='option' value="${p.province_name}">${p.province_name}</option>`;
+
+			let provinceEntry = `<option class='option' value="${province.properties.NAME_3}" province-id="${p.province_code}">${province.properties.NAME_3}</option>`;
 
 			gvOption += provinceEntry;
 		}
 		
-		
-
-		
-
-		if(p['party 1'] && +p['seats 1'] > 0) d3.select("#p" + +p.province_code).attr('class', p['party 1'])
+		if(p['party 1'] && +p['seats 1'] > 0) d3.select("#p" + p.province_code).attr('class', p['party 1'])
 
 			for(let i = 1 ; i<80 ; i++){
 
-			if(+p['seats ' + i] > 0)
-			{
-				let party = p['party ' + i];
-				let deputies = +p['seats ' + i];
-				let votes = +p['votes ' + i];
-				let percentage = +p['percentage ' + i];
-
-
-				if(parties.indexOf(party) == -1){
-
-					parties.push(party)
-				}
-
-				deputiesByProvince[+p.province_code].push({
-					"deputies" : deputies,
-					"votes" : votes,
-					"percentage" : percentage,
-					"party" : party
-				});
-
-				for(let j = 0; j < deputies; j++)
+				if(+p['seats ' + i] > 0)
 				{
-					let number = acumm;
-					if(acumm<10) number = '0' + acumm;
-					d3.select('#d' + p.province_code + number)
-					.attr('class', party)
-					acumm++
-				}
+					let party = p['party ' + i];
+					let deputies = +p['seats ' + i];
+					let votes = +p['votes ' + i];
+					let percentage = +p['percentage ' + i];
 
+
+					if(parties.indexOf(party) == -1){
+
+						parties.push(party)
+					}
+
+					deputiesByProvince[p.province_code].push({
+						"deputies" : deputies,
+						"votes" : votes,
+						"percentage" : percentage,
+						"party" : party
+					});
+
+					for(let j = 0; j < deputies; j++)
+					{
+						let number = acumm;
+						if(acumm<10) number = '0' + acumm;
+						d3.select('#d' + p.province_code + number)
+						.attr('class', party)
+						acumm++
+					}
+
+				}
 			}
 		}
-	}
-} )
+	} )
+
+
 
 d3.select(".gv-province-filter").html(gvOption);
 
@@ -190,19 +202,91 @@ const dropdownOptions = document.querySelectorAll('.gv-dropdown-menu .option');
 
 dropdownOptions.forEach(option => option.addEventListener('click',handleOptionSelected));
 
+
 function handleOptionSelected(event)
 {
-	console.log(event.target.innerHTML)
+	cleanResult()
+
+	printResult(event.srcElement.attributes['province-id'].value,event.target.innerHTML)
+}
+
+function printResult(id,name){
+
+	let result = provincesVotes.find(province => +province.province_code == id);
+
+	if(result){
+
+		d3.selectAll(".geo-map .provinces path").classed(" over", true)
+		d3.select(".geo-map .provinces #p" + id).classed(" over", false)
+
+		tooltip.classed(" over", true)
+
+		tooltip.select('.tooltip-province').html(name)
+		tooltip.select('.tooltip-deputies').html(+result.deputies_total)
+
+		let turnOut = '-';
+		let oldTurnOut = parseFloat(totalProvinceVotesOld.find(p => p.id == id).turnout);
+		let differenceTurnOut = '-';
+
+		if(+result.voters_percentage > 0){
+			turnOut = +result.voters_percentage / 100;
+			differenceTurnOut = (turnOut - oldTurnOut).toFixed(2);
+			if(differenceTurnOut > 0)differenceTurnOut = '+' + differenceTurnOut;
+		}
+
+		tooltip.select('.tooltip-turnout .turnout').html(turnOut + "%")
+		tooltip.select('.tooltip-turnout .old-turnout').html("(" + differenceTurnOut + "%)")
 
 
-	d3.selectAll(".geo-map .provinces path").classed(" over", true)
-	d3.selectAll(".cartogram-wrapper .cartogram path").style('fill-opacity',1)
+		if(deputiesByProvince[id])
+		{
+			deputiesByProvince[id].map(dep => {
 
-	tooltip.classed(" over", true)
+				let row = tooltip.select('.tooltip-results')
+				.append('div')
+				.attr('class', 'tooltip-row')
 
-	tooltip.select('.tooltip-province').html(event.target.innerHTML)
+				row
+				.append('div')
+				.attr('id','tooltip-color')
+				.attr('class', dep.party)
 
-	//d3.select(".geo-map .provinces #p" + d.properties.ID_3).classed(" over", false)
+				row
+				.append('div')
+				.attr('class','tooltip-party')
+				.html(dep.party)
+
+				row
+				.append('div')
+				.attr('class','tooltip-deputies')
+				.html(dep.deputies)
+			})
+
+
+			d3.selectAll(".cartogram-wrapper .cartogram path").style('fill-opacity',1)
+			d3.select(".cartogram-wrapper .cartogram #p" + id).style('fill-opacity',0)
+
+		}
+
+	}
+
+	
+
+}
+
+function cleanResult(){
+
+
+	console.log('paso por aqui')
+
+	tooltip.classed(" over", false)
+	
+	d3.selectAll(".geo-map .provinces path").classed("over", false)
+
+	tooltip.select('.tooltip-results').html('')
+
+	d3.selectAll('.provincia-hex').style('fill-opacity',0)
+
 }
 
 function valueInRange(value, min, max)
@@ -219,52 +303,5 @@ function rectOverlap(A, B)
 	return xOverlap && yOverlap;
 }
 
-function mouseover(d){
 
-
-	d3.selectAll(".geo-map .provinces path").classed(" over", true)
-	d3.select(".geo-map .provinces #p" + d.properties.ID_3).classed(" over", false)
-
-	tooltip.classed(" over", true)
-
-	tooltip.select('.tooltip-province').html(d.properties.NAME_2)
-	tooltip.select('.tooltip-deputies').html(d.properties['deputies'])
-
-	if(deputiesByProvince[d.properties.ID_3])
-	{
-		deputiesByProvince[d.properties.ID_3].map(dep => {
-
-			let row = tooltip.select('.tooltip-results')
-			.append('div')
-			.attr('class', 'tooltip-row')
-
-			row
-			.append('div')
-			.attr('class','tooltip-party')
-			.html(dep.party)
-
-			row
-			.append('div')
-			.attr('class','tooltip-deputies')
-			.html(dep.deputies)
-		})
-
-
-		d3.selectAll(".cartogram-wrapper .cartogram path").style('fill-opacity',1)
-		d3.select(".cartogram-wrapper .cartogram #p" + d.properties.ID_3).style('fill-opacity',0)
-	}
-}
-
-
-function mouseout(){
-
-	tooltip.classed(" over", false)
-	
-	d3.selectAll(".geo-map .provinces path").classed("over", false)
-
-	tooltip.select('.tooltip-results').html('')
-
-	d3.selectAll('.provincia-hex').style('fill-opacity',0)
-
-}
 
