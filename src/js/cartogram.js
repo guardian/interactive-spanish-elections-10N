@@ -5,6 +5,7 @@ import * as d3geo from 'd3-geo'
 import {event as currentEvent} from 'd3-selection';
 import cartogram from '../assets/spa-hex-adm1-adm2-deputies.json'
 import provincesVotesRaw from 'raw-loader!./../assets/november-province-results.csv';
+import oldResults from 'raw-loader!./../assets/old-province-results.csv'
 import * as d3Jetpack from 'd3-jetpack';
 import { $ } from "./util"
 
@@ -12,24 +13,23 @@ let d3 = Object.assign({}, d3B, d3Select, d3geo);
 
 const parsed = d3.csvParse(provincesVotesRaw)
 const provincesVotes = parsed;
+const totalProvinceVotesOld = d3.csvParse(oldResults);
 let deputiesByProvince = [];
+let turnOutByProvince = [];
 let parties = []
 
-const atomEl = $('.interactive-wrapper')
+const atomEl = $('.gv-map-wrapper')
 
 let isMobile = window.matchMedia('(max-width: 620px)').matches;
 
-let maxWidth = atomEl.getBoundingClientRect().width;
-let maxHeight = maxWidth - 100;
-
-let width = isMobile ? atomEl.getBoundingClientRect().width : (atomEl.getBoundingClientRect().width / 2) - 30;
+let width = atomEl.getBoundingClientRect().width;
 let height = width;
 
 let padding = 20;
 
-let tooltip = d3.select("#gv-cartogram .tooltip")
+let tooltip = d3.select(".tooltip")
 
-let svg = d3.select('#gv-cartogram #cartogram').append('svg')
+let svg = d3.select('.cartogram-wrapper').append('svg')
 .attr('width', width)
 .attr('height', height)
 .attr('class', 'cartogram')
@@ -71,7 +71,6 @@ provincesCarto
 .attr('id', d => 'p' + d.properties.id)
 .on('mouseover', mouseover)
 .on('mouseout', mouseout)
-.on("mousemove", mousemove)
 
 comunidadesCarto
 .selectAll('path')
@@ -136,22 +135,7 @@ function checkOverlapping(box, position){
 	})
 }
 
-
-let psoeVotes = 0;
-let podemosVotes = 0;
-let ercVotes = 0;
-let juntsVotes = 0;
-let ppVotes = 0;
-
-
 provincesVotes.map(p => {
-
-
-	//console.log(p)
-
-	//let results = provincesVotes.find(v => v.province_code === p['province-code'])
-
-	//let p.province_code = p.province_code;
 
 	let acumm = 1;
 
@@ -161,68 +145,22 @@ provincesVotes.map(p => {
 	if(+p.census_counted > 0)
 	{
 
+		turnOutByProvince[p.province_code] = +p['voters_percentage'] / 100 + '%'
+
 		for(let i = 1 ; i<80 ; i++){
 
 			if(+p['seats ' + i] > 0)
 			{
 				let party = p['party ' + i];
-				let partyBeauty = party;
 				let deputies = +p['seats ' + i];
 				let votes = +p['votes ' + i];
 				let percentage = +p['percentage ' + i];
-
-				if(party == "PODEMOS-EUIB") partyBeauty = 'Podemos-EUIB';
-				if(party == "PODEMOS-EU-MAREAS EN COMÚN-EQUO") partyBeauty = 'Podemos-EU-MAREAS EN COMÚN-EQUO';
-				if(party == "PODEMOS-EUPV") partyBeauty = 'Podemos-EUPV';
-				if(party == "PODEMOS-IU-EQUO") partyBeauty = 'Podemos-IU-EQUO';
-				if(party == "PODEMOS-IU-EQUO-AAeC") partyBeauty = 'Podemos-IU-EQUO-AAeC';
-				if(party == "PODEMOS-IU-EQUO-BATZARRE") partyBeauty = 'Podemos-IU-EQUO-BATZARRE';
-				if(party == "PODEMOS-IU-EQUO BERDEAK") partyBeauty = 'Podemos-IU-EQUO BERDEAK';
-				if(party == "PODEMOS-IU LV CA-EQUO")partyBeauty = 'Podemos-IU LV CA-EQUO';
-				if(party == "PODEMOS-IX-EQUO" )partyBeauty = 'Podemos-IX-EQUO';
-				
-				if(party == "Cs") partyBeauty = 'Citizens';
-
-				let partyToKey = partyBeauty;
-
-				if(partyBeauty == 'Podemos-EUIB') partyToKey = 'Podemos and coalitions';
-				if(partyBeauty == 'Podemos-EU-MAREAS EN COMÚN-EQUO') partyToKey = 'Podemos and coalitions';
-				if(partyBeauty == 'Podemos-EUPV') partyToKey = 'Podemos and coalitions';
-				if(partyBeauty == 'Podemos-IU-EQUO') partyToKey = 'Podemos and coalitions';
-				if(partyBeauty == 'Podemos-IU-EQUO-AAeC') partyToKey = 'Podemos and coalitions';
-				if(partyBeauty == 'Podemos-IU-EQUO-BATZARRE') partyToKey = 'Podemos and coalitions';
-				if(partyBeauty == 'Podemos-IU-EQUO BERDEAK') partyToKey = 'Podemos and coalitions';
-				if(partyBeauty == 'Podemos-IU LV CA-EQUO') partyToKey = 'Podemos and coalitions';
-				if(partyBeauty == 'Podemos-IX-EQUO') partyToKey = 'Podemos and coalitions';
-				if(partyBeauty == "ECP-GUANYEM EL CANVI" ) partyToKey = 'Podemos and coalitions';
-
-
-				if(partyBeauty == 'PP-FORO') partyToKey = 'PP';
-
-				if(partyBeauty == "ERC-SOBIRANISTES") partyToKey = 'ERC'
-				if(partyBeauty == "ERC-CATSÍ") partyToKey = 'ERC'
-				if(partyBeauty == "ERPV") partyToKey = 'ERC'
-
-				if(partyBeauty == "JxCAT-JUNTS") partyToKey = 'JxCAT-JUNTS'
-				if(partyBeauty == "CDC") partyToKey = 'JxCAT-JUNTS'
-
-				if(partyBeauty == "PSC") partyToKey = "PSOE"
-				if(partyBeauty == "PSdeG-PSOE") partyToKey = "PSOE"
-				if(partyBeauty == "PSE-EE (PSOE)") partyToKey = "PSOE"
-				if(partyBeauty == "PSOE") partyToKey = "PSOE"
-				if(partyBeauty == "PSOE") partyToKey = "PSOE"
-
-
-				if(parties.indexOf(partyToKey) == -1){
-
-					parties.push(partyToKey)
-				}
 
 				deputiesByProvince[p.province_code].push({
 					"deputies" : deputies,
 					"votes" : votes,
 					"percentage" : percentage,
-					"party" : partyBeauty
+					"party" : party
 				});
 
 				for(let j = 0; j < deputies; j++)
@@ -230,7 +168,7 @@ provincesVotes.map(p => {
 					let number = acumm;
 					if(acumm<10) number = '0' + acumm;
 					d3.select('#d' + p.province_code + number)
-					.attr('class', partyBeauty)
+					.attr('class', party)
 					acumm++
 				}
 
@@ -243,24 +181,45 @@ provincesVotes.map(p => {
 		acumm = 0;
 
 	}
-	
-
-	
-
 })
 
 function mouseover(d){
 
+	tooltip.classed(" over", true)
+
 	d3.selectAll('.provincia-hex').style('fill-opacity',1)
 	d3.select(this).style('fill-opacity',0)
-
-	tooltip.classed(" over", true)
 
 	tooltip.select('.tooltip-province').html(d.properties['name-english'])
 	tooltip.select('.tooltip-deputies').html(d.properties['deputies'])
 
+	let turnOut = '';
+	let oldTurnOut = '';
+	let differenceTurnOut = '';
+
+	if(turnOutByProvince[d.properties.id]){
+		turnOut= parseFloat(turnOutByProvince[d.properties.id]);
+		oldTurnOut= parseFloat(totalProvinceVotesOld.find(p => +p.id == d.properties.id).turnout);
+		differenceTurnOut = (turnOut - oldTurnOut).toFixed(2);
+		if(differenceTurnOut > 0)differenceTurnOut = '+' + differenceTurnOut;
+	}
+	
+	
+
 	if(deputiesByProvince[d.properties.id])
 	{
+
+		if(turnOut || oldTurnOut){
+			tooltip.select('.tooltip-turnout .turnout').html(turnOut + "%")
+			tooltip.select('.tooltip-turnout .old-turnout').html("(" + differenceTurnOut + "%)")
+		}
+		else
+		{
+			tooltip.select('.tooltip-turnout .turnout').html("-")
+			tooltip.select('.tooltip-turnout .old-turnout').html("-")
+		}
+		
+
 		deputiesByProvince[d.properties.id].map(dep => {
 
 			let row = tooltip.select('.tooltip-results')
@@ -278,11 +237,8 @@ function mouseover(d){
 			.html(dep.deputies)
 		})
 
-		tooltip.style('top', getPos(currentEvent).posY + 'px')
-		tooltip.style('left', getPos(currentEvent).posX + 'px')
-
-		d3.selectAll(".geo-map .provinces path").classed("over", true)
-		d3.select(".geo-map #p" + +d.properties.id).classed("over", false)
+		d3.selectAll(".geo-map .provinces path").classed(" over", true)
+		d3.select(".geo-map #p" + +d.properties.id).classed(" over", false)
 	}
 }
 
@@ -299,42 +255,7 @@ function mouseout(){
 
 }
 
-function mousemove(){
 
-
-	tooltip.style('top', getPos(currentEvent).posY + 'px')
-	tooltip.style('left', getPos(currentEvent).posX + 'px')
-	
-}
-
-
-function getPos(currentEvent){
-
-	let left = document.getElementById('gv-cartogram').getBoundingClientRect().x;
-	let top = document.getElementById('cartogram').getBoundingClientRect().y;
-
-	let tWidth = +tooltip.style("width").split('px')[0]
-	let tHeight = +tooltip.style("height").split('px')[0]
-
-	let posX = 0;
-	let posY = currentEvent.clientY - top + padding
-
-	if(currentEvent.clientX - left > width /2){
-		posX += width - tWidth
-	}
-
-	if(currentEvent.clientY - top > height /2){
-		posY -= tHeight + padding * 2
-	}
-
-	return {posX:posX, posY:posY}
-}
-
-/*svg.on("click", function() {
-  console.log(projection.invert(d3.mouse(this)));
-});
-
-*/
 
 function valueInRange(value, min, max)
 {

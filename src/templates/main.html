@@ -201,34 +201,42 @@
 		<span></span>
 	</div>
 
+	<div class="gv-dropdown-menu">
+		<select class="gv-province-filter" data-team="Jump to a province" name="gv-profvince-filter"></select>
+		<svg width="24" height="10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 10">
+			<path d="M0 .7l10.5 8.4 1.1.9 1.1-.9 10.5-8.4-.5-.7-11.1 6.3-11-6.3-.6.7z" fill="#333"/>
+		</svg>
+	</div>
+
 	<div class="gv-maps-wrapper">
 		<div class='gv-map-wrapper' id="gv-geographical">
-			<div id="coropleth">
-				<div class='tooltip'>
-					<div class='tooltip-title'>
-						<div class="tooltip-province"></div>
-						<div class="tooltip-deputies"></div>
-					</div>
-					<div class="tooltip-results"></div>
-				</div>
+			<div class="coropleth-wrapper">
 			</div>
-			<div class='tooltip'>
-				<div class='tooltip-title'>
-					<div class="tooltip-province"></div>
-					<div class="tooltip-deputies"></div>
-				</div>
-				<div class="tooltip-results"></div>
+			
+		</div>
+
+		<div class='tooltip'>
+			<div class='tooltip-button'>
+				<svg class="icon-cancel" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        			<path d="m 8.2646211,7.64 -0.985372,0.992 6.8996289,7.5523 7.720992,6.739 0.821373,-0.8267 -6.899628,-7.5524 -7.5569939,-6.9042" fill="#333"/>
+        			<path d="m 7.2792491,21.64 0.985372,0.9854 7.5569939,-6.8977 6.899628,-7.5523 -0.985381,-0.992 -7.556984,6.9042 -6.8996289,7.5524" fill="#333"/>
+      			</svg>
+			</div>
+			<div class='tooltip-title'>
+				<div class="tooltip-province"></div>
+				<div class="tooltip-deputies"></div>
+			</div>
+			<div class="tooltip-results"></div>
+			<div class='tooltip-turnout'>
+				<span>Turnout:</span>
+				<span class="turnout"></span>
+				<span class="old-turnout"></span>
 			</div>
 		</div>
+
+
 		<div class='gv-map-wrapper' id="gv-cartogram">
-			<div id="cartogram">
-				<div class='tooltip'>
-					<div class='tooltip-title'>
-						<div class="tooltip-province"></div>
-						<div class="tooltip-deputies"></div>
-					</div>
-					<div class="tooltip-results"></div>
-				</div>
+			<div class="cartogram-wrapper">
 			</div>
 		</div>
 

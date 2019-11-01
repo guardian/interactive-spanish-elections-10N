@@ -98,6 +98,9 @@ totalProvinceVotes.map( (province,n) => {
                         }
 
                         if(partiesList.indexOf(party) == -1){
+
+                            console.log("This is a new party: ",party)
+                            
                             partiesList.push(party);
                             newPartiesList.push(party);
                             totalSeatsByParty[party] = [];
@@ -249,8 +252,6 @@ let partyblobs = svg.append("g").selectAll("rect")
 
 newPartiesList.map(party =>{
 
-
-    console.log("This is a new party: ",party)
 
     let randomColor = Math.floor(Math.random()*16777215).toString(16);
 

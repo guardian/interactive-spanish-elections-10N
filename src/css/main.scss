@@ -86,19 +86,21 @@ font-size: 24px;
 .gv-maps-wrapper{
 	display: flex;
 	@include mq(mobile){flex-direction: column;}
-	@include mq(tablet){flex-direction: row;}
+	@include mq(tablet){flex-direction: column;}
 	@include mq(desktop){flex-direction: row;}
 	@include mq(leftCol){flex-direction: row;}
 	@include mq(wide){flex-direction: row;}
+
+	#gv-cartogram{
+		display: flex;
+		justify-content: flex-end;
+	}
 	
 }
-
 .gv-map-wrapper{
-	@include mq(mobile){width: 100%;}
-	@include mq(tablet){width: 50%;}
-	@include mq(desktop){width: 50%;}
-	@include mq(leftCol){width: 50%;}
-	@include mq(wide){width: 50%;}
+
+
+	width: 100%;
 }
 
 .provincia{
@@ -188,65 +190,103 @@ font-size: 24px;
 }
 
 .tooltip{
-	min-width:210px;
-	padding:6px;
-	position:absolute;
-	z-index: 1011 !important;
-	font-size: 12px;
+	min-width:20%;
+	//width: 100%;
+	height: max-content;
+	padding:12px;
+	font-size: 14px;
 	line-height: 16px;
 	font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
 	background: #fff;
 	border: 1px solid #333;
-	display:none;
+	
 	color: #333333;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
 	border-top: 1px solid #333;
-	box-shadow: 2px 2px 0 0 #333;
-	pointer-events:none;
+
+	//display: none;
+	//pointer-events:none;
+
+	opacity: 0;
+
+	display: flex;
+	flex-direction: column;
+
+	.tooltip-button{
+		width: 100%;
+		display: flex;
+		justify-content: right;
+		margin-bottom: 14px;
+	}
 
 	&.over{
-		display: block;
+		opacity: 1;
 	}
 
 
+	.tooltip-title{
+		font-size: 24px;
+		font-family: "Guardian Headline","Guardian Egyptian Web","Guardian Headline Full",Georgia,serif;
+		font-weight: bold;
+		color: #000;
+		font-weight: 900;
+		padding-bottom: 15px;
+		margin-bottom:5px;
+		line-height: 24px;
+		display: flex;
+		width: 100%;
+	}
+
+	.tooltip-row {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.tooltip-row:not(:last-child){
+		margin-bottom: 5px;
+		border-bottom: 2px dotted #b3b3b3;
+		height:20px;
+	}
+
+	.tooltip-province, .tooltip-party{
+		//position:relative;
+		flex: 100%;
+
+	}
+
+	.tooltip-deputies, .tooltip-deputies{
+
+		justify-content: right;
+	}
+
+	.tooltip-turnout{
+
+		margin-top: 12px;
+
+		//position: absolute;
+
+		display: flex;
+
+		flex-direction: column;
+
+
+		span{
+
+			margin-bottom: 7px;
+			
+		}
+
+		.turnout{
+			font-size: 24px;
+			font-family: "Guardian Headline","Guardian Egyptian Web","Guardian Headline Full",Georgia,serif;
+			font-weight: bold;
+			color: #000;
+		}
+	}
+
+
+
 }
 
-.tooltip-title{
-	font-size: 14px;
-	font-family: "Guardian Headline","Guardian Egyptian Web","Guardian Headline Full",Georgia,serif;
-	font-weight: bold;
-	color: #000;
-	font-weight: 900;
-	border-bottom: 1px solid #efefef;
-	padding-bottom: 15px;
-	margin-bottom:5px;
-
-	display: flex;
-	flex-direction: row;
-}
-
-.tooltip-row {
-	display: flex;
-	flex-direction: row;
-}
-
-.tooltip-row:not(:last-child){
-	margin-bottom: 5px;
-	border-bottom: 1px solid #efefef;
-	height:20px;
-}
-
-.tooltip-province, .tooltip-party{
-	position:relative;
-	flex: 90%;
-
-}
-
-.tooltip-deputies, .tooltip-deputies{
-	position:relative;
-	justify-content: flex-end;
-}
 
 [class="AHORA CANARIAS"]{fill:#00FCFC; background-color: #00FCFC;}
 [class="ANDECHA ASTUR"]{fill:#B3B3B4;background-color: #B3B3B4;}
@@ -644,6 +684,42 @@ font-size: 24px;
 .tint-erc {
  border-color: #f5be2c;
 }
+
+
+.gv-dropdown-menu
+{
+
+
+
+
+	select {
+    height: 32px;
+
+    border-radius: 30px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+	padding: 5px;
+    
+	font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+	font-size: 14px;
+	font-weight: 900;
+
+	border: 2px solid
+    #efefef;
+    width: 220px;
+    padding-right: 40px;
+
+	}
+
+	svg{
+    	position: absolute;
+    	margin: 13px 0 0 -37px;
+    }
+}
+
+
+
 
 
 
