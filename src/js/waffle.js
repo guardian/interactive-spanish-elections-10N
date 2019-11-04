@@ -3,23 +3,31 @@ import provinceResults from 'raw-loader!./../assets/november-province-results.cs
 import oldResults from 'raw-loader!./../assets/old-province-results.csv'
 import * as d3 from 'd3'
 
-const partiesList = ["UP", "ERC", "AHORA CANARIAS","ANDECHA ASTUR","ARA-MES-ESQUERRA","AVANT ADELANTE LOS VERDES","AVANT-LOS VERDES","AxSI","BNG","C 21","CCa-PNC","centrados","C.Ex-C.R.Ex-P.R.Ex","CILU-LINARES","CNV","COMPROMÍS 2019","CpM","Cs","Cs","CxG","DP","DPL","EAJ-PNV","EB","EB","EB","ECP-GUANYEM EL CANVI","EH Bildu","ELAK/PCTE","EL PI","EN MAREA","ERC-SOBIRANISTES","ERPV","F8","FE de las JONS","FIA","FRONT REPUBLICÀ","GBAI","IZAR","IZQP","JF","JxCAT-JUNTS","+MAS+","NA+","NCa","PACMA","PACMA","PACT","PCOE","PCPA","PCPC","PCPC","PCPE","PCPE","PCTC","PCTE","PCTE/ELAK","PCTG","PDSJE-UDEC","PH","P-LIB","PODEMOS-EUIB","PODEMOS-EU-MAREAS EN COMÚN-EQUO","PODEMOS-EUPV","PODEMOS-IU-EQUO","PODEMOS-IU-EQUO-AAeC","PODEMOS-IU-EQUO-BATZARRE","PODEMOS-IU-EQUO BERDEAK","PODEMOS-IU LV CA-EQUO","PODEMOS-IX-EQUO","PP","PP","PP","PP-FORO","PPSO","PR+","PRC","PREPAL","PSC","PSdeG-PSOE","PSE-EE (PSOE)","PSOE","PSOE","PUM+J","PUM+J","PUM+J","PYLN","RECORTES CERO-GV","RECORTES CERO-GV-PCAS-TC","RISA","SOLIDARIA","SOMOS REGIÓN","UDT","UIG-SOM-CUIDES","UNIÓN REGIONALISTA","VOU","VOX"];
-const podemosRawNames = ["PODEMOS-EUIB","PODEMOS-EU-MAREAS EN COMÚN-EQUO","PODEMOS-EUPV","PODEMOS-IU-EQUO","PODEMOS-IU-EQUO-AAeC","PODEMOS-IU-EQUO-BATZARRE","PODEMOS-IU-EQUO BERDEAK","PODEMOS-IU LV CA-EQUO","PODEMOS-IX-EQUO","ECP-GUANYEM EL CANVI"];
-const psoeRawNames = ["PSC","PSdeG-PSOE","PSE-EE (PSOE)","PSOE","PSOE"]
-const csRawNames = ["C's","Cs","Citizens"]
-const ppRawNames = ["PP","PP-FORO"]
-const ercRawNames = ["ERC-SOBIRANISTES","ERC-CATSÍ","ERC"]
+const partiesList = ["Más País","UP", "ERC", "AHORA CANARIAS","ANDECHA ASTUR","ARA-MES-ESQUERRA","AVANT ADELANTE LOS VERDES","AVANT-LOS VERDES","AxSI","BNG","C 21","CCa-PNC","centrados","C.Ex-C.R.Ex-P.R.Ex","CILU-LINARES","CNV","COMPROMÍS 2019","CpM","Cs","Cs","CxG","DP","DPL","EAJ-PNV","EB","EB","EB","ECP-GUANYEM EL CANVI","EH Bildu","ELAK/PCTE","EL PI","EN MAREA","ERC-SOBIRANISTES","ERPV","F8","FE de las JONS","FIA","FRONT REPUBLICÀ","GBAI","IZAR","IZQP","JF","JxCAT-JUNTS","+MAS+","NA+","NCa","PACMA","PACMA","PACT","PCOE","PCPA","PCPC","PCPC","PCPE","PCPE","PCTC","PCTE","PCTE/ELAK","PCTG","PDSJE-UDEC","PH","P-LIB","PODEMOS-EUIB","PODEMOS-EU-MAREAS EN COMÚN-EQUO","PODEMOS-EUPV","PODEMOS-IU-EQUO","PODEMOS-IU-EQUO-AAeC","PODEMOS-IU-EQUO-BATZARRE","PODEMOS-IU-EQUO BERDEAK","PODEMOS-IU LV CA-EQUO","PODEMOS-IX-EQUO","PP","PP","PP","PP-FORO","PPSO","PR+","PRC","PREPAL","PSC","PSdeG-PSOE","PSE-EE (PSOE)","PSOE","PSOE","PUM+J","PUM+J","PUM+J","PYLN","RECORTES CERO-GV","RECORTES CERO-GV-PCAS-TC","RISA","SOLIDARIA","SOMOS REGIÓN","UDT","UIG-SOM-CUIDES","UNIÓN REGIONALISTA","VOU","VOX", "CAnda", "PODEMOS-IU-Alto Aragón en Común", "CHA", "¡TERUEL EXISTE!", "AUNACV", "ANDECHA", "PODEMOS-IX", "MÉS-ESQUERRA", "CCa-PNC-NC", "VERDES", "CONTIGO", "PDSJE","VERDES o LOS VERDES o LV","PCAS-TC","XAV","UPL","PFyV","Junts","PFiV","CUP-PR","I.Fem","UNIDOS SÍ-ACPS-DEf","EXTREMADURA UNIDA","MÉS COMPROMÍS","RVPVE","MDyC"];
+const podemosRawNames = ["PODEMOS-IULV-CA", "PODEMOS-EU","PODEMOS-IU","PODEMOS-EUIB","PODEMOS-EU-MAREAS EN COMÚN-EQUO","PODEMOS-EUPV","PODEMOS-IU-EQUO","PODEMOS-IU-EQUO-AAeC","PODEMOS-IU-EQUO-BATZARRE","PODEMOS-IU-EQUO BERDEAK","PODEMOS-IU LV CA-EQUO","PODEMOS-IX-EQUO","ECP-GUANYEM EL CANVI"];
+const psoeRawNames = ["PSC-PSOE","PSC","PSdeG-PSOE","PSE-EE (PSOE)","PSOE","PSOE"];
+const csRawNames = ["C's","Cs","Citizens"];
+const ppRawNames = ["PP","PP-FORO"];
+const juntsRawNames = ["JUNTS","JxCAT-JUNTS"];
+const ercRawNames = ["ERC-SOBIRANISTES","ERC-CATSÍ","ERC"];
+const masPaisRawNames = ['MAS','MÁS PAÍS','M. PAÍS','MÁS','MÁS PAÍS-ANDALUCÍA','MÁS PAÍS-CANDIDATURA ECOLOGISTA','MÁS PAÍS-EQUO','MÁS PAÍS-EQUO','M.PAÍS-CHA-EQUO'];
+const PNCRawNames = ['CCa-PNC-NC','NC-CCa-PNC'];
+
+
 const seats = 350;
 const majority = seats / 2;
-const ranks = 10;
+
 const totalProvinceVotes = d3.csvParse(provinceResults);
 const totalProvinceVotesOld = d3.csvParse(oldResults);
 const partyWing = [];
 const totalPartiesLastElections = 13;
 
+let isMobile = window.matchMedia('(max-width: 620px)').matches;
+let ranks = isMobile ? 14 : 7;
+
 let totalCounted = 0;
 
-partyWing["UP"]="left";partyWing["ERC"]="left";partyWing["AHORA CANARIAS"]="left";partyWing["ANDECHA ASTUR"]="left";partyWing["ARA-MES-ESQUERRA"]="left";partyWing["AVANT ADELANTE LOS VERDES"]="left";partyWing["AVANT-LOS VERDES"]="left";partyWing["AxSI"]="left";partyWing["BNG"]="left";partyWing["C 21"]="left";partyWing["CCa-PNC"]="left";partyWing["centrados"]="left";partyWing["C.Ex-C.R.Ex-P.R.Ex"]="left";partyWing["CILU-LINARES"]="left";partyWing["CNV"]="left";partyWing["COMPROMÍS 2019"]="left";partyWing["CpM"]="left";partyWing["Cs"]="right";partyWing["Cs"]="right";partyWing["CxG"]="left";partyWing["DP"]="left";partyWing["DPL"]="";partyWing["EAJ-PNV"]="right";partyWing["EB"]="left";partyWing["EB"]="left";partyWing["EB"]="left";partyWing["ECP-GUANYEM EL CANVI"]="left";partyWing["EH Bildu"]="left";partyWing["ELAK/PCTE"]="left";partyWing["EL PI"]="left";partyWing["EN MAREA"]="left";partyWing["ERC-SOBIRANISTES"]="left";partyWing["ERPV"]="left";partyWing["F8"]="left";partyWing["FE de las JONS"]="right";partyWing["FIA"]="left";partyWing["FRONT REPUBLICÀ"]="left";partyWing["GBAI"]="left";partyWing["IZAR"]="left";partyWing["IZQP"]="left";partyWing["JF"]="left";partyWing["JxCAT-JUNTS"]="right";partyWing["+MAS+"]="left";partyWing["NA+"]="right";partyWing["NCa"]="left";partyWing["PACMA"]="left";partyWing["PACMA"]="left";partyWing["PACT"]="left";partyWing["PCOE"]="left";partyWing["PCPA"]="left";partyWing["PCPC"]="left";partyWing["PCPC"]="left";partyWing["PCPE"]="left";partyWing["PCPE"]="left";partyWing["PCTC"]="left";partyWing["PCTE"]="left";partyWing["PCTE/ELAK"]="left";partyWing["PCTG"]="left";partyWing["PDSJE-UDEC"]="left";partyWing["PH"]="left";partyWing["P-LIB"]="left";partyWing["PODEMOS-EUIB"]="left";partyWing["PODEMOS-EU-MAREAS EN COMÚN-EQUO"]="left";partyWing["PODEMOS-EUPV"]="left";partyWing["PODEMOS-IU-EQUO"]="left";partyWing["PODEMOS-IU-EQUO-AAeC"]="left";partyWing["PODEMOS-IU-EQUO-BATZARRE"]="left";partyWing["PODEMOS-IU-EQUO BERDEAK"]="left";partyWing["PODEMOS-IU LV CA-EQUO"]="left";partyWing["PODEMOS-IX-EQUO"]="left";partyWing["PP"]="right";partyWing["PP"]="right";partyWing["PP"]="right";partyWing["PP-FORO"]="right";partyWing["PPSO"]="";partyWing["PR+"]="left";partyWing["PRC"]="left";partyWing["PREPAL"]="left";partyWing["PSC"]="left";partyWing["PSdeG-PSOE"]="left";partyWing["PSE-EE (PSOE)"]="left";partyWing["PSOE"]="left";partyWing["PSOE"]="left";partyWing["PUM+J"]="left";partyWing["PUM+J"]="left";partyWing["PUM+J"]="left";partyWing["PYLN"]="left";partyWing["RECORTES CERO-GV"]="left";partyWing["RECORTES CERO-GV-PCAS-TC"]="left";partyWing["RISA"]="left";partyWing["SOLIDARIA"]="left";partyWing["SOMOS REGIÓN"]="left";partyWing["UDT"]="left";partyWing["UIG-SOM-CUIDES"]="left";partyWing["UNIÓN REGIONALISTA"]="left";partyWing["VOU"]="left";partyWing["VOX"]="right";
+partyWing["Más País"]="left";partyWing["UP"]="left";partyWing["ERC"]="left";partyWing["AHORA CANARIAS"]="left";partyWing["ANDECHA ASTUR"]="left";partyWing["ARA-MES-ESQUERRA"]="left";partyWing["AVANT ADELANTE LOS VERDES"]="left";partyWing["AVANT-LOS VERDES"]="left";partyWing["AxSI"]="left";partyWing["BNG"]="left";partyWing["C 21"]="left";partyWing["CCa-PNC"]="left";partyWing["centrados"]="left";partyWing["C.Ex-C.R.Ex-P.R.Ex"]="left";partyWing["CILU-LINARES"]="left";partyWing["CNV"]="left";partyWing["COMPROMÍS 2019"]="left";partyWing["CpM"]="left";partyWing["Cs"]="right";partyWing["Cs"]="right";partyWing["CxG"]="left";partyWing["DP"]="left";partyWing["DPL"]="";partyWing["EAJ-PNV"]="right";partyWing["EB"]="left";partyWing["EB"]="left";partyWing["EB"]="left";partyWing["ECP-GUANYEM EL CANVI"]="left";partyWing["EH Bildu"]="left";partyWing["ELAK/PCTE"]="left";partyWing["EL PI"]="left";partyWing["EN MAREA"]="left";partyWing["ERC-SOBIRANISTES"]="left";partyWing["ERPV"]="left";partyWing["F8"]="left";partyWing["FE de las JONS"]="right";partyWing["FIA"]="left";partyWing["FRONT REPUBLICÀ"]="left";partyWing["GBAI"]="left";partyWing["IZAR"]="left";partyWing["IZQP"]="left";partyWing["JF"]="left";partyWing["JxCAT-JUNTS"]="right";partyWing["+MAS+"]="left";partyWing["NA+"]="right";partyWing["NCa"]="left";partyWing["PACMA"]="left";partyWing["PACMA"]="left";partyWing["PACT"]="left";partyWing["PCOE"]="left";partyWing["PCPA"]="left";partyWing["PCPC"]="left";partyWing["PCPC"]="left";partyWing["PCPE"]="left";partyWing["PCPE"]="left";partyWing["PCTC"]="left";partyWing["PCTE"]="left";partyWing["PCTE/ELAK"]="left";partyWing["PCTG"]="left";partyWing["PDSJE-UDEC"]="left";partyWing["PH"]="left";partyWing["P-LIB"]="left";partyWing["PODEMOS-EUIB"]="left";partyWing["PODEMOS-EU-MAREAS EN COMÚN-EQUO"]="left";partyWing["PODEMOS-EUPV"]="left";partyWing["PODEMOS-IU-EQUO"]="left";partyWing["PODEMOS-IU-EQUO-AAeC"]="left";partyWing["PODEMOS-IU-EQUO-BATZARRE"]="left";partyWing["PODEMOS-IU-EQUO BERDEAK"]="left";partyWing["PODEMOS-IU LV CA-EQUO"]="left";partyWing["PODEMOS-IX-EQUO"]="left";partyWing["PP"]="right";partyWing["PP"]="right";partyWing["PP"]="right";partyWing["PP-FORO"]="right";partyWing["PPSO"]="";partyWing["PR+"]="left";partyWing["PRC"]="left";partyWing["PREPAL"]="left";partyWing["PSC"]="left";partyWing["PSdeG-PSOE"]="left";partyWing["PSE-EE (PSOE)"]="left";partyWing["PSOE"]="left";partyWing["PSOE"]="left";partyWing["PUM+J"]="left";partyWing["PUM+J"]="left";partyWing["PUM+J"]="left";partyWing["PYLN"]="left";partyWing["RECORTES CERO-GV"]="left";partyWing["RECORTES CERO-GV-PCAS-TC"]="left";partyWing["RISA"]="left";partyWing["SOLIDARIA"]="left";partyWing["SOMOS REGIÓN"]="left";partyWing["UDT"]="left";partyWing["UIG-SOM-CUIDES"]="left";partyWing["UNIÓN REGIONALISTA"]="left";partyWing["VOU"]="left";partyWing["VOX"]="right";
 
 let totalSeatsByParty = [];
 let partiesWithSeats = [];
@@ -63,9 +71,6 @@ totalProvinceVotes.map( (province,n) => {
     {
         if(oldProvince)
         {
-
-            console.log(province)
-
                 for(let i = 1 ; i<80 ; i++)
                 {
                         
@@ -79,6 +84,9 @@ totalProvinceVotes.map( (province,n) => {
                         if(ercRawNames.indexOf(party) != -1) party = 'ERC';
                         if(ppRawNames.indexOf(party) != -1) party = 'PP';
                         if(csRawNames.indexOf(party) != -1) party = 'Cs';
+                        if(juntsRawNames.indexOf(party) != -1) party = 'Junts';
+                        if(masPaisRawNames.indexOf(party) != -1) party = 'Más País';
+                        if(PNCRawNames.indexOf(party) != -1) party = 'CCa-PNC-NC';
 
                         if(partyWing[party])wing =  partyWing[party];
 
@@ -90,10 +98,13 @@ totalProvinceVotes.map( (province,n) => {
                         }
 
                         if(partiesList.indexOf(party) == -1){
+
+                            console.log("This is a new party: ",party)
+                            
                             partiesList.push(party);
                             newPartiesList.push(party);
                             totalSeatsByParty[party] = [];
-                            partyWing[party]="left";
+                            partyWing[party] = "right";
                         }
 
 
@@ -242,8 +253,6 @@ let partyblobs = svg.append("g").selectAll("rect")
 newPartiesList.map(party =>{
 
 
-    console.log("This is a new party: ",party)
-
     let randomColor = Math.floor(Math.random()*16777215).toString(16);
 
     d3.select('[class="' + party + '"').style('background-color','#'+ randomColor)
@@ -257,16 +266,40 @@ newPartiesList.map(party =>{
 
 })
 
+let midlineText = svg.append('g')
+.append('text')
+
 
 let midline = svg.append('g')
 .attr('width', 200)
 .attr('height', containerHeight )
-.attr('transform', 'translate('+ ((containerWidth /2) + cellsize / 2) +', 0)');
+.attr('transform', d =>{
+    let translateMobile = 'translate('+ ((containerWidth /2) + (cellsize / 2)) +', 0)';
+    let translateDesktop = 'translate('+ (containerWidth /2) +', 0)';
+    let translate;
+
+    isMobile ? translate = translateMobile : translate = translateDesktop;
+
+    return translate
+});
 
 let path = midline
 .append('path')
-.attr('d', "M 0 0 V 0 L 0 " +  (cellsize * (ranks / 2)) + "H " + (-cellsize) + " V " + (cellsize * (ranks / 2)) + "L " + (-cellsize) + " " +  (cellsize * ranks) ) 
+//.attr('d', "M 0 0 V 0 L 0 " +  (cellsize * (ranks / 2)) + "H " + (-cellsize) + " V " + (cellsize * (ranks / 2)) + "L " + (-cellsize) + " " +  (cellsize * ranks) ) 
+.attr('d', d => {
+
+    let lineMobile = "M 0 0 V 0 L 0 " +  (cellsize * (ranks / 2)) + "H " + (-cellsize) + " V " + (cellsize * (ranks / 2)) + "L " + (-cellsize) + " " +  (cellsize * ranks);
+    let lineDesktop = "M 0 0 V 0 L 0 " +  (cellsize * ranks);
+    let line;
+
+    isMobile ? line = lineMobile : line = lineDesktop;
+
+    return line
+
+}) 
 .attr('class', 'gv-midline')
+
+
 
 
 function addKey() {
@@ -275,13 +308,24 @@ function addKey() {
 
     partiesWithSeats.sort((a,b) => +b.seats - +a.seats)
 
+    console.log(partiesWithSeats)
+
     partiesWithSeats.map(p => {
+
+
+        let name = p.party;
+
+        let current = totalSeatsByParty[name].reduce((a, b) => { return a + b.seats; }, 0);
+        let old = totalSeatsByParty[name].reduce((a, b) => { return a + b.old_seats; }, 0);
+        let difference = current - old
+
+        if(difference > 0) difference = '+' + difference;
 
         if(p.party != 'nodata' && p.seats >0)
         {
             if(fourParties.indexOf(p) == -1)
             {
-                let partystring = `<div class="gv-party-key-entry"><div class="${p.party}"></div><span>${+p.seats} ${p.party}</span></div>`;
+                let partystring = `<div class="gv-party-key-entry"><div class="${name}"></div><span>${+p.seats} ${"(" + difference + ")"} ${p.party}</span></div>`;
                 gvkeystring += partystring;
             }
         }
@@ -316,9 +360,12 @@ function flagMainParties () {
 
 window.addEventListener("resize", function(){
 
-
+    isMobile = window.matchMedia('(max-width: 620px)').matches;
     containerWidth = Number(d3.select(".gv-waffle").style('width').slice(0, -2));
+    ranks = isMobile ? 14 : 7;
     containerHeight = cellsize * ranks;
+
+    files = seats / ranks;
 
     cellsize = containerWidth / files;
 
@@ -346,9 +393,10 @@ window.addEventListener("resize", function(){
     .attr("height", cellsize)
     .attr("width", cellsize)
 
-    midline.attr('transform', 'translate('+ ((containerWidth /2) + cellsize / 2) +', 0)');
-    path
-    .attr('d', "M 0 0 V 0 L 0 " +  (cellsize * (ranks / 2)) + "H " + (-cellsize) + " V " + (cellsize * (ranks / 2)) + "L " + (-cellsize) + " " +  (cellsize * ranks) ) 
+    isMobile ? midline.attr('transform', 'translate('+ ((containerWidth /2) + (cellsize / 2)) +', 0)') :  midline.attr('transform', 'translate('+ (containerWidth /2) +', 0)');
+
+    isMobile ? path.attr('d', "M 0 0 V 0 L 0 " +  (cellsize * (ranks / 2)) + "H " + (-cellsize) + " V " + (cellsize * (ranks / 2)) + "L " + (-cellsize) + " " +  (cellsize * ranks) ) : path.attr('d', "M 0 0 V 0 L 0 " +  (cellsize * ranks) )
+     
 
 });
 
