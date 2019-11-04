@@ -62,7 +62,7 @@ provincesMap
 .attr('d', path)
 .attr('id', d => 'p' + d.properties.ID_3)
 .attr('class', 'province')
-.on('mouseover', d => printResult(d.properties.ID_3, d.properties.NAME_3))
+.on('mouseover', d => printResult(+d.properties.ID_3, d.properties.NAME_3, d.properties.deputies))
 .on('mouseout', d => cleanResult())
 
 comunitiesMap
@@ -126,8 +126,7 @@ let gvOption =`<option selected="selected">Jump to a province</option>`
 
 map.objects.adm2.geometries.map(province => {
 
-
-	let provinceEntry = `<option class='option' value="${province.properties.NAME_3}" province-id="${province.properties.ID_3}">${province.properties.NAME_3}</option>`;
+	let provinceEntry = `<option class='option' value="${province.properties.NAME_3}" province-id="${province.properties.ID_3}"province-deputies="${province.properties.deputies}">${province.properties.NAME_3}</option>`;
 
 	gvOption += provinceEntry;
 
@@ -142,9 +141,10 @@ dropdownOptions.forEach(option => option.addEventListener('click',handleOptionSe
 
 function handleOptionSelected(event)
 {
+
 	cleanResult()
 
-	printResult(event.srcElement.attributes['province-id'].value,event.target.innerHTML)
+	printResult(+event.srcElement.attributes['province-id'].value, event.target.innerHTML, event.srcElement.attributes['province-deputies'].value)
 }
 
 //-----------------------------------------
@@ -159,12 +159,14 @@ provincesVotes.map(p => {
 	{
 		let acumm = 1;
 
-		deputiesByProvince[p.province_code] = [];
+		deputiesByProvince[+p.province_code] = [];
 
-		let province = topojson.feature(map, map.objects.adm2).features.find(feature => feature.properties.ID_3 == p.province_code);
+		let province = topojson.feature(map, map.objects.adm2).features.find(feature => feature.properties.ID_3 == +p.province_code);
+
+		console.log(province)
 
 
-		if(p['party 1'] && +p['seats 1'] > 0) d3.select("#p" + p.province_code).attr('class', p['party 1'])
+		if(p['party 1'] && +p['seats 1'] > 0) d3.select("#p" + +p.province_code).attr('class', p['party 1'])
 
 			for(let i = 1 ; i<80 ; i++){
 
@@ -181,7 +183,7 @@ provincesVotes.map(p => {
 						parties.push(party)
 					}
 
-					deputiesByProvince[p.province_code].push({
+					deputiesByProvince[+p.province_code].push({
 						"deputies" : deputies,
 						"votes" : votes,
 						"percentage" : percentage,
@@ -209,9 +211,11 @@ provincesVotes.map(p => {
 
 // PRINT AND CLEAN TOOLTIP
 
-function printResult(id,name){
+function printResult(id,name,deputies){
 
-	let result = provincesVotes.find(province => +province.province_code == id);
+	cleanResult()
+
+	let result = provincesVotes.find(province => +province.province_code == +id);
 
 	if(result){
 
@@ -221,7 +225,7 @@ function printResult(id,name){
 		tooltip.classed(" over", true)
 
 		tooltip.select('.tooltip-province').html(name)
-		tooltip.select('.tooltip-deputies').html(+result.deputies_total)
+		tooltip.select('.tooltip-deputies').html(deputies)
 
 		let turnOut = '-';
 		let oldTurnOut = parseFloat(totalProvinceVotesOld.find(p => p.id == id).turnout);
@@ -237,9 +241,9 @@ function printResult(id,name){
 		tooltip.select('.tooltip-turnout .old-turnout').html("(" + differenceTurnOut + "%)")
 
 
-		if(deputiesByProvince[id])
+		if(deputiesByProvince[+id])
 		{
-			deputiesByProvince[id].map(dep => {
+			deputiesByProvince[+id].map(dep => {
 
 				let row = tooltip.select('.tooltip-results')
 				.append('div')
@@ -263,7 +267,7 @@ function printResult(id,name){
 
 
 			d3.selectAll(".cartogram-wrapper .cartogram path").style('fill-opacity',1)
-			d3.select(".cartogram-wrapper .cartogram #p" + id).style('fill-opacity',0)
+			d3.select(".cartogram-wrapper .cartogram #p" + +id).style('fill-opacity',0)
 
 		}
 
@@ -271,6 +275,7 @@ function printResult(id,name){
 
 	else{
 		tooltip.select('.tooltip-province').html(name)
+		tooltip.select('.tooltip-deputies').html(deputies)
 
 		tooltip.select('.tooltip-turnout .turnout').html("-%")
 		tooltip.select('.tooltip-turnout .old-turnout').html("(-%)")

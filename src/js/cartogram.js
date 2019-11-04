@@ -69,7 +69,7 @@ provincesCarto
 .attr('d', path)
 .attr('class', 'provincia-hex')
 .attr('id', d => 'p' + d.properties.id)
-.on('mouseover', d => printResult(d.properties.id,d.properties['name-english']))
+.on('mouseover', d => printResult(d.properties.id, d.properties['name-english'], d.properties.deputies))
 .on('mouseout', cleanResult)
 
 comunidadesCarto
@@ -177,7 +177,9 @@ provincesVotes.map(p => {
 
 //PRINT AND CLEAN TOOLTIP
 
-function printResult(id,name){
+function printResult(id,name, deputies){
+
+	cleanResult()
 
 	let result = provincesVotes.find(province => +province.province_code == id);
 
@@ -189,7 +191,7 @@ function printResult(id,name){
 		tooltip.classed(" over", true)
 
 		tooltip.select('.tooltip-province').html(name)
-		tooltip.select('.tooltip-deputies').html(+result.deputies_total)
+		tooltip.select('.tooltip-deputies').html(deputies)
 
 		let turnOut = '-';
 		let oldTurnOut = parseFloat(totalProvinceVotesOld.find(p => p.id == id).turnout);
@@ -238,6 +240,7 @@ function printResult(id,name){
 	}
 	else{
 		tooltip.select('.tooltip-province').html(name)
+		tooltip.select('.tooltip-deputies').html(deputies)
 
 		tooltip.select('.tooltip-turnout .turnout').html("-%")
 		tooltip.select('.tooltip-turnout .old-turnout').html("(-%)")
