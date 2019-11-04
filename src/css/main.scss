@@ -7,6 +7,8 @@
 //@import "fullscreen";
 
 
+
+
 .content__main-column--interactive {
 	& > p,& > h2,& > ul, & > sub {
 // strong {
@@ -53,6 +55,32 @@ max-width: 620px;
 }
 }
 
+h2 {
+	@include fs-header(3);
+
+	@include mq(leftCol) {
+		@include fs-header(4);
+	}
+}
+
+.content__headline {
+	&:before {
+				content: '';
+				display: none;
+				position: absolute;
+				border-left: 1px solid #dcdcdc;
+				left: 0px;
+				top: 0px;
+				width: 0;
+				height: 600px;
+
+				@include mq(leftCol) {
+					display: block;
+				}
+			}
+}
+
+
 .element-atom,
 .interactive-atom, body {
 
@@ -66,14 +94,24 @@ max-width: 620px;
 	background-color: white;
 	max-width: 1260px;
 	background:white;
+
 }
 
 .gv-main-title{
 	margin-bottom: 10px;
 	width: 100%;
+	margin-top: 44px;
 	span{
-
 		@include fs-data(4);
+	}
+
+	&::before {
+		content: '';
+		position: absolute;
+		border-top: 1px solid $neutral-86;
+		width: calc(100% + 40px);
+		left: -20px;
+		margin-top: -2px;
 	}
 }
 
@@ -193,7 +231,7 @@ max-width: 620px;
 		span{
 
 			margin-bottom: 7px;
-			
+
 		}
 
 		.turnout{
@@ -270,7 +308,7 @@ max-width: 620px;
 	stroke-opacity: 0.6;
 	stroke-width: 3px;
 	stroke-linejoin: round;
-	stroke-linecap:butt; 
+	stroke-linecap:butt;
 	pointer-events: none;
 	font-size: 13px;
 
@@ -298,7 +336,7 @@ max-width: 620px;
 			display: block;
 		}
 	}
-	
+
 }
 
 [class="AHORA CANARIAS"]{fill:#00FCFC; background-color: #00FCFC;}
@@ -558,13 +596,13 @@ max-width: 620px;
 		        	width: 4px;
 		        	border-radius: 20%;
 		        	margin-right: 5px;
-		        	float: left;	
+		        	float: left;
 		        }
 
 		        span{
 		        	line-height: 20px;
 		        }
-		        
+
 		    }
 		}
 
@@ -580,7 +618,7 @@ max-width: 620px;
 		min-width: 200px;
 
 		display: flex;
-		margin: 0 20px 20px 0;
+		margin: 0 20px 48px 0;
 
 		@include mq(mobile){max-width: 100%}
 		@include mq(tablet){max-width: 295px;}
@@ -628,12 +666,13 @@ max-width: 620px;
 
 		.gv-party-name{
 			padding-bottom: 8px;
-			margin-bottom: 12px;
+			margin-bottom: 2px;
 			border-bottom: 1px solid #dadada;
+			min-height: 36px;
 		}
 
 		.gv-party-description{
-			margin-top: 12px;
+			margin-top: 6px;
 		}
 
 
@@ -642,14 +681,10 @@ max-width: 620px;
 			width: 100%;
 			display: flex;
 			flex-direction: row;
-			margin-bottom: 6px;
-
-			font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
-			font-size: 14px;
+			@include fs-header(2);
 
 			.gv-leader-name{
-				width: 50%;
-				font-weight: 900;
+				// width: 50%;
 			}
 		}
 	}
@@ -662,9 +697,9 @@ max-width: 620px;
 	}
 
 	.party-key__leader-img{
-		height: 45px;
-		width: 45px;
-		border-radius: 50px;
+		height: 60px;
+		width: 60px;
+		border-radius: 50%;
 		margin-right: 6px;
 		border:3px solid;
 	}
@@ -701,34 +736,26 @@ max-width: 620px;
 	.gv-dropdown-menu
 	{
 		select {
-			height: 32px;
-
-			border-radius: 30px;
+			height: 40px;
+			border-radius: 40px;
 			-webkit-appearance: none;
 			-moz-appearance: none;
 			appearance: none;
-			padding: 5px;
+			padding: 8px;
+			padding-left: 12px;
 
 			font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
 			font-size: 14px;
-			font-weight: 900;
-
-			border: 2px solid
-			#efefef;
+			font-weight: bold;
 			width: 220px;
 			padding-right: 40px;
+			color: white;
+			background-color: $neutral-7;
 
 		}
 
 		svg{
 			position: absolute;
-			margin: 13px 0 0 -37px;
+			margin: 16px 0 0 -37px;
 		}
 	}
-
-
-
-
-
-
-
