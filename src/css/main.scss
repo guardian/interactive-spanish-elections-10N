@@ -98,13 +98,14 @@ max-width: 620px;
 	}
 
 	.tooltip{
+		pointer-events: none;
 		min-width:20%;
 		height: max-content;
 		padding:12px;
 		font-size: 14px;
 		line-height: 16px;
 		font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
-		background: #fff;
+		background: rgba(255, 255, 255, 0.9);
 		border: 1px solid #333;
 
 		color: #333333;
@@ -117,12 +118,13 @@ max-width: 620px;
 
 		@include mq(mobile){
 			position: fixed;
-			width: 90%;
+			width: calc(100% - 50px);
 			bottom: 0%;
 		}
 		@include mq(desktop){
 			max-width: 300px;
 			position: relative;
+			width: 20%;
 		}
 
 		.tooltip-button{
@@ -130,6 +132,11 @@ max-width: 620px;
 			display: flex;
 			justify-content: right;
 			margin-bottom: 14px;
+
+			svg{
+				pointer-events: auto;
+			}
+
 		}
 
 		&.over{
