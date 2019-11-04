@@ -24,7 +24,6 @@ let height = width;
 
 let tooltip = d3.select(".tooltip")
 
-
 tooltip.select('.tooltip-button')
 .on("click", cleanResult)
 
@@ -117,26 +116,42 @@ labelsAreas.map((area,i) => {
 })
 
 
-function checkOverlapping(box, position){
 
-	labelsAreas.map((area,i) => {
 
-		if(position != i){
 
-			var overlap = rectOverlap(box,area);
+// FILL OUT THE DROPDOWN MENU AND HANDLE IT
 
-			if(overlap)labels[i].node().remove()
-		}
-
-})
-}
 
 let gvOption =`<option selected="selected">Jump to a province</option>`
 
+map.objects.adm2.geometries.map(province => {
 
-provincesVotes.sort((a,b) => +a.province_code - +b.province_code)
 
-console.log(provincesVotes)
+	let provinceEntry = `<option class='option' value="${province.properties.NAME_3}" province-id="${province.properties.ID_3}">${province.properties.NAME_3}</option>`;
+
+	gvOption += provinceEntry;
+
+})
+
+d3.select(".gv-province-filter").html(gvOption);
+
+const dropdownOptions = document.querySelectorAll('.gv-dropdown-menu .option');
+
+dropdownOptions.forEach(option => option.addEventListener('click',handleOptionSelected));
+
+
+function handleOptionSelected(event)
+{
+	cleanResult()
+
+	printResult(event.srcElement.attributes['province-id'].value,event.target.innerHTML)
+}
+
+//-----------------------------------------
+
+
+
+// MANAGE RESULTS
 
 provincesVotes.map(p => {
 
@@ -146,16 +161,9 @@ provincesVotes.map(p => {
 
 		deputiesByProvince[p.province_code] = [];
 
-
 		let province = topojson.feature(map, map.objects.adm2).features.find(feature => feature.properties.ID_3 == p.province_code);
 
-		if(p.province_name != 'Total nacional'){
 
-			let provinceEntry = `<option class='option' value="${province.properties.NAME_3}" province-id="${p.province_code}">${province.properties.NAME_3}</option>`;
-
-			gvOption += provinceEntry;
-		}
-		
 		if(p['party 1'] && +p['seats 1'] > 0) d3.select("#p" + p.province_code).attr('class', p['party 1'])
 
 			for(let i = 1 ; i<80 ; i++){
@@ -195,20 +203,11 @@ provincesVotes.map(p => {
 	} )
 
 
-
-d3.select(".gv-province-filter").html(gvOption);
-
-const dropdownOptions = document.querySelectorAll('.gv-dropdown-menu .option');
-
-dropdownOptions.forEach(option => option.addEventListener('click',handleOptionSelected));
+//----------------------------------------
 
 
-function handleOptionSelected(event)
-{
-	cleanResult()
 
-	printResult(event.srcElement.attributes['province-id'].value,event.target.innerHTML)
-}
+// PRINT AND CLEAN TOOLTIP
 
 function printResult(id,name){
 
@@ -270,14 +269,18 @@ function printResult(id,name){
 
 	}
 
-	
+	else{
+		tooltip.select('.tooltip-province').html(name)
 
+		tooltip.select('.tooltip-turnout .turnout').html("-%")
+		tooltip.select('.tooltip-turnout .old-turnout').html("(-%)")
+
+		tooltip.classed(" over", true)
+
+	}
 }
 
 function cleanResult(){
-
-
-	console.log('paso por aqui')
 
 	tooltip.classed(" over", false)
 	
@@ -288,6 +291,27 @@ function cleanResult(){
 	d3.selectAll('.provincia-hex').style('fill-opacity',0)
 
 }
+
+
+//----------------------------------------------
+
+//LABELING HANDLERS
+
+
+function checkOverlapping(box, position){
+
+	labelsAreas.map((area,i) => {
+
+		if(position != i){
+
+			var overlap = rectOverlap(box,area);
+
+			if(overlap)labels[i].node().remove()
+		}
+
+})
+}
+
 
 function valueInRange(value, min, max)
 {
@@ -303,5 +327,7 @@ function rectOverlap(A, B)
 	return xOverlap && yOverlap;
 }
 
+
+//-----------------------------------------------
 
 

@@ -121,19 +121,7 @@ labelsAreas.map((area,i) => {
 })
 
 
-function checkOverlapping(box, position){
-
-	labelsAreas.map((area,i) => {
-
-		if(position != i){
-
-			var overlap = rectOverlap(box,area);
-
-			if(overlap)labels[i].node().remove()
-		}
-
-})
-}
+// MANAGE RESULTS
 
 provincesVotes.map(p => {
 
@@ -182,6 +170,12 @@ provincesVotes.map(p => {
 
 	}
 })
+
+
+//----------------------------------------
+
+
+//PRINT AND CLEAN TOOLTIP
 
 function printResult(id,name){
 
@@ -242,12 +236,19 @@ function printResult(id,name){
 		}
 
 	}
+	else{
+		tooltip.select('.tooltip-province').html(name)
+
+		tooltip.select('.tooltip-turnout .turnout').html("-%")
+		tooltip.select('.tooltip-turnout .old-turnout').html("(-%)")
+
+		tooltip.classed(" over", true)
+
+	}
 
 	
 
 }
-
-
 
 function cleanResult(){
 
@@ -261,7 +262,23 @@ function cleanResult(){
 
 }
 
+//----------------------------------------
 
+//LABELING HANDLERS
+
+function checkOverlapping(box, position){
+
+	labelsAreas.map((area,i) => {
+
+		if(position != i){
+
+			var overlap = rectOverlap(box,area);
+
+			if(overlap)labels[i].node().remove()
+		}
+
+})
+}
 
 function valueInRange(value, min, max)
 {
@@ -276,3 +293,6 @@ function rectOverlap(A, B)
 
 	return xOverlap && yOverlap;
 }
+
+
+//-----------------------------

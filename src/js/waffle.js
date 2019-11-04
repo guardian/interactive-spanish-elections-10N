@@ -1,4 +1,3 @@
-//https://interactive.guim.co.uk/docsdata-test/11_Yp1yHl8xlIl0GMALvr0TXdNj8917Ei7lO0t-3PWZA.json
 import provinceResults from 'raw-loader!./../assets/november-province-results.csv'
 import oldResults from 'raw-loader!./../assets/old-province-results.csv'
 import * as d3 from 'd3'
