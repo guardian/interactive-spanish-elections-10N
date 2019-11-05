@@ -200,6 +200,13 @@ h2 {
 			flex-direction: row;
 			flex: 1;
 			min-width: 0;
+
+			.tooltip-party{
+
+				white-space: nowrap;
+			    overflow: hidden;
+			    text-overflow: ellipsis;
+			}
 		}
 
 		.tooltip-row:not(:last-child){
@@ -210,13 +217,8 @@ h2 {
 
 		.tooltip-province, .tooltip-party{
 			flex: 100%;
-			white-space: nowrap;
-		    overflow: hidden;
-		    text-overflow: ellipsis;
-
-
 		}
-
+			
 		.tooltip-deputies, .tooltip-deputies{
 
 			justify-content: right;

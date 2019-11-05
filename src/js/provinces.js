@@ -3,7 +3,7 @@ import * as topojson from 'topojson';
 import map from '../assets/adm1_adm2.json';
 import provincesVotesRaw from 'raw-loader!./../assets/november-province-results.csv';
 import oldResults from 'raw-loader!./../assets/old-province-results.csv'
-import * as d3Jetpack from 'd3-jetpack';
+import { wordwrap } from 'd3-jetpack'
 import {event as currentEvent} from 'd3-selection';
 import { $, $$ } from "./util"
 
@@ -83,14 +83,14 @@ comunitiesMap
 	.attr('class', 'cartogram-label-outline')
 	.attr('transform', "translate(" + posX + "," + posY + ")")
 	.text('')//clear existing text
-	.tspans(d3Jetpack.wordwrap(d.properties.NAME_1, 12), 20)
+	.tspans(wordwrap(d.properties.NAME_1, 12), 20)
 
 	label
 	.append('text')
 	.attr('class', 'cartogram-label')
 	.attr('transform', "translate(" + posX + "," + posY + ")")
 	.text('')//clear existing text
-	.tspans(d3Jetpack.wordwrap(d.properties.NAME_1, 12), 20)
+	.tspans(wordwrap(d.properties.NAME_1, 12), 20)
 
 	let boxX1 = label.node().getBBox().x;
 	let boxY1 = label.node().getBBox().y;
