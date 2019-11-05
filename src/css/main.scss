@@ -124,6 +124,8 @@ h2 {
 .gv-maps-wrapper{
 	display: flex;
 
+	align-items:center;
+
 	@include mq(mobile){flex-direction: column;}
 	@include mq(tablet){flex-direction: column;}
 	@include mq(desktop){flex-direction: row;}
@@ -163,18 +165,6 @@ h2 {
 			max-width: 300px;
 			position: relative;
 			width: 20%;
-		}
-
-		.tooltip-button{
-			width: 100%;
-			display: flex;
-			justify-content: right;
-			margin-bottom: 14px;
-
-			svg{
-				pointer-events: auto;
-			}
-
 		}
 
 		&.over{

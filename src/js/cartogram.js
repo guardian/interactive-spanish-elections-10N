@@ -64,8 +64,8 @@ provincesCarto
 .append('path')
 .attr('d', path)
 .attr('class', 'provincia-hex')
-.attr('id', d => 'p' + d.properties.id)
-.on('mousemove', d => printResult(d.properties.id, d.properties['name-english'], d.properties.deputies))
+.attr('id', d => 'p' + +d.properties.id)
+.on('mousemove', d => printResult(+d.properties.id, d.properties['name-english'], d.properties.deputies))
 .on('mouseout', cleanResult)
 
 comunidadesCarto
@@ -123,7 +123,7 @@ provincesVotes.map(p => {
 
 	let acumm = 1;
 
-	deputiesByProvince[p.province_code] = []
+	deputiesByProvince[+p.province_code] = []
 
 
 	if(+p.census_counted > 0)
@@ -140,7 +140,7 @@ provincesVotes.map(p => {
 				let votes = +p['votes ' + i];
 				let percentage = +p['percentage ' + i];
 
-				deputiesByProvince[p.province_code].push({
+				deputiesByProvince[+p.province_code].push({
 					"deputies" : deputies,
 					"votes" : votes,
 					"percentage" : percentage,
@@ -160,7 +160,7 @@ provincesVotes.map(p => {
 			
 		}
 
-		deputiesByProvince[p.province_code].sort((a,b) => b.votes - a.votes);
+		deputiesByProvince[+p.province_code].sort((a,b) => b.votes - a.votes);
 
 		acumm = 0;
 
@@ -177,12 +177,12 @@ function printResult(id,name, deputies){
 
 	cleanResult()
 
-	let result = provincesVotes.find(province => +province.province_code == id);
+	let result = provincesVotes.find(province => +province.province_code == +id);
 
 	if(result){
 
 		d3.selectAll(".geo-map .provinces path").classed(" over", true)
-		d3.select(".geo-map .provinces #p" + +id).classed(" over", false)
+		d3.select(".geo-map .provinces #p" + id).classed(" over", false)
 
 		tooltip.classed(" over", true)
 
@@ -190,7 +190,7 @@ function printResult(id,name, deputies){
 		tooltip.select('.tooltip-deputies').html(deputies)
 
 		let turnOut = '-';
-		let oldTurnOut = parseFloat(totalProvinceVotesOld.find(p => +p.id == +id).turnout);
+		let oldTurnOut = parseFloat(totalProvinceVotesOld.find(p => +p.id == id).turnout);
 		let differenceTurnOut = '-';
 
 		if(+result.voters_percentage > 0){
@@ -202,7 +202,7 @@ function printResult(id,name, deputies){
 		tooltip.select('.tooltip-turnout .turnout').html(turnOut + "%")
 		tooltip.select('.tooltip-turnout .old-turnout').html("(" + differenceTurnOut + "%)")
 
-
+		console.log(deputiesByProvince[id])
 		if(deputiesByProvince[id])
 		{
 			deputiesByProvince[id].map(dep => {

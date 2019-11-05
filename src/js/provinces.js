@@ -13,7 +13,7 @@ const totalProvinceVotesOld = d3.csvParse(oldResults);
 
 const atomEl = $('.gv-map-wrapper')
 
-let isMobile = window.matchMedia('(max-width: 620px)').matches;
+let isMobile = window.matchMedia('(max-width: 860px)').matches;
 
 let width = atomEl.getBoundingClientRect().width;
 let height = width;
@@ -271,7 +271,7 @@ function printResult(id,name,deputies){
 
 
 			d3.selectAll(".cartogram-wrapper .cartogram path").style('fill-opacity',1)
-			d3.select(".cartogram-wrapper .cartogram #p" + +id).style('fill-opacity',0)
+			d3.select(".cartogram-wrapper .cartogram #p" + id).style('fill-opacity',0)
 
 		}
 
@@ -338,5 +338,12 @@ function rectOverlap(A, B)
 
 
 //-----------------------------------------------
+
+
+window.onscroll = function (e) { 
+
+if(isMobile)cleanResult()
+// called when the window is scrolled.  
+} 
 
 
