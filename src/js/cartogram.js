@@ -190,7 +190,7 @@ function printResult(id,name, deputies){
 		tooltip.select('.tooltip-deputies').html(deputies)
 
 		let turnOut = '-';
-		let oldTurnOut = parseFloat(totalProvinceVotesOld.find(p => p.id == id).turnout);
+		let oldTurnOut = parseFloat(totalProvinceVotesOld.find(p => +p.id == +id).turnout);
 		let differenceTurnOut = '-';
 
 		if(+result.voters_percentage > 0){

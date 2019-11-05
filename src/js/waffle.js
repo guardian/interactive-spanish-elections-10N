@@ -63,7 +63,7 @@ totalProvinceVotes.map( (province,n) => {
 
     d3.select('.gv-main-title span').html(totalCounted + '% of votes counted')
 
-    let oldProvince = totalProvinceVotesOld.find(p => p.id === province.province_code);
+    let oldProvince = totalProvinceVotesOld.find(p => +p.id === +province.province_code);
    
     if(+province.census_counted > 0)
     {
@@ -131,7 +131,10 @@ totalProvinceVotes.map( (province,n) => {
 
 
             for (var i = 1; i <= totalPartiesLastElections; i++) {
+
                 if(oldProvince['seats ' + i] > 0){
+
+                    console.log(oldProvince['party ' + i], totalSeatsByParty[oldProvince['party ' + i]])
 
                     let match = totalSeatsByParty[oldProvince['party ' + i]].find(province => oldProvince.province == province.province);
 

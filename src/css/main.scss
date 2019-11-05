@@ -198,6 +198,8 @@ h2 {
 		.tooltip-row {
 			display: flex;
 			flex-direction: row;
+			flex: 1;
+			min-width: 0;
 		}
 
 		.tooltip-row:not(:last-child){
@@ -207,30 +209,33 @@ h2 {
 		}
 
 		.tooltip-province, .tooltip-party{
-		//position:relative;
-		flex: 100%;
-
-	}
-
-	.tooltip-deputies, .tooltip-deputies{
-
-		justify-content: right;
-	}
-
-	.tooltip-turnout{
-
-		margin-top: 12px;
-
-		//position: absolute;
-
-		display: flex;
-
-		flex-direction: column;
+			flex: 100%;
+			white-space: nowrap;
+		    overflow: hidden;
+		    text-overflow: ellipsis;
 
 
-		span{
+		}
 
-			margin-bottom: 7px;
+		.tooltip-deputies, .tooltip-deputies{
+
+			justify-content: right;
+		}
+
+		.tooltip-turnout{
+
+			margin-top: 12px;
+
+			//position: absolute;
+
+			display: flex;
+
+			flex-direction: column;
+
+
+			span{
+
+				margin-bottom: 7px;
 
 		}
 
