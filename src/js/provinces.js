@@ -235,9 +235,11 @@ function printResult(id,name,deputies){
 		let oldTurnOut = parseFloat(totalProvinceVotesOld.find(p => p.id == id).turnout);
 		let differenceTurnOut = '-';
 
+		
+
 		if(+result.voters_percentage > 0){
 			turnOut = +result.voters_percentage / 100;
-			differenceTurnOut = (turnOut - oldTurnOut).toFixed(2);
+			differenceTurnOut = Math.floor(turnOut) - Math.floor(oldTurnOut);
 			if(differenceTurnOut > 0)differenceTurnOut = '+' + differenceTurnOut;
 		}
 
@@ -270,10 +272,12 @@ function printResult(id,name,deputies){
 			})
 
 
-			d3.selectAll(".cartogram-wrapper .cartogram path").style('fill-opacity',1)
-			d3.select(".cartogram-wrapper .cartogram #p" + id).style('fill-opacity',0)
+			
 
 		}
+
+		d3.selectAll(".cartogram-wrapper .cartogram path").style('fill-opacity',1)
+		d3.select(".cartogram-wrapper .cartogram #p" + id).style('fill-opacity',0)
 
 	}
 

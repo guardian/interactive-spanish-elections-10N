@@ -195,14 +195,13 @@ function printResult(id,name, deputies){
 
 		if(+result.voters_percentage > 0){
 			turnOut = +result.voters_percentage / 100;
-			differenceTurnOut = (turnOut - oldTurnOut).toFixed(2);
+			differenceTurnOut = Math.floor(turnOut) - Math.floor(oldTurnOut);
 			if(differenceTurnOut > 0)differenceTurnOut = '+' + differenceTurnOut;
 		}
 
 		tooltip.select('.tooltip-turnout .turnout').html(turnOut + "%")
 		tooltip.select('.tooltip-turnout .old-turnout').html("(" + differenceTurnOut + "%)")
 
-		console.log(deputiesByProvince[id])
 		if(deputiesByProvince[id])
 		{
 			deputiesByProvince[id].map(dep => {
@@ -227,11 +226,10 @@ function printResult(id,name, deputies){
 				.html(dep.deputies)
 			})
 
-
-			d3.selectAll(".cartogram-wrapper .cartogram path").style('fill-opacity',1)
-			d3.select(".cartogram-wrapper .cartogram #p" + id).style('fill-opacity',0)
-
 		}
+
+		d3.selectAll(".cartogram-wrapper .cartogram path").style('fill-opacity',1)
+		d3.select(".cartogram-wrapper .cartogram #p" + id).style('fill-opacity',0)
 
 	}
 	else{

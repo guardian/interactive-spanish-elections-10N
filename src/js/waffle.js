@@ -351,7 +351,8 @@ function flagMainParties () {
             if(difference > 0) difference = '+' + difference;
             
             document.querySelector('.gv-main-party-' + (i+1) + '-name').innerHTML = name;
-            document.querySelector('.gv-main-party-' + (i+1) + '-seats').innerHTML = party.seats + " (" + difference + ")";
+            document.querySelector('.gv-main-party-' + (i+1) + '-seats').innerHTML = party.seats;
+            document.querySelector('.gv-main-party-' + (i+1) + '-gain').innerHTML = "(" + difference + ")";
             document.querySelector('.gv-party-box-' + (i+1) ).className = name;
         } 
     })

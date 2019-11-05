@@ -47,6 +47,46 @@
 	</div>
 
 	<div class="gv-main-title">
+		<h2>Main party and distribution of seats per province</h2>
+		<span></span>
+	</div>
+
+	<div class="gv-dropdown-menu">
+		<select class="gv-province-filter" data-team="Jump to a province" name="gv-profvince-filter"></select>
+		<svg width="24" height="10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 10">
+			<path d="M0 .7l10.5 8.4 1.1.9 1.1-.9 10.5-8.4-.5-.7-11.1 6.3-11-6.3-.6.7z" fill="#ffffff"/>
+		</svg>
+	</div>
+
+	<div class="gv-maps-wrapper">
+		<div class='gv-map-wrapper' id="gv-geographical">
+			<div class="coropleth-wrapper">
+			</div>
+
+		</div>
+
+		<div class='tooltip'>
+			<div class='tooltip-title'>
+				<div class="tooltip-province"></div>
+				<div class="tooltip-deputies"></div>
+			</div>
+			<div class="tooltip-results"></div>
+			<div class='tooltip-turnout'>
+				<span>Turnout:</span>
+				<span class="turnout"></span>
+				<span class="old-turnout"></span>
+			</div>
+		</div>
+
+
+		<div class='gv-map-wrapper' id="gv-cartogram">
+			<div class="cartogram-wrapper">
+			</div>
+		</div>
+
+	</div>
+
+	<div class="gv-main-title">
 		<h2>Main candidates</h2>
 		<span></span>
 	</div>
@@ -192,45 +232,15 @@ Left-wing Catalan regional party at the forefront of the independence movement.
 				</div>
 			</div>
 		</div>
+		
 	</div>
 
-	<div class="gv-main-title">
-		<h2>Main party and distribution of seats per province</h2>
-		<span></span>
+	<div class="gv-key-party-wrapper-others">
+		<div class="gv-party-name">Others</div>
+		<p class="gv-party-description">
+<strong>EAJ - PNV</strong> - Euzko Alderdi Jeltzal, Partido Nacionalista Vasco, both meaning Basque Nationalist Party, a relatively moderate Basque party. <strong>Junts - Junts per Catalunya</strong>, Together for Catalonia, an alliance of strongly pro-independence groups associated with the exiled Carles Puigdemont. <strong>EH Bildu</strong> - Euskal Herria Bildu, Basque Country Unite, a leftwing Basque party. <strong>PRC</strong> - Partido Regionalista de Cantabria, Cantabrian Regionalist Party, from a hilly northern province. <strong>CCa-PNC</strong> - Coalición Canaria, Partido Nacionalista Canario - Canary Islands Nationalist party. <strong>NA+</strong> - Navarra Más, Navarra Plus, a rightwing electoral pact between the PP and Citizens together with a local party in the partly-Basque speaking region in the north.  <strong>Més Compromís</strong> - More Commitment, a Valencian flavour of Més País.
+		</p>
 	</div>
 
-	<div class="gv-dropdown-menu">
-		<select class="gv-province-filter" data-team="Jump to a province" name="gv-profvince-filter"></select>
-		<svg width="24" height="10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 10">
-			<path d="M0 .7l10.5 8.4 1.1.9 1.1-.9 10.5-8.4-.5-.7-11.1 6.3-11-6.3-.6.7z" fill="#ffffff"/>
-		</svg>
-	</div>
-
-	<div class="gv-maps-wrapper">
-		<div class='gv-map-wrapper' id="gv-geographical">
-			<div class="coropleth-wrapper">
-			</div>
-
-		</div>
-
-		<div class='tooltip'>
-			<div class='tooltip-title'>
-				<div class="tooltip-province"></div>
-				<div class="tooltip-deputies"></div>
-			</div>
-			<div class="tooltip-results"></div>
-			<div class='tooltip-turnout'>
-				<span>Turnout:</span>
-				<span class="turnout"></span>
-				<span class="old-turnout"></span>
-			</div>
-		</div>
-
-
-		<div class='gv-map-wrapper' id="gv-cartogram">
-			<div class="cartogram-wrapper">
-			</div>
-		</div>
-
-	</div>
+	
 </div>

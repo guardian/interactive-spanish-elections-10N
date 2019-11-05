@@ -240,9 +240,10 @@ h2 {
 	}
 
 	#tooltip-color{
-		width: 4px;
-		height: 16px;
-		margin-right: 4px;
+		width: 8px;
+		height: 8px;
+		margin-right: 5px;
+		margin-top: 4px;
 	}
 }
 
@@ -500,13 +501,13 @@ h2 {
 		.gv-main-party{
 
 			margin-bottom: 16px;
-		    	//min-width: 110px;
+		    min-width: 130px;
 
 		    	@include mq(mobile){ width: 25%;};
 		    	@include mq(tablet){ width: 25%;};
 		    	@include mq(desktop){ width: 90px;};
-		    	@include mq(leftCol){ width: 50%;};
-		    	@include mq(wide){ width: 50%;};
+		    	@include mq(leftCol){ width: 50%; min-width: 110px;};
+		    	@include mq(wide){ width: 50%; min-width: 120px;};
 
 
 		    	h3{
@@ -608,6 +609,9 @@ h2 {
 		        	border-radius: 20%;
 		        	margin-right: 5px;
 		        	float: left;
+		        	height: 8px;
+		        	width: 8px;
+		        	margin-top: 5px;
 		        }
 
 		        span{
@@ -629,7 +633,7 @@ h2 {
 		min-width: 200px;
 
 		display: flex;
-		margin: 0 20px 48px 0;
+		margin: 0 18px 48px 0;
 
 		@include mq(mobile){max-width: 100%}
 		@include mq(tablet){max-width: 295px;}
@@ -637,6 +641,9 @@ h2 {
 		.aside{
 			order: 1;
 		}
+
+
+
 
 		.main{
 			order: 2;
@@ -770,3 +777,30 @@ h2 {
 			margin: 16px 0 0 -37px;
 		}
 	}
+
+	.gv-key-party-wrapper-others{
+
+		@include fs-textSans(2);
+		color:#929297;
+
+		margin-left: 70px;
+
+		max-width: 1260px;
+
+		.gv-party-name{
+			@include fs-header(3);
+		}
+	}
+
+
+
+.android{
+	.aside{
+		border: 0;
+		width: 70px;
+	}
+		
+
+}
+
+	
