@@ -1,15 +1,11 @@
-import * as d3B from 'd3';
-import * as d3Select from 'd3-selection';
+import * as d3 from 'd3';
 import * as topojson from 'topojson';
-import * as d3geo from 'd3-geo';
 import map from '../assets/adm1_adm2.json';
 import provincesVotesRaw from 'raw-loader!./../assets/november-province-results.csv';
 import oldResults from 'raw-loader!./../assets/old-province-results.csv'
 import * as d3Jetpack from 'd3-jetpack';
 import {event as currentEvent} from 'd3-selection';
-import { $ } from "./util"
-
-let d3 = Object.assign({}, d3B, d3Select, d3geo);
+import { $, $$ } from "./util"
 
 const parsed = d3.csvParse(provincesVotesRaw)
 const provincesVotes = parsed;
@@ -62,7 +58,7 @@ provincesMap
 .attr('d', path)
 .attr('id', d => 'p' + d.properties.ID_3)
 .attr('class', 'province')
-.on('mouseover', d => printResult(+d.properties.ID_3, d.properties.NAME_3, d.properties.deputies))
+.on('mousemove', d => printResult(+d.properties.ID_3, d.properties.NAME_3, d.properties.deputies))
 .on('mouseout', d => cleanResult())
 
 comunitiesMap
@@ -114,15 +110,17 @@ labelsAreas.map((area,i) => {
 	
 	checkOverlapping(area, i)
 })
-
-
-
-
+ 
 
 // FILL OUT THE DROPDOWN MENU AND HANDLE IT
 
-
 let gvOption =`<option selected="selected">Jump to a province</option>`
+
+
+map.objects.adm2.geometries.sort(function(a, b) {
+   return a.properties.NAME_3.localeCompare(b.properties.NAME_3)
+});
+
 
 map.objects.adm2.geometries.map(province => {
 
@@ -132,19 +130,27 @@ map.objects.adm2.geometries.map(province => {
 
 })
 
+
+
 d3.select(".gv-province-filter").html(gvOption);
+
+const dropdown = $(".gv-province-filter")
+
+dropdown.addEventListener('change', handleOptionSelected)
 
 const dropdownOptions = document.querySelectorAll('.gv-dropdown-menu .option');
 
-dropdownOptions.forEach(option => option.addEventListener('click',handleOptionSelected));
-
+//dropdownOptions.forEach(option => option.addEventListener('select',handleOptionSelected));
 
 function handleOptionSelected(event)
 {
+	
+	const el = $$('.gv-dropdown-menu .option')
+		.find( option => option.selected )
 
 	cleanResult()
 
-	printResult(+event.srcElement.attributes['province-id'].value, event.target.innerHTML, event.srcElement.attributes['province-deputies'].value)
+	printResult(+el.attributes['province-id'].value, el.innerHTML, el.attributes['province-deputies'].value)
 }
 
 //-----------------------------------------
@@ -162,8 +168,6 @@ provincesVotes.map(p => {
 		deputiesByProvince[+p.province_code] = [];
 
 		let province = topojson.feature(map, map.objects.adm2).features.find(feature => feature.properties.ID_3 == +p.province_code);
-
-		console.log(province)
 
 
 		if(p['party 1'] && +p['seats 1'] > 0) d3.select("#p" + +p.province_code).attr('class', p['party 1'])

@@ -1,15 +1,11 @@
-import * as d3B from 'd3'
-import * as d3Select from 'd3-selection'
+import * as d3 from 'd3'
 import * as topojson from 'topojson'
-import * as d3geo from 'd3-geo'
 import {event as currentEvent} from 'd3-selection';
 import cartogram from '../assets/spa-hex-adm1-adm2-deputies.json'
 import provincesVotesRaw from 'raw-loader!./../assets/november-province-results.csv';
 import oldResults from 'raw-loader!./../assets/old-province-results.csv'
 import * as d3Jetpack from 'd3-jetpack';
 import { $ } from "./util"
-
-let d3 = Object.assign({}, d3B, d3Select, d3geo);
 
 const parsed = d3.csvParse(provincesVotesRaw)
 const provincesVotes = parsed;
@@ -69,7 +65,7 @@ provincesCarto
 .attr('d', path)
 .attr('class', 'provincia-hex')
 .attr('id', d => 'p' + d.properties.id)
-.on('mouseover', d => printResult(d.properties.id, d.properties['name-english'], d.properties.deputies))
+.on('mousemove', d => printResult(d.properties.id, d.properties['name-english'], d.properties.deputies))
 .on('mouseout', cleanResult)
 
 comunidadesCarto
@@ -186,7 +182,7 @@ function printResult(id,name, deputies){
 	if(result){
 
 		d3.selectAll(".geo-map .provinces path").classed(" over", true)
-		d3.select(".geo-map .provinces #p" + id).classed(" over", false)
+		d3.select(".geo-map .provinces #p" + +id).classed(" over", false)
 
 		tooltip.classed(" over", true)
 

@@ -345,6 +345,7 @@ max-width: 620px;
 [class="GBAI"]{fill:#B3B3B4;background-color: #B3B3B4;}
 [class="IZAR"]{fill:#456789;background-color: #456789;}
 [class="IZQP"]{fill:#FF3300;background-color: #FF3300;}
+[class="I.Fem"]{fill:#FF3300;background-color: #FF3300;}
 [class="JF"]{fill:#B3B3B4;background-color: #B3B3B4;}
 [class="JxCAT-JUNTS"]{fill:#056DA1;background-color: #056DA1;}
 [class="Junts"]{fill:#056DA1;background-color: #056DA1;}
@@ -380,6 +381,8 @@ max-width: 620px;
 [class="PODEMOS-IU-EQUO BERDEAK"]{fill:#951d7a;background-color: #951d7a;}
 [class="PODEMOS-IU LV CA-EQUO"]{fill:#951d7a;background-color: #951d7a;}
 [class="PODEMOS-IX-EQUO"]{fill:#951d7a;background-color: #951d7a;}
+[class="PODEMOS-IU LV CA"]{fill:#951d7a;background-color: #951d7a;}
+[class="PODEMOS-IU-BATZARRE"]{fill:#951d7a;background-color: #951d7a;}
 [class="Podemos"]{fill:#951d7a;background-color: #951d7a;}
 [class="Podemos-EUIB"]{fill:#951d7a;background-color: #951d7a;}
 [class="Podemos-EU-MAREAS EN COMÚN-EQUO"]{fill:#951d7a;background-color: #951d7a;}
@@ -426,6 +429,7 @@ max-width: 620px;
 [class="Más País"]{fill:#2BADBC;background-color:#2BADBC;}
 [class="M. PAÍS"]{fill:#2BADBC;background-color:#2BADBC;}
 [class="MÁS PAÍS-EQUO"]{fill:#2BADBC;background-color:#2BADBC;}
+[class="M PAÍS"]{fill:#2BADBC;background-color:#2BADBC;}
 [class="¡TERUEL EXISTE!"]{fill:#B3B3B4;background-color: #B3B3B4;}
 [class="Others"]{fill:#B3B3B4;background-color: #B3B3B4;}
 .nodata{fill:#fafafa;}
@@ -525,8 +529,8 @@ max-width: 620px;
 				stroke: #333;
 				fill: none;
 
-				@include mq(mobile){stroke-width:2px;}
-				@include mq(tablet){stroke-width: 3px;}
+				stroke-width: 3px;
+
 			}
 
 			div
