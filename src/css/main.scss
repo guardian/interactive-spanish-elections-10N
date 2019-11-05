@@ -102,7 +102,7 @@ h2 {
 	width: 100%;
 	margin-top: 44px;
 	span{
-		@include fs-data(4);
+		@include fs-textSans(3);
 	}
 
 	&::before {
@@ -509,8 +509,7 @@ h2 {
 
 		.gv-main-party{
 
-			margin-bottom: 5px;
-			height: 50px;
+			margin-bottom: 16px;
 		    	//min-width: 110px;
 
 		    	@include mq(mobile){ width: 25%;};
@@ -522,24 +521,35 @@ h2 {
 
 		    	h3{
 
-		    		@include fs-header(1);
+					@include fs-textSans(3);
+					font-weight: bold;
 
 		    		margin-bottom: 0px;
 		    	}
 
 		    	div{
 
-		    		width:4px;
-
+		    		width:8px;
 		    		float: left;
-
-		    		height: 100%;
-
-		    		border-radius: 20%;
-
+					height: 8px;
+					margin-top: 5px;
 		    		margin-right: 5px;
-		    	}
-		    }
+				}
+
+				&-seats {
+					@include fs-titlepiece(1);
+					line-height: 36px;
+				}
+				
+				&-gain {
+					@include fs-titlepiece(1);
+					font-size: 24px;
+					line-height: 24px;
+					color: $neutral-46;
+				}
+				
+			}
+			
 		}
 
 		.gv-waffle-key-wrapper{
