@@ -20,22 +20,22 @@ provinces.map(field => {
 			let cont = 1;
 
 			province.push({
-					territory_id:field[0],
-					comunidad_code:field[1],
+					//territory_id:field[0],
+					//comunidad_code:field[1],
 					province_code:field[2],
 					province_name:field[4],
-					poll_boxes:field[5],
-					census_total:field[6],
+					//poll_boxes:field[5],
+					//census_total:field[6],
 					census_counted:field[7],
-					census_counted_percentage:field[8],
-					voters:field[9],
+					//census_counted_percentage:field[8],
+					//voters:field[9],
 					voters_percentage:field[10],
-					abstention:field[11],
-					abstention_percentage:field[12],
-					blank_votes:field[13],
-					blank_votes_percentage:field[14],
-					null_votes:field[15],
-					null_votes_percentage:field[16],
+					//abstention:field[11],
+					//abstention_percentage:field[12],
+					//blank_votes:field[13],
+					//blank_votes_percentage:field[14],
+					//null_votes:field[15],
+					//null_votes_percentage:field[16],
 					deputies_total:field[17]
 
 			})

@@ -71,7 +71,7 @@ totalProvinceVotes.map( (province,n) => {
         {
                 for(let i = 1 ; i<80 ; i++)
                 {
-                        
+                                
                         let party = province['party ' + i];
                         let oldSeats = 0;
                         let oldVotes = 0;
@@ -134,8 +134,6 @@ totalProvinceVotes.map( (province,n) => {
 
                 if(oldProvince['seats ' + i] > 0){
 
-                    console.log(oldProvince['party ' + i], totalSeatsByParty[oldProvince['party ' + i]])
-
                     let match = totalSeatsByParty[oldProvince['party ' + i]].find(province => oldProvince.province == province.province);
 
                     if(!match){
@@ -157,6 +155,7 @@ totalProvinceVotes.map( (province,n) => {
         }
     }
     else{
+        
         console.log(province.province_name, " hasn't yet started to count")
     }
 })
