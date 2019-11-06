@@ -13,7 +13,7 @@
     echo https://descargas.10noviembre2019.es/web/datos/$TIMESTAMP
 
 
-    curl -u usuario52:Ken7ohme https://descargas.10noviembre2019.es/web/datos/$TIMESTAMP | gzip -d > ./src/assets/latestraw.csv
+    curl -u usuario52:Ken7ohme https://descargas.10noviembre2019.es/web/datos/$TIMESTAMP | gzip -d > ./src/server/latestraw.csv
 
 
     npm run provinces-parser

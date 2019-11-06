@@ -24,6 +24,7 @@ let isMobile = window.matchMedia('(max-width: 620px)').matches;
 let ranks = isMobile ? 14 : 7;
 
 let totalCounted = 0;
+let totalProvincesCounting = 0;
 
 partyWing["Más País"]="left";partyWing["UP"]="left";partyWing["ERC"]="left";partyWing["AHORA CANARIAS"]="left";partyWing["ANDECHA ASTUR"]="left";partyWing["ARA-MES-ESQUERRA"]="left";partyWing["AVANT ADELANTE LOS VERDES"]="left";partyWing["AVANT-LOS VERDES"]="left";partyWing["AxSI"]="left";partyWing["BNG"]="left";partyWing["C 21"]="left";partyWing["CCa-PNC"]="left";partyWing["centrados"]="left";partyWing["C.Ex-C.R.Ex-P.R.Ex"]="left";partyWing["CILU-LINARES"]="left";partyWing["CNV"]="left";partyWing["COMPROMÍS 2019"]="left";partyWing["CpM"]="left";partyWing["Cs"]="right";partyWing["Cs"]="right";partyWing["CxG"]="left";partyWing["DP"]="left";partyWing["DPL"]="";partyWing["EAJ-PNV"]="right";partyWing["EB"]="left";partyWing["EB"]="left";partyWing["EB"]="left";partyWing["ECP-GUANYEM EL CANVI"]="left";partyWing["EH Bildu"]="left";partyWing["ELAK/PCTE"]="left";partyWing["EL PI"]="left";partyWing["EN MAREA"]="left";partyWing["ERC-SOBIRANISTES"]="left";partyWing["ERPV"]="left";partyWing["F8"]="left";partyWing["FE de las JONS"]="right";partyWing["FIA"]="left";partyWing["FRONT REPUBLICÀ"]="left";partyWing["GBAI"]="left";partyWing["IZAR"]="left";partyWing["IZQP"]="left";partyWing["JF"]="left";partyWing["JxCAT-JUNTS"]="right";partyWing["+MAS+"]="left";partyWing["NA+"]="right";partyWing["NCa"]="left";partyWing["PACMA"]="left";partyWing["PACMA"]="left";partyWing["PACT"]="left";partyWing["PCOE"]="left";partyWing["PCPA"]="left";partyWing["PCPC"]="left";partyWing["PCPC"]="left";partyWing["PCPE"]="left";partyWing["PCPE"]="left";partyWing["PCTC"]="left";partyWing["PCTE"]="left";partyWing["PCTE/ELAK"]="left";partyWing["PCTG"]="left";partyWing["PDSJE-UDEC"]="left";partyWing["PH"]="left";partyWing["P-LIB"]="left";partyWing["PODEMOS-EUIB"]="left";partyWing["PODEMOS-EU-MAREAS EN COMÚN-EQUO"]="left";partyWing["PODEMOS-EUPV"]="left";partyWing["PODEMOS-IU-EQUO"]="left";partyWing["PODEMOS-IU-EQUO-AAeC"]="left";partyWing["PODEMOS-IU-EQUO-BATZARRE"]="left";partyWing["PODEMOS-IU-EQUO BERDEAK"]="left";partyWing["PODEMOS-IU LV CA-EQUO"]="left";partyWing["PODEMOS-IX-EQUO"]="left";partyWing["PP"]="right";partyWing["PP"]="right";partyWing["PP"]="right";partyWing["PP-FORO"]="right";partyWing["PPSO"]="";partyWing["PR+"]="left";partyWing["PRC"]="left";partyWing["PREPAL"]="left";partyWing["PSC"]="left";partyWing["PSdeG-PSOE"]="left";partyWing["PSE-EE (PSOE)"]="left";partyWing["PSOE"]="left";partyWing["PSOE"]="left";partyWing["PUM+J"]="left";partyWing["PUM+J"]="left";partyWing["PUM+J"]="left";partyWing["PYLN"]="left";partyWing["RECORTES CERO-GV"]="left";partyWing["RECORTES CERO-GV-PCAS-TC"]="left";partyWing["RISA"]="left";partyWing["SOLIDARIA"]="left";partyWing["SOMOS REGIÓN"]="left";partyWing["UDT"]="left";partyWing["UIG-SOM-CUIDES"]="left";partyWing["UNIÓN REGIONALISTA"]="left";partyWing["VOU"]="left";partyWing["VOX"]="right";
 
@@ -59,14 +60,14 @@ partiesList.map(party => totalSeatsByParty[party] = [])
 
 totalProvinceVotes.map( (province,n) => {
 
-    if(province.territory_id == 'TO') totalCounted = +province.census_counted_percentage / 100;
-
-    d3.select('.gv-main-title span').html(totalCounted + '% of votes counted')
+    if(province.province_name == 'Total nacional') totalCounted = +province.census_counted_percentage / 100;
+    else if(province.province_name != 'Total nacional' && +province.census_counted > 0)totalProvincesCounting++
 
     let oldProvince = totalProvinceVotesOld.find(p => +p.id === +province.province_code);
    
     if(+province.census_counted > 0)
     {
+
         if(oldProvince)
         {
                 for(let i = 1 ; i<80 ; i++)
@@ -159,6 +160,8 @@ totalProvinceVotes.map( (province,n) => {
         console.log(province.province_name, " hasn't yet started to count")
     }
 })
+
+d3.select('.gv-main-title span').html(totalCounted + '% of votes counted | ' + totalProvincesCounting + " of 52 provinces emiting results"  )
 
 partiesWithSeats.map(party => {
 

@@ -2,7 +2,7 @@ import csvParse from 'csv-parse/lib/es5/sync'
 import csvStringify from 'csv-stringify/lib/es5/sync'
 import fs from "fs"
 
-const provincesVotesRaw = fs.readFileSync("./src/assets/latestraw.csv")
+const provincesVotesRaw = fs.readFileSync("./src/server/latestraw.csv")
 
 const provinces = csvParse(provincesVotesRaw,{"delimiter": ";","rtrim": true});
 
@@ -27,7 +27,7 @@ provinces.map(field => {
 					//poll_boxes:field[5],
 					//census_total:field[6],
 					census_counted:field[7],
-					//census_counted_percentage:field[8],
+					census_counted_percentage:field[8],
 					//voters:field[9],
 					voters_percentage:field[10],
 					//abstention:field[11],
@@ -62,7 +62,9 @@ provinces.map(field => {
 			
 })
 
-
+const timeStamp = new Date().getHours() + '-' + new Date().getMinutes();
 fs.writeFileSync('./src/assets/november-province-results.csv', csvStringify(provincesTotals, { header : true }));
+fs.writeFileSync('./src/server/november-province-results-' + timeStamp  + '.csv', csvStringify(provincesTotals, { header : true }));
+
 
 
