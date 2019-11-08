@@ -167,6 +167,8 @@ provincesVotes.map(p => {
 	}
 })
 
+newPartiesList.map(party => d3.selectAll('.cartogram [class="' + party.party + '"').style('fill', '#' + party.color))
+
 
 //----------------------------------------
 
@@ -181,8 +183,8 @@ function printResult(id,name, deputies){
 
 	if(result){
 
-		d3.selectAll(".geo-map .provinces path").classed(" over", true)
-		d3.select(".geo-map .provinces #p" + id).classed(" over", false)
+		d3.selectAll(".geo-map .provinces-cover path").style("opacity", 1)
+		d3.select(".geo-map .provinces-cover #p" + id).style("opacity", 0)
 
 		tooltip.classed(" over", true)
 
@@ -210,10 +212,14 @@ function printResult(id,name, deputies){
 				.append('div')
 				.attr('class', 'tooltip-row')
 
-				row
+				let keyColor = row
 				.append('div')
 				.attr('id','tooltip-color')
 				.attr('class', dep.party)
+
+
+				let f = newPartiesList.find(party => party.party == dep.party);
+				if(f) keyColor.style('background-color', '#' + f.color)
 
 				row
 				.append('div')
@@ -255,7 +261,7 @@ function cleanResult(){
 
 	tooltip.select('.tooltip-results').html('')
 
-	d3.selectAll(".geo-map .provinces path").classed("over", false)
+	d3.selectAll(".geo-map .provinces-cover path").style("opacity", 0)
 
 }
 

@@ -469,7 +469,7 @@ h2 {
 [class="¡TERUEL EXISTE!"]{fill:#B3B3B4;background-color: #B3B3B4;}
 [class="CUP-PR"]{fill:#e6f5ff;background-color: #e6f5ff;}
 [class="Others"]{fill:#B3B3B4;background-color: #B3B3B4;}
-.nodata{fill:#fafafa;}
+.nodata{fill:#efefef;}
 .municipality{fill:#FFFFFF;}
 
 .over{
@@ -515,8 +515,11 @@ h2 {
 
 					@include fs-textSans(3);
 					font-weight: bold;
-
 		    		margin-bottom: 0px;
+
+		    		white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
 		    	}
 
 		    	div{
@@ -804,4 +807,49 @@ h2 {
 
 }
 
+.ge-tk__left-live {
+    display: inline-block;
+    position: relative;
+    color: 
+    #c70000;
+    font-size: 12px;
+    font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+    font-weight: bold;
+}
+
+.gv-updated-wrapper{
+	display: flex;
+	flex-direction: row;
+	align-items: baseline;
+}
+
+
+.ge-tk__left-live::before {
+
+    content: ' ';
+    display: inline-block;
+    margin-right: 5px;
+    width: .75em;
+    height: .75em;
+    border-radius: 10px;
+    background: 
+    #c70000;
+    animation: live-pulse 1s infinite;
+        animation-name: live-pulse;
+        animation-duration: 1s;
+        animation-timing-function: ease;
+        animation-delay: 0s;
+        animation-iteration-count: infinite;
+        animation-direction: normal;
+        animation-fill-mode: none;
+        animation-play-state: running;
+}
+
+.gv-updated {
+	line-height: 36px;
+	margin-left: 8px;
+    font-size: 13px;
+    font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+    color: #767676;
+}
 	

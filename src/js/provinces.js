@@ -6,6 +6,9 @@ import oldResults from 'raw-loader!./../assets/old-province-results.csv'
 import { wordwrap } from 'd3-jetpack'
 import {event as currentEvent} from 'd3-selection';
 import { $, $$ } from "./util"
+//import * as waffle from "./../js/waffle.js"
+
+
 
 const parsed = d3.csvParse(provincesVotesRaw)
 const provincesVotes = parsed;
@@ -38,6 +41,8 @@ projection.fitSize([width, width], topojson.feature(map, map.objects.adm2));
 
 let provincesMap = svg.append('g')
 
+let provincesMapCover = svg.append('g')
+
 let comunitiesMap = svg.append('g');
 
 let leabelsGroup = svg.append('g');
@@ -55,11 +60,25 @@ provincesMap
 .data(topojson.feature(map, map.objects.adm2).features)
 .enter()
 .append('path')
+.style('stroke', 'white')
+.style('stroke-width', 1)
 .attr('d', path)
 .attr('id', d => 'p' + d.properties.ID_3)
 .attr('class', 'province')
+
+provincesMapCover
+.attr('class', "provinces-cover")
+.selectAll('path')
+.data(topojson.feature(map, map.objects.adm2).features)
+.enter()
+.append('path')
+.attr('d', path)
+.attr('id', d => 'p' + d.properties.ID_3)
+.attr('class', 'nodata')
+.style('opacity', 0)
 .on('mousemove', d => printResult(+d.properties.ID_3, d.properties.NAME_3, d.properties.deputies))
 .on('mouseout', d => cleanResult())
+
 
 comunitiesMap
 .selectAll('path')
@@ -194,19 +213,20 @@ provincesVotes.map(p => {
 						"party" : party
 					});
 
-					for(let j = 0; j < deputies; j++)
-					{
-						let number = acumm;
-						if(acumm<10) number = '0' + acumm;
-						d3.select('#d' + p.province_code + number)
-						.attr('class', party)
-						acumm++
-					}
+					d3.select('#d' + p.province_code)
+					.attr('class', party)
 
 				}
 			}
 		}
 	} )
+
+
+   // d3.selectAll('.cartogram [class="' + party.party + '"').style('fill', '#' + party.color)
+
+   newPartiesList.map(party => d3.selectAll('.provinces [class="' + party.party + '"').style('fill', '#' + party.color))
+
+    
 
 
 //----------------------------------------
@@ -223,8 +243,8 @@ function printResult(id,name,deputies){
 
 	if(result){
 
-		d3.selectAll(".geo-map .provinces path").classed(" over", true)
-		d3.select(".geo-map .provinces #p" + id).classed(" over", false)
+		d3.selectAll(".geo-map .provinces-cover path").style("opacity", 1)
+		d3.select(".geo-map .provinces-cover #p" + id).style("opacity", 0)
 
 		tooltip.classed(" over", true)
 
@@ -255,7 +275,7 @@ function printResult(id,name,deputies){
 				.append('div')
 				.attr('class', 'tooltip-row')
 
-				row
+				let keyColor = row
 				.append('div')
 				.attr('id','tooltip-color')
 				.attr('class', dep.party)
@@ -269,6 +289,13 @@ function printResult(id,name,deputies){
 				.append('div')
 				.attr('class','tooltip-deputies')
 				.html(dep.deputies)
+
+
+				let f = newPartiesList.find(party => party.party == dep.party);
+				console.log('provinces: ', f)
+				if(f) keyColor.style('background-color', '#' + f.color)
+
+				
 			})
 
 
@@ -297,7 +324,7 @@ function cleanResult(){
 
 	tooltip.classed(" over", false)
 	
-	d3.selectAll(".geo-map .provinces path").classed("over", false)
+	d3.selectAll(".geo-map .provinces-cover path").style("opacity", 0)
 
 	tooltip.select('.tooltip-results').html('')
 

@@ -2,6 +2,20 @@ import provinceResults from 'raw-loader!./../assets/november-province-results.cs
 import oldResults from 'raw-loader!./../assets/old-province-results.csv'
 import * as d3 from 'd3'
 
+
+
+//UPDATED
+
+const date = new Date();
+let hours = date.getHours() + 1;
+const minutes = date.getMinutes();
+let seconds = date.getSeconds();
+
+if(seconds < 10)seconds = '0' + seconds;
+
+d3.select('.gv-updated').html('Updated at ' + hours + ':' + minutes + ':' + seconds + ' Madrid time')
+
+
 const partiesList = ["Más País","UP", "ERC", "AHORA CANARIAS","ANDECHA ASTUR","ARA-MES-ESQUERRA","AVANT ADELANTE LOS VERDES","AVANT-LOS VERDES","AxSI","BNG","C 21","CCa-PNC","centrados","C.Ex-C.R.Ex-P.R.Ex","CILU-LINARES","CNV","COMPROMÍS 2019","CpM","Cs","Cs","CxG","DP","DPL","EAJ-PNV","EB","EB","EB","ECP-GUANYEM EL CANVI","EH Bildu","ELAK/PCTE","EL PI","EN MAREA","ERC-SOBIRANISTES","ERPV","F8","FE de las JONS","FIA","FRONT REPUBLICÀ","GBAI","IZAR","IZQP","JF","JxCAT-JUNTS","+MAS+","NA+","NCa","PACMA","PACMA","PACT","PCOE","PCPA","PCPC","PCPC","PCPE","PCPE","PCTC","PCTE","PCTE/ELAK","PCTG","PDSJE-UDEC","PH","P-LIB","PODEMOS-EUIB","PODEMOS-EU-MAREAS EN COMÚN-EQUO","PODEMOS-EUPV","PODEMOS-IU-EQUO","PODEMOS-IU-EQUO-AAeC","PODEMOS-IU-EQUO-BATZARRE","PODEMOS-IU-EQUO BERDEAK","PODEMOS-IU LV CA-EQUO","PODEMOS-IX-EQUO","PP","PP","PP","PP-FORO","PPSO","PR+","PRC","PREPAL","PSC","PSdeG-PSOE","PSE-EE (PSOE)","PSOE","PSOE","PUM+J","PUM+J","PUM+J","PYLN","RECORTES CERO-GV","RECORTES CERO-GV-PCAS-TC","RISA","SOLIDARIA","SOMOS REGIÓN","UDT","UIG-SOM-CUIDES","UNIÓN REGIONALISTA","VOU","VOX", "CAnda", "PODEMOS-IU-Alto Aragón en Común", "CHA", "¡TERUEL EXISTE!", "AUNACV", "ANDECHA", "PODEMOS-IX", "MÉS-ESQUERRA", "CCa-PNC-NC", "VERDES", "CONTIGO", "PDSJE","VERDES o LOS VERDES o LV","PCAS-TC","XAV","UPL","PFyV","Junts","PFiV","CUP-PR","I.Fem","UNIDOS SÍ-ACPS-DEf","EXTREMADURA UNIDA","MÉS COMPROMÍS","RVPVE","MDyC", "PODEMOS-IU LV CA","AxSÍ","M PAÍS-CHA-EQUO","M PAÍS","PODEMOS-IU-BATZARRE","AVANT LOS VERDES","LOS VERDES"];
 const podemosRawNames = ["PODEMOS-IU-BATZARRE", "PODEMOS-IU LV CA", "PODEMOS-IULV-CA", "PODEMOS-EU","PODEMOS-IU","PODEMOS-EUIB","PODEMOS-EU-MAREAS EN COMÚN-EQUO","PODEMOS-EUPV","PODEMOS-IU-EQUO","PODEMOS-IU-EQUO-AAeC","PODEMOS-IU-EQUO-BATZARRE","PODEMOS-IU-EQUO BERDEAK","PODEMOS-IU LV CA-EQUO","PODEMOS-IX-EQUO","ECP-GUANYEM EL CANVI"];
 const psoeRawNames = ["PSC-PSOE","PSC","PSdeG-PSOE","PSE-EE (PSOE)","PSOE","PSOE"];
@@ -54,13 +68,22 @@ let totalNodata = {party: "nodata", seats: seats};
 
 let assignedSeats = 0;
 
-let newPartiesList = [];
+//let newPartiesList = [];
+
+global.newPartiesList = [];
 
 partiesList.map(party => totalSeatsByParty[party] = [])
 
+console.log(totalProvinceVotes)
+
+let turnout = 0
+
+if(totalProvinceVotes.length > 0) turnout = +totalProvinceVotes.find(province => province.province_name == 'Total nacional').voters_percentage / 100;
+
+ 
 totalProvinceVotes.map( (province,n) => {
 
-    if(province.province_name == 'Total nacional') totalCounted = +province.census_counted_percentage / 100;
+    if(province.province_name == 'Total nacional')totalCounted = +province.census_counted_percentage / 100;
     else if(province.province_name != 'Total nacional' && +province.census_counted > 0)totalProvincesCounting++
 
     let oldProvince = totalProvinceVotesOld.find(p => +p.id === +province.province_code);
@@ -101,7 +124,7 @@ totalProvinceVotes.map( (province,n) => {
                             console.log("This is a new party: ",party)
                             
                             partiesList.push(party);
-                            newPartiesList.push(party);
+                            newPartiesList.push({party:party, color:''});
                             totalSeatsByParty[party] = [];
                             partyWing[party] = "right";
                         }
@@ -161,7 +184,7 @@ totalProvinceVotes.map( (province,n) => {
     }
 })
 
-d3.select('.gv-main-title span').html(totalCounted + '% of votes counted | ' + totalProvincesCounting + " of 52 provinces emiting results"  )
+d3.select('.gv-main-title span').html("<strong>" + totalCounted  + '%</strong> of votes counted | <strong>' + totalProvincesCounting + "</strong> of 52 provinces reporting results | <strong>"+ turnout + "%</strong> turnout"   )
 
 partiesWithSeats.map(party => {
 
@@ -180,6 +203,17 @@ partiesWithSeats.map(party => {
 partiesWithSeats.sort((a,b) => +b.seats - +a.seats);
 
 fourParties = partiesWithSeats.slice(0,4);
+
+newPartiesList.map(party =>{
+
+
+    let randomColor = Math.floor(Math.random()*16777215).toString(16);
+
+    party.color = randomColor;
+
+})
+
+console.log(newPartiesList)
 
 flagMainParties();
 addKey();
@@ -253,21 +287,17 @@ let partyblobs = svg.append("g").selectAll("rect")
 })
 .attr('class', d => d.party)
 
+
+
 newPartiesList.map(party =>{
+    d3.select('[class="' + party.party + '"').style('background-color','#'+ party.color)
 
+    d3.selectAll('.gv-waffle [class="' + party.party + '"').style('fill', '#' + party.color)
 
-    let randomColor = Math.floor(Math.random()*16777215).toString(16);
-
-    d3.select('[class="' + party + '"').style('background-color','#'+ randomColor)
-
-    d3.selectAll('.gv-waffle [class="' + party + '"').style('fill', '#' + randomColor)
-
-    d3.selectAll('.cartogram [class="' + party + '"').style('fill', '#' + randomColor)
-
-    d3.selectAll('.provinces [class="' + party + '"').style('fill', '#' + randomColor)
-
-
+    d3.select('.gv-key [class="' + party.party + '"').style('background-color', '#' + party.color)
 })
+
+
 
 let midlineText = svg.append('g')
 .append('text')
@@ -311,10 +341,7 @@ function addKey() {
 
     partiesWithSeats.sort((a,b) => +b.seats - +a.seats)
 
-    console.log(partiesWithSeats)
-
     partiesWithSeats.map(p => {
-
 
         let name = p.party;
 
@@ -329,9 +356,12 @@ function addKey() {
             if(fourParties.indexOf(p) == -1)
             {
                 let partystring = `<div class="gv-party-key-entry"><div class="${name}"></div><span>${+p.seats} ${"(" + difference + ")"} ${p.party}</span></div>`;
-                gvkeystring += partystring;
+
+                gvkeystring += partystring; 
             }
         }
+
+        
     })
 
 
