@@ -292,7 +292,6 @@ function printResult(id,name,deputies){
 
 
 				let f = newPartiesList.find(party => party.party == dep.party);
-				console.log('provinces: ', f)
 				if(f) keyColor.style('background-color', '#' + f.color)
 
 				

@@ -8,9 +8,11 @@ import * as d3 from 'd3'
 
 const date = new Date();
 let hours = date.getHours() + 1;
-const minutes = date.getMinutes();
+let minutes = date.getMinutes();
 let seconds = date.getSeconds();
 
+if(hours < 10)hours = '0' + hours;
+if(minutes < 10)minutes = '0' + minutes;
 if(seconds < 10)seconds = '0' + seconds;
 
 d3.select('.gv-updated').html('Updated at ' + hours + ':' + minutes + ':' + seconds + ' Madrid time')
@@ -68,17 +70,23 @@ let totalNodata = {party: "nodata", seats: seats};
 
 let assignedSeats = 0;
 
-//let newPartiesList = [];
-
 global.newPartiesList = [];
 
 partiesList.map(party => totalSeatsByParty[party] = [])
 
-console.log(totalProvinceVotes)
+let turnout = '-';
+const oldTurnOut = 75.74;
+let turnoutDifference = '-';
 
-let turnout = 0
+if(totalProvinceVotes.length > 0){
+    turnout = +totalProvinceVotes.find(province => province.province_name == 'Total nacional').voters_percentage / 100;
 
-if(totalProvinceVotes.length > 0) turnout = +totalProvinceVotes.find(province => province.province_name == 'Total nacional').voters_percentage / 100;
+    turnoutDifference = turnout - oldTurnOut;
+
+    turnoutDifference = turnoutDifference.toFixed(2)
+
+    if(turnoutDifference > 0)turnoutDifference = '+' + turnoutDifference;
+}
 
  
 totalProvinceVotes.map( (province,n) => {
@@ -184,7 +192,7 @@ totalProvinceVotes.map( (province,n) => {
     }
 })
 
-d3.select('.gv-main-title span').html("<strong>" + totalCounted  + '%</strong> of votes counted | <strong>' + totalProvincesCounting + "</strong> of 52 provinces reporting results | <strong>"+ turnout + "%</strong> turnout"   )
+d3.select('.gv-main-title span').html("<strong>" + totalCounted  + '%</strong> of votes counted | <strong>' + totalProvincesCounting + "</strong> of 52 provinces reporting results | Turnout: <strong>"+ turnout + "%</strong> " + " (" + turnoutDifference + "%)"  )
 
 partiesWithSeats.map(party => {
 
