@@ -16,7 +16,7 @@
     curl -u usuario552:aiw4Yeiw https://descargas.10noviembre2019.es/web/datos/$TIMESTAMP | gzip -d > ./src/server/latestraw.csv
 
 fetchstamp=$(date "+%H:%M:%S")
-echo $fetchstamp >> ./src/server/timestamp.csv
+echo $fetchstamp >> ./src/server/timestamp
 
    	npm run provinces-parser
     npm run deploylive
