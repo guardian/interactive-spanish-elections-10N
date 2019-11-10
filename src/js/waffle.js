@@ -4,13 +4,16 @@ import * as d3 from 'd3'
 import fetchtime from 'raw-loader!./../server/timestamp'
 
 
-console.log('fetchtime!')
-console.log(fetchtime)
+// console.log('fetchtime!')
+// console.log(fetchtime)
 
 const date = new Date();
 let hours = +fetchtime.split(":")[0] + 1
 let minutes = fetchtime.split(":")[1];
 let seconds = fetchtime.split(":")[2]
+
+if (hours == 24 || hours == "24") { hours = "00"}
+console.log(hours)
 
 
 //UPDATED
