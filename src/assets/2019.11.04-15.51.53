@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="es">
+ <head> 
+  <title>Elecciones Generales 10N - Web de descarga electoral - Descarga de ficheros</title> 
+  <meta charset="utf-8"> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+  <link rel="shortcut icon" href="/favicon.ico"> 
+  <link href="/css/bundle.min.css" rel="stylesheet"> 
+ </head> 
+ <body class="descargas"> 
+  <header> 
+   <div class="fondo-cabecera--descargas"> 
+    <div class="ancho-fijo--descargas"> 
+     <div class="higher-banner"> 
+      <a href="/web/inicialdes_L1.html"> 
+       <figure class="logo-elec "> 
+        <img src="/imgs/logo_elec.png" alt="Elecciones Generales 10N"> 
+       </figure></a> 
+      <figure class="logo-admon "> 
+       <img src="/imgs/logo_admon.png" alt="Ministerio" del Interior, Gobierno de España> 
+      </figure> 
+      <div class="descargas-combo"> 
+       <select id="sel_lang" onchange="document.location.href = this.value"> <option value="/web/datos/DESCAR99_L1.html" selected>Castellano</option> <option value="/web/datos/DESCAR99_L2.html">Català</option> <option value="/web/datos/DESCAR99_L3.html">Galego</option> <option value="/web/datos/DESCAR99_L5.html">Euskera</option> <option value="/web/datos/DESCAR99_L4.html">Valencià</option> </select> 
+      </div> 
+     </div> 
+     <div class="descargas-barra-botones"> 
+      <button class="boton-con-imagen "> <img class="imagen-recargar" src="/imgs/Recargar.png" alt="Recargar" onclick="location.reload()"> </button> 
+      <button class="boton-con-imagen "> <img class="imagen-imprimir" src="/imgs/Imprimir.png" alt="Imprimir" onclick="window.print()"> </button> 
+      <div id="descargas-actualizado" class="singleLine small">
+       <strong>Actualizado 16:51h</strong>
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+  </header> 
+  <!-- INICIO CONTENEDOR --> 
+  <div id="pagina" class="descargas"> 
+   <div class="ancho-fijo--descargas"> 
+    <nav class="descargas-pestanas"> 
+     <div class="react-tabs" data-tabs="true"> 
+      <ul class="react-tabs__tab-list" role="tablist"> 
+       <li class="react-tabs__tab react-tabs__tab" role="tab" tabindex="0" onclick="window.location.href='/web/iniDESCR99_L1.html'"> Descripción de ficheros </li> 
+       <li class="react-tabs__tab react-tabs__tab--selected" role="tab" tabindex="0" onclick="window.location.href='/web/datos/DESCAR99_L1.html'"> Descarga de ficheros </li> 
+      </ul> 
+     </div> 
+    </nav> 
+    <div id="cajadatostres" class="cajadatostres descargas descargas__container"> 
+     <div id="descrifich"> 
+      <div class="descargas-parrafos"> 
+       <p> Durante la jornada electoral se irán actualizando los enlaces para descargar los ficheros con la información actualizada. </p> 
+       <p> Cada vez que se generen ficheros se actualizará la <strong>hora-minuto</strong> del enlace y el <strong>nombre del fichero</strong> a descargar. </p> 
+       <p> Los ficheros están comprimidos con "gzip", siendo compatibles con la mayoría de los programas de compresión, como WinZip, Winrar, etc. </p> 
+      </div> 
+      <div class="descargas-container"> 
+       <div class="descargas-caja clear-left"> 
+        <div class="txtitulin">
+          Ficheros&nbsp;de&nbsp;recuento&nbsp;provisional&nbsp;de&nbsp;Congreso 
+        </div> 
+        <div class="half-width"> 
+         <div class="cabeceraFichADescargar">
+           Totales 
+         </div> 
+         <ul class="ficheros"> 
+          <li id="TXTOTCO99INI"><a href="./TXTOTCO99INI.gz">Datos iniciales</a></li> 
+          <!--TXTOTCO99--> 
+          <!--FIN--> 
+         </ul> 
+        </div> 
+        <div class="half-width"> 
+         <div class="cabeceraFichADescargar">
+           Municipios 
+         </div> 
+         <ul class="ficheros"> 
+          <li id="TXMUNCO99INI"><a href="./TXMUNCO99INI.tar.gz">Datos iniciales</a></li> 
+          <!--TXMUNCO99--> 
+          <!--FIN--> 
+         </ul> 
+        </div> 
+       </div> 
+       <div class="descargas-caja clear-right"> 
+        <div class="txtitulin">
+          Ficheros&nbsp;de&nbsp;recuento&nbsp;provisional&nbsp;de&nbsp;Senado 
+        </div> 
+        <div class="half-width"> 
+         <div class="cabeceraFichADescargar">
+           Totales 
+         </div> 
+         <ul class="ficheros"> 
+          <li id="TXTOTSE99INI"><a href="./TXTOTSE99INI.gz">Datos iniciales</a></li> 
+          <!--TXTOTSE99--> 
+          <!--FIN--> 
+         </ul> 
+        </div> 
+        <div class="half-width"> 
+         <div class="cabeceraFichADescargar">
+           Municipios 
+         </div> 
+         <ul class="ficheros"> 
+          <li id="TXMUNSE99INI"><a href="./TXMUNSE99INI.tar.gz">Datos iniciales</a></li> 
+          <!--TXMUNSE99--> 
+          <!--FIN--> 
+         </ul> 
+        </div> 
+       </div> 
+       <div class="descargas-caja clear-left"> 
+        <div class="txtitulin">
+          Ficheros de avances de participación 
+        </div> 
+        <div class="half-width"> 
+         <div class="cabeceraFichADescargar">
+           Totales 
+         </div> 
+         <ul class="ficheros"> 
+          <li id="TXTOTDI99INI"><a href="./TXTOTDI99INI.gz">Datos iniciales</a></li> 
+          <!--TXTOTDI99--> 
+          <!--FIN--> 
+          <li id="TXTOTDI99hhmm"><a href="TXTOTDI99o1v7jeaq.gz">Datos de las 16:51</a></li> 
+         </ul> 
+        </div> 
+        <div class="half-width"> 
+         <div class="cabeceraFichADescargar">
+           Municipios 
+         </div> 
+         <ul class="ficheros"> 
+          <li id="TXMUNDI99INI"><a href="./TXMUNDI99INI.tar.gz">Datos iniciales</a></li> 
+          <!--TXMUNDI99--> 
+          <!--FIN--> 
+          <li id="TXMUNDI99hhmm"><a href="TXMUNDI99o1v7jeaq.tar.gz">Datos de las 16:51</a></li> 
+         </ul> 
+        </div> 
+       </div> 
+       <div class="descargas-caja clear-right"> 
+        <div class="txtitulin">
+          Ficheros&nbsp;auxiliares 
+        </div> 
+        <div class="half-width"> 
+         <ul class="ficheros"> 
+          <li id="TXPARTIDCO99"><a href="./TXPARTIDCO99.gz">Fichero de candidaturas Congreso 10N</a></li> 
+          <li id="TXPARTIDSE99"><a href="./TXPARTIDSE99.gz">Fichero de candidaturas Senado 10N</a></li> 
+          <li id="TXCANDIDSE99"><a href="./TXCANDIDSE99.gz">Fichero de candidatos Senado 10N</a></li> 
+          <li id="TXPARTANCO99" class="separatorLi"><a href="./TXPARTANCO99.gz">Fichero de candidaturas Congreso 28A</a></li> 
+          <li id="TXTOTCO99ANT"><a href="./TXTOTCO99ANT.gz">Congreso: Resultados de recuento de totales 28A</a></li> 
+          <li id="TXMUNCO99ANT"><a href="./TXMUNCO99ANT.tar.gz">Congreso: Resultados de recuento de municipios 28A</a></li> 
+         </ul> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+   <br> 
+  </div> 
+  <!-- FIN CONTENEDOR --> 
+  <footer class="footer--descargas" aria-hidden="true"> 
+   <div class="footer-sub--descargas"> 
+    <div class="footer__texto-container"> 
+     <div class="singleLine "> 
+      <p>© Ministerio del Interior, Gobierno de España</p> 
+     </div> 
+    </div> 
+   </div> 
+  </footer>  
+ </body>
+</html>
