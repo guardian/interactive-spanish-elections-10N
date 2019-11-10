@@ -16,7 +16,9 @@
     curl -u usuario552:aiw4Yeiw https://descargas.10noviembre2019.es/web/datos/$TIMESTAMP | gzip -d > ./src/server/latestraw.csv
 
 
-    npm run provinces-parser
-    npm run deploylive
+   	npm run provinces-parser
+    #npm run deploylive
+
+    gulp
     sleep 300
 done
