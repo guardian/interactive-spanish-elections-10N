@@ -5,9 +5,13 @@
 
 #this is the real version getting the hours and minutes
 
- while true
- do
- 	TIMESTAMP=$(curl -u usuario52:Ken7ohme https://descargas.10noviembre2019.es/web/datos/DESCAR99_L1.html 2>&1 | grep 'TXTOTCO99hhmm' | sed -n 's/.*href="\([^"]*\).*/\1/p')
+# while true
+# do
+ 	
+    #sleep 300
+#done
+
+TIMESTAMP=$(curl -u usuario552:aiw4Yeiw https://descargas.10noviembre2019.es/web/datos/DESCAR99_L1.html 2>&1 | grep 'TXTOTCO99hhmm' | sed -n 's/.*href="\([^"]*\).*/\1/p')
 
     echo 'hitting this url'
     echo https://descargas.10noviembre2019.es/web/datos/$TIMESTAMP
@@ -20,5 +24,3 @@
     #npm run deploylive
 
     gulp
-    sleep 300
-done
