@@ -1,19 +1,28 @@
 import provinceResults from 'raw-loader!./../assets/november-province-results.csv'
 import oldResults from 'raw-loader!./../assets/old-province-results.csv'
 import * as d3 from 'd3'
+import fetchtime from 'raw-loader!./../server/timestamp'
 
+
+console.log('fetchtime!')
+console.log(fetchtime)
+
+const date = new Date();
+let hours = +fetchtime.split(":")[0] + 1
+let minutes = fetchtime.split(":")[1];
+let seconds = fetchtime.split(":")[2]
 
 
 //UPDATED
 
-const date = new Date();
-let hours = date.getHours() + 1;
-let minutes = date.getMinutes();
-let seconds = date.getSeconds();
+// const date = new Date();
+// let hours = date.getHours() + 1;
+// let minutes = date.getMinutes();
+// let seconds = date.getSeconds();
 
-if(hours < 10)hours = '0' + hours;
-if(minutes < 10)minutes = '0' + minutes;
-if(seconds < 10)seconds = '0' + seconds;
+//if(hours < 10)hours = '0' + hours;
+//if(minutes < 10)minutes = '0' + minutes;
+//if(seconds < 10)seconds = '0' + seconds;
 
 d3.select('.gv-updated').html('Updated at ' + hours + ':' + minutes + ':' + seconds + ' Madrid time')
 
