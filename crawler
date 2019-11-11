@@ -5,13 +5,9 @@
 
 #this is the real version getting the hours and minutes
 
-
-TIMESTAMP=$(curl -u usuario552:aiw4Yeiw https://descargas.10noviembre2019.es/web/datos/DESCAR99_L1.html 2>&1 | grep 'TXTOTCO99hhmm' | sed -n 's/.*href="\([^"]*\).*/\1/p')
-
  while true
  do
  	TIMESTAMP=$(curl -u usuario552:aiw4Yeiw https://descargas.10noviembre2019.es/web/datos/DESCAR99_L1.html 2>&1 | grep 'TXTOTCO99hhmm' | sed -n 's/.*href="\([^"]*\).*/\1/p')
-
 
     echo 'hitting this url'
     echo https://descargas.10noviembre2019.es/web/datos/$TIMESTAMP
@@ -20,10 +16,10 @@ TIMESTAMP=$(curl -u usuario552:aiw4Yeiw https://descargas.10noviembre2019.es/web
     curl -u usuario552:aiw4Yeiw https://descargas.10noviembre2019.es/web/datos/$TIMESTAMP | gzip -d > ./src/server/latestraw.csv
 
 fetchstamp=$(date "+%H:%M:%S")
-echo $fetchstamp >> ./src/server/timestamp
+echo $fetchstamp > ./src/server/timestamp
 
    	npm run provinces-parser
     npm run deploylive
-    sleep 300
-done
 
+    sleep 150
+done

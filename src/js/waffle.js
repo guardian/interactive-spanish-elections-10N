@@ -1,25 +1,37 @@
 import provinceResults from 'raw-loader!./../assets/november-province-results.csv'
 import oldResults from 'raw-loader!./../assets/old-province-results.csv'
 import * as d3 from 'd3'
+import fetchtime from 'raw-loader!./../server/timestamp'
 
+
+// console.log('fetchtime!')
+// console.log(fetchtime)
+
+const date = new Date();
+let hours = +fetchtime.split(":")[0] + 1
+let minutes = fetchtime.split(":")[1];
+let seconds = fetchtime.split(":")[2]
+
+if (hours == 24 || hours == "24") { hours = "00"}
+console.log(hours)
 
 
 //UPDATED
 
-const date = new Date();
-let hours = date.getHours() + 1;
-let minutes = date.getMinutes();
-let seconds = date.getSeconds();
+// const date = new Date();
+// let hours = date.getHours() + 1;
+// let minutes = date.getMinutes();
+// let seconds = date.getSeconds();
 
-if(hours < 10)hours = '0' + hours;
-if(minutes < 10)minutes = '0' + minutes;
-if(seconds < 10)seconds = '0' + seconds;
+//if(hours < 10)hours = '0' + hours;
+//if(minutes < 10)minutes = '0' + minutes;
+//if(seconds < 10)seconds = '0' + seconds;
 
 d3.select('.gv-updated').html('Updated at ' + hours + ':' + minutes + ':' + seconds + ' Madrid time')
 
 
 const partiesList = ["PSC-PSOE","NC-CCa-PNC","M PAÍS-CHA-EQUO","MÁS PAÍS-EQUO","MÁS PAÍS-EQUO","MÁS PAÍS-CANDIDATURA ECOLOGISTA","MÁS PAÍS-ANDALUCÍA","MÁS PAÍS","Más País","UP", "ERC", "AHORA CANARIAS","ANDECHA ASTUR","ARA-MES-ESQUERRA","AVANT ADELANTE LOS VERDES","AVANT-LOS VERDES","AxSI","BNG","C 21","CCa-PNC","centrados","C.Ex-C.R.Ex-P.R.Ex","CILU-LINARES","CNV","COMPROMÍS 2019","CpM","Cs","Cs","CxG","DP","DPL","EAJ-PNV","EB","EB","EB","ECP-GUANYEM EL CANVI","EH Bildu","ELAK/PCTE","EL PI","EN MAREA","ERC-SOBIRANISTES","ERPV","F8","FE de las JONS","FIA","FRONT REPUBLICÀ","GBAI","IZAR","IZQP","JF","JxCAT-JUNTS","MAS","NA+","NCa","PACMA","PACMA","PACT","PCOE","PCPA","PCPC","PCPC","PCPE","PCPE","PCTC","PCTE","PCTE/ELAK","PCTG","PDSJE-UDEC","PH","P-LIB","PODEMOS-EUIB","PODEMOS-EU-MAREAS EN COMÚN-EQUO","PODEMOS-EUPV","PODEMOS-IU","PODEMOS-IU-EQUO","PODEMOS-IU-EQUO-AAeC","PODEMOS-IU-EQUO-BATZARRE","PODEMOS-IU-EQUO BERDEAK","PODEMOS-IU LV CA-EQUO","PODEMOS-IX-EQUO","PP","PP","PP","PP-FORO","PPSO","PR+","PRC","PREPAL","PSC","PSdeG-PSOE","PSE-EE (PSOE)","PSOE","PSOE","PUM+J","PUM+J","PUM+J","PYLN","RECORTES CERO-GV","RECORTES CERO-GV-PCAS-TC","RISA","SOLIDARIA","SOMOS REGIÓN","UDT","UIG-SOM-CUIDES","UNIÓN REGIONALISTA","VOU","VOX", "CAnda", "PODEMOS-IU-Alto Aragón en Común", "CHA", "¡TERUEL EXISTE!", "AUNACV", "ANDECHA", "PODEMOS-IX", "MÉS-ESQUERRA", "CCa-PNC-NC", "VERDES", "CONTIGO", "PDSJE","VERDES o LOS VERDES o LV","PCAS-TC","XAV","UPL","PFyV","Junts","PFiV","CUP-PR","I.Fem","UNIDOS SÍ-ACPS-DEf","EXTREMADURA UNIDA","MÉS COMPROMÍS","RVPVE","MDyC", "PODEMOS-IU LV CA","AxSÍ","M PAÍS-CHA-EQUO","M PAÍS","PODEMOS-IU-BATZARRE","AVANT LOS VERDES","LOS VERDES"];
-const podemosRawNames = ["PODEMOS-IU-BATZARRE", "PODEMOS-IU LV CA", "PODEMOS-IULV-CA", "PODEMOS-EU","PODEMOS-IU","PODEMOS-EUIB","PODEMOS-EU-MAREAS EN COMÚN-EQUO","PODEMOS-EUPV","PODEMOS-IU-EQUO","PODEMOS-IU-EQUO-AAeC","PODEMOS-IU-EQUO-BATZARRE","PODEMOS-IU-EQUO BERDEAK","PODEMOS-IU LV CA-EQUO","PODEMOS-IX-EQUO","ECP-GUANYEM EL CANVI"];
+const podemosRawNames = ["PODEMOS-IU-BATZARRE", "PODEMOS-IU LV CA", "PODEMOS-IX", "PODEMOS-IULV-CA", "PODEMOS-EU","PODEMOS-IU","PODEMOS-EUIB","PODEMOS-EU-MAREAS EN COMÚN-EQUO","PODEMOS-EUPV","PODEMOS-IU-EQUO","PODEMOS-IU-EQUO-AAeC","PODEMOS-IU-EQUO-BATZARRE","PODEMOS-IU-EQUO BERDEAK","PODEMOS-IU LV CA-EQUO","PODEMOS-IX-EQUO","ECP-GUANYEM EL CANVI"];
 const psoeRawNames = ["PSC-PSOE","PSC","PSdeG-PSOE","PSE-EE (PSOE)","PSOE","PSOE"];
 const csRawNames = ["C's","Cs","Citizens"];
 const ppRawNames = ["PP","PP-FORO"];
