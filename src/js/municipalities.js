@@ -5,7 +5,7 @@ import * as d3geo from 'd3-geo'
 import csv from 'csv-parse/lib/sync'
 import map from '../assets/admn1_admn2'
 import municipalities from '../assets/municipios'
-import electoralData from '../assets/electoral_data'
+//import electoralData from '../assets/electoral_data'
 import { $ } from "./util"
 
 let d3 = Object.assign({}, d3B, d3Select, d3geo);
@@ -84,7 +84,7 @@ let data = []
 
 Promise.all(files
 .map(file => {
-	fetch('<%= path %>/assets/TXMUNCO99kojg2dng/' + file).then(response =>{
+	fetch('<%= path %>/assets/TXMUNCO995k3agofj/' + file).then(response =>{
 		return response.ok ? response.text() : Promise.reject(response.status);
 	})
 	.then(text =>{
@@ -142,7 +142,7 @@ Promise.all(files
 	})
 	.then(d => {
 
-		console.log(data.length)
+		//console.log(data.length)
 
 		//makeMap()
 
@@ -161,12 +161,14 @@ Promise.all(files
 
 }))
 
+let voxResults = []
+
 
 const makeMap = empty  => {
 
-	projection.fitSize([width, height], topojson.feature(municipalities, municipalities.objects.municipios_4326));
+	projection.fitSize([width, height], topojson.feature(municipalities, municipalities.objects.municipios));
 
-	let municipiosFeatures = topojson.feature(municipalities, municipalities.objects.municipios_4326).features
+	let municipiosFeatures = topojson.feature(municipalities, municipalities.objects.municipios).features
 
 	let winnersGroup = d3.select("#elections-municipalities").append('svg')
 	.attr('width', width)
@@ -178,224 +180,71 @@ const makeMap = empty  => {
 	.append('path')
 	.attr('d', path)
 	.attr('id', d => 'm' + d.properties.NATCODE.substr(6,10))
-	.attr('municipality', d => d.properties.Texto)
-	.attr('class', 'municipality')
+	//.style('stroke', "black")
+	.style('fill', "#333333")
+	.style('opacity', 0)
 
-	let comunidades = winnersGroup.append('g').selectAll('path')
-	.data(topojson.feature(map, map.objects.comunidades).features)
-	.enter()
-	.append('path')
-	.attr('d', path)
-	.attr('class', 'comunidad')
-
-	/*let psoeGroup = d3.select("#elections-municipalities").append('svg')
-	.attr('width', width)
-	.attr('height', height)
-
-	let psoe_depth = psoeGroup.selectAll('path')
-	.data(municipiosFeatures)
-	.enter()
-	.append('path')
-	.attr('d', path)
-	.attr('id', d => 'm' + d.properties.NATCODE.substr(6,10))
-	.attr('municipality', d => d.properties.Texto)
-	.attr('class', 'municipality')
-
-
-	let comunidadesPsoe = psoeGroup.append('g').selectAll('path')
-	.data(topojson.feature(map, map.objects.comunidades).features)
-	.enter()
-	.append('path')
-	.attr('d', path)
-	.attr('class', 'comunidad')
 	
-
-	let ppGroup = d3.select("#elections-municipalities").append('svg')
-	.attr('width', width)
-	.attr('height', height)
-
-	let pp_depth = ppGroup.selectAll('path')
-	.data(municipiosFeatures)
-	.enter()
-	.append('path')
-	.attr('d', path)
-	.attr('id', d => 'm' + d.properties.NATCODE.substr(6,10))
-	.attr('municipality', d => d.properties.Texto)
-	.attr('class', 'municipality')
-
-	let comunidadesPp = ppGroup.append('g').selectAll('path')
-	.data(topojson.feature(map, map.objects.comunidades).features)
-	.enter()
-	.append('path')
-	.attr('d', path)
-	.attr('class', 'comunidad')
-
-
-	let podemosGroup = d3.select("#elections-municipalities").append('svg')
-	.attr('width', width)
-	.attr('height', height)
-
-	let podemos_depth = podemosGroup.selectAll('path')
-	.data(municipiosFeatures)
-	.enter()
-	.append('path')
-	.attr('d', path)
-	.attr('id', d => 'm' + d.properties.NATCODE.substr(6,10))
-	.attr('municipality', d => d.properties.Texto)
-	.attr('class', 'municipality')
-
-	let comunidadesPodemos = podemosGroup.append('g').selectAll('path')
-	.data(topojson.feature(map, map.objects.comunidades).features)
-	.enter()
-	.append('path')
-	.attr('d', path)
-	.attr('class', 'comunidad')
-
-
-	let csGroup = d3.select("#elections-municipalities").append('svg')
-	.attr('width', width)
-	.attr('height', height)
-
-	let cs_depth = csGroup.selectAll('path')
-	.data(municipiosFeatures)
-	.enter()
-	.append('path')
-	.attr('d', path)
-	.attr('id', d => 'm' + d.properties.NATCODE.substr(6,10))
-	.attr('municipality', d => d.properties.Texto)
-	.attr('class', 'municipality')
-
-	let comunidadesCs = csGroup.append('g').selectAll('path')
-	.data(topojson.feature(map, map.objects.comunidades).features)
-	.enter()
-	.append('path')
-	.attr('d', path)
-	.attr('class', 'comunidad')
-
-	let voxGroup = d3.select("#elections-municipalities").append('svg')
-	.attr('width', width)
-	.attr('height', height)
-
-	let vox_depth = voxGroup.selectAll('path')
-	.data(municipiosFeatures)
-	.enter()
-	.append('path')
-	.attr('d', path)
-	.attr('id', d => 'm' + d.properties.NATCODE.substr(6,10))
-	.attr('municipality', d => d.properties.Texto)
-	.attr('class', 'municipality')
-
-	let comunidadesVox = voxGroup.append('g').selectAll('path')
-	.data(topojson.feature(map, map.objects.comunidades).features)
-	.enter()
-	.append('path')
-	.attr('d', path)
-	.attr('class', 'comunidad')*/
-
-
-
-
 
 	data.map(municipality =>{
 
 
-		let votedParties = municipality.results.filter(result => +result.party_votes_percentage > 0);
+		//console.log('&&', municipality)
 
-		let winner = votedParties.filter( p => +p.party_votes_percentage === d3.max(votedParties, party => +party.party_votes_percentage));
+		municipality.results.map( result => {
 
-		let party;
+			let voxResult;
+
+			let op = 0;
 
 
-		if(winner.length > 0)
-		{
 
-			if(municipality.municipality_name == 'Madrid')console.log(municipality, winner)
-			if(winner.length > 1){
+			if(result.party_acronym == "VOX")
+				{
+					voxResult = result;
 
-				party =  electoralData.parties.find(party => party.acronym === 'Others')
-			}
-			else{
+					voxResults.push(voxResult);
 
-				party = electoralData.parties.find(party => party.acronym === winner[0].party_acronym)
-			}
+					//console.log("@@", +voxResult.party_votes_percentage / 10000)
 
-			winnersGroup.select("#m" + municipality.provincia_code + municipality.municipality_code)
-			.attr('class', party.acronym)
+					let mun = d3.select('#m' + municipality.provincia_code + municipality.municipality_code)
+
+					let pr = +voxResult.party_votes_percentage / 100;
+
+					console.log(pr)
+
+					if(pr > 0 && pr < 10){
+						op = 0.1
+					}
+					else if(pr >= 10 && pr < 20){
+						op = 0.3
+					}
+					else if(pr >= 20 && pr < 30){
+						op = 0.6
+					}
+					else if(pr >= 30){
+						op = 1
+					}
+
+
+
+
+					//console.log(voxResult.party_votes_percentage,+voxResult.party_votes_percentage/ 10000)
+
+					mun
+					.style('opacity', op)
+					
+				}
 
 			
-		}
-		else
-		{
-			winnersGroup.select("#m" + municipality.provincia_code + municipality.municipality_code)
-			.attr('class', 'nodata')
-			//console.log("NO VOTES YET ------>",municipality.municipality_name, municipality)
-		}
-
-
-		/*let psoe = municipality.results.find(result => result.party_code === "0096" || result.party_code === "0092" || result.party_code === "0093" || result.party_code === "0094" || result.party_code === "0097");
-		let psoePercentage = +psoe.party_votes_percentage / 100
-
-		if(psoe){
-
-			psoeGroup.select("#m" + municipality.provincia_code + municipality.municipality_code)
-			.style('fill-opacity', psoePercentage / 100)
-			.attr('class' , 'PSOE')
-		}
-
-
-		let pp = municipality.results.find(result => result.party_code === "0083" || result.party_code === "0084" || result.party_code === "0085" || result.party_code === "0086" );
-		let ppPercentage = +pp.party_votes_percentage / 100
-
-		if(pp){
-
-			ppGroup.select("#m" + municipality.provincia_code + municipality.municipality_code)
-			.style('fill-opacity', ppPercentage /100)
-			.attr('class' , 'PP')
-		}
-
-
-		let podemos = municipality.results.find(result => result.party_code === "0074" || result.party_code === "0075" || result.party_code === "0076" || result.party_code === "0077" || result.party_code === "0078" || result.party_code === "0079" || result.party_code === "0080" || result.party_code === "0081" || result.party_code === "0082" || result.party_code === "0032");
-		let podemosPercentage = +podemos.party_votes_percentage / 100
-
-		if(podemos){
-
-			podemosGroup.select("#m" + municipality.provincia_code + municipality.municipality_code)
-			.style('fill-opacity', podemosPercentage /100)
-			.attr('class' , 'PODEMOS')
-		}
-
-		let cs = municipality.results.find(result => result.party_code === "0022" || result.party_code === "0023"  );
-		let csPercentage = +cs.party_votes_percentage / 100
-
-		if(cs){
-
-			csGroup.select("#m" + municipality.provincia_code + municipality.municipality_code)
-			.style('fill-opacity', csPercentage / 100)
-			.attr('class' , 'Cs')
-		}
-
-
-		let vox = municipality.results.find(result => result.party_code === "0117");
-		let voxPercentage = +vox.party_votes_percentage / 100
-
-		if(vox){
-
-			voxGroup.select("#m" + municipality.provincia_code + municipality.municipality_code)
-			.style('fill-opacity', voxPercentage / 100)
-			.attr('class' , 'VOX')
-		}
-
-		percentages.push(+psoe.party_votes_percentage)
-		percentages.push(+pp.party_votes_percentage)
-		percentages.push(+cs.party_votes_percentage)
-		percentages.push(+podemos.party_votes_percentage)
-		percentages.push(+vox.party_votes_percentage)*/
-
+		})
 		
 
 	})
 
 
-	console.log('max: ', d3.max(percentages))
+	let max = d3.max(voxResults, function(d) { return +d.party_votes_percentage;} );
+	let maxMunicipality = voxResults.find(result => +result.party_votes_percentage >= max)
+	console.log('max: ', max, maxMunicipality)
 }
 

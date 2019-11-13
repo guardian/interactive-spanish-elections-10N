@@ -18,8 +18,10 @@
 fetchstamp=$(date "+%H:%M:%S")
 echo $fetchstamp > ./src/server/timestamp
 
-   	npm run provinces-parser
-    npm run deploylive
+gulp
 
-    sleep 150
+   	# npm run provinces-parser
+    # npm run deploylive
+
+    # sleep 150
 done
